@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://5vdk0s8aqq0"]
+
+[ext_resource type="Script" uid="uid://sf4a6shahctf" path="res://cagada/rigid_body_3d.gd" id="1_8cicr"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_gu0x1"]
+friction = 0.53
+bounce = 1.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_ahorc"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_i7goa"]
+
+[node name="RigidBody3D" type="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, -13.675)
+collision_layer = 2
+collision_mask = 5
+physics_material_override = SubResource("PhysicsMaterial_gu0x1")
+inertia = Vector3(0.1, 0.1, 0.1)
+contact_monitor = true
+max_contacts_reported = 5
+constant_force = Vector3(0, 1, 0)
+constant_torque = Vector3(0, 1, 0)
+script = ExtResource("1_8cicr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_ahorc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_i7goa")

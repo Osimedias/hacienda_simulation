@@ -1,0 +1,71 @@
+[gd_scene load_steps=2 format=3 uid="uid://xg280y03twfe"]
+
+[ext_resource type="Script" uid="uid://bhvrrx5bcaowu" path="res://gameplay/camera_controller.gd" id="1_sq258"]
+
+[node name="CameraController" type="Node3D"]
+script = ExtResource("1_sq258")
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.48137, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
+
+[node name="CameraControlBorders" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CameraControlBorders"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Left" type="Control" parent="CameraControlBorders/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CameraControlBorders/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+size_flags_stretch_ratio = 20.0
+
+[node name="Up" type="Control" parent="CameraControlBorders/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 13
+size_flags_vertical = 15
+
+[node name="Control2" type="Control" parent="CameraControlBorders/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 13
+size_flags_vertical = 15
+size_flags_stretch_ratio = 20.0
+mouse_filter = 2
+
+[node name="Down" type="Control" parent="CameraControlBorders/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 13
+size_flags_vertical = 15
+
+[node name="Right" type="Control" parent="CameraControlBorders/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+
+[connection signal="mouse_entered" from="CameraControlBorders/HBoxContainer/Left" to="." method="_on_left_mouse_entered"]
+[connection signal="mouse_exited" from="CameraControlBorders/HBoxContainer/Left" to="." method="_on_left_mouse_exited"]
+[connection signal="mouse_entered" from="CameraControlBorders/HBoxContainer/VBoxContainer/Up" to="." method="_on_up_mouse_entered"]
+[connection signal="mouse_exited" from="CameraControlBorders/HBoxContainer/VBoxContainer/Up" to="." method="_on_up_mouse_exited"]
+[connection signal="mouse_entered" from="CameraControlBorders/HBoxContainer/VBoxContainer/Down" to="." method="_on_down_mouse_entered"]
+[connection signal="mouse_exited" from="CameraControlBorders/HBoxContainer/VBoxContainer/Down" to="." method="_on_down_mouse_exited"]
+[connection signal="mouse_entered" from="CameraControlBorders/HBoxContainer/Right" to="." method="_on_right_mouse_entered"]
+[connection signal="mouse_exited" from="CameraControlBorders/HBoxContainer/Right" to="." method="_on_right_mouse_exited"]

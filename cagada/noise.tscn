@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://w182wju1swpb"]
+
+[ext_resource type="Script" uid="uid://bsfkosn4x3co0" path="res://cagada/draw_stuff.gd" id="1_5t6qi"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nkwvw"]
+
+[node name="Noise" type="Node"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.237539, 0.237539, 0.237539, 1)
+script = ExtResource("1_5t6qi")
+noise = SubResource("FastNoiseLite_nkwvw")
+metadata/_edit_use_anchors_ = true

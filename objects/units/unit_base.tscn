@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://bhvhdbi0raaab"]
+
+[ext_resource type="Script" uid="uid://baghpyc3ybojj" path="res://objects/units/unit.gd" id="1_2twme"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_vhjvw"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_oha55"]
+
+[sub_resource type="TorusMesh" id="TorusMesh_r6gnb"]
+inner_radius = 0.924
+
+[node name="UnitBase" type="CharacterBody3D"]
+script = ExtResource("1_2twme")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_vhjvw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_oha55")
+
+[node name="SelectionCircle" type="MeshInstance3D" parent="."]
+mesh = SubResource("TorusMesh_r6gnb")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]

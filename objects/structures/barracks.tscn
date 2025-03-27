@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://cbf7xoo07q6r0"]
+
+[ext_resource type="PackedScene" uid="uid://boncr1n86yqbv" path="res://models/structures/barracks.glb" id="1_3ibuj"]
+[ext_resource type="Script" uid="uid://b6jqobpag4r3f" path="res://objects/structures/structure.gd" id="2_niaav"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_cwk73"]
+device = -1
+keycode = 90
+unicode = 122
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tmn6b"]
+size = Vector3(8.32907, 4.65216, 7.04907)
+
+[node name="Barracks" node_paths=PackedStringArray("spawn_entities_node", "reunion_marker") groups=["terrain"] instance=ExtResource("1_3ibuj")]
+collision_layer = 2
+script = ExtResource("2_niaav")
+spawn_entities_node = NodePath("SpawnEntities")
+reunion_marker = NodePath("ReunionMarker")
+action_event_key_list = Array[InputEventKey]([SubResource("InputEventKey_cwk73")])
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1" groups=["terrain"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0151825, 2.32553, 1.40759)
+shape = SubResource("BoxShape3D_tmn6b")
+
+[node name="SpawnEntities" type="Marker3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6.17885)
+
+[node name="ReunionMarker" type="Marker3D" parent="." index="3"]

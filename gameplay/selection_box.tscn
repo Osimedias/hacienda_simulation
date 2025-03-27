@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bbcdek24v6dd8"]
+
+[ext_resource type="Script" uid="uid://idlduo8y2b7g" path="res://gameplay/selection_box.gd" id="1_1yhit"]
+
+[node name="SelectionBox" type="Node2D"]
+script = ExtResource("1_1yhit")

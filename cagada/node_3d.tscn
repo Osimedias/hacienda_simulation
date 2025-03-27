@@ -1,0 +1,102 @@
+[gd_scene load_steps=14 format=3 uid="uid://bacnfp6vblci1"]
+
+[ext_resource type="Shader" uid="uid://b40pnrs7bjwyi" path="res://shades/terrain_painter.gdshader" id="1_kijmm"]
+[ext_resource type="Shader" uid="uid://clja36bbi8msb" path="res://shades/depth_viewport.gdshader" id="2_y45cx"]
+[ext_resource type="PackedScene" uid="uid://xg280y03twfe" path="res://gameplay/camera_controller.tscn" id="3_qy42a"]
+[ext_resource type="Script" uid="uid://ccdxh4r0t5olx" path="res://world/depth_texture.gd" id="3_xf5du"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_em52a"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_w5o6a"]
+sky_material = SubResource("ProceduralSkyMaterial_em52a")
+
+[sub_resource type="Environment" id="Environment_i1abo"]
+background_mode = 2
+sky = SubResource("Sky_w5o6a")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xf5du"]
+render_priority = 0
+shader = ExtResource("1_kijmm")
+shader_parameter/max_height = 60.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_yq8w7"]
+resource_local_to_scene = true
+size = Vector2(50, 50)
+subdivide_width = 400
+subdivide_depth = 400
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1ctj2"]
+albedo_color = Color(0.201816, 3.15858e-08, 1.20327e-08, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_djm5e"]
+material = SubResource("StandardMaterial3D_1ctj2")
+top_radius = 0.0
+bottom_radius = 0.13
+height = 0.605
+cap_top = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gnycm"]
+render_priority = 0
+shader = ExtResource("2_y45cx")
+shader_parameter/offset = 0.0
+shader_parameter/weight = 0.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_xf5du"]
+material = SubResource("ShaderMaterial_gnycm")
+size = Vector2(50, 50)
+orientation = 1
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_i1abo")
+
+[node name="TerrainMesh" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_xf5du")
+mesh = SubResource("PlaneMesh_yq8w7")
+
+[node name="SubViewport" type="SubViewport" parent="." node_paths=PackedStringArray("debug_tex", "camera")]
+handle_input_locally = false
+debug_draw = 1
+fsr_sharpness = 2.0
+render_target_clear_mode = 1
+render_target_update_mode = 4
+script = ExtResource("3_xf5du")
+debug_tex = NodePath("../DebugRect")
+camera = NodePath("../CameraController/Head/Camera3D")
+
+[node name="Brush" type="MeshInstance3D" parent="SubViewport"]
+transform = Transform3D(1.51, 0, 0, 0, 1.51, 0, 0, 0, 1.51, 0, 1.62425, 0)
+layers = 524288
+mesh = SubResource("CylinderMesh_djm5e")
+skeleton = NodePath("../..")
+
+[node name="Camera" type="Camera3D" parent="SubViewport"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -2, 0)
+cull_mask = 524288
+projection = 1
+size = 35.327
+
+[node name="DepthQuad" type="MeshInstance3D" parent="SubViewport/Camera"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -4.37585e-08, -1.00108)
+layers = 524288
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_xf5du")
+skeleton = NodePath("../../..")
+
+[node name="CameraController" parent="." instance=ExtResource("3_qy42a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 21, 16)
+cull_mask = 524287
+
+[node name="DebugRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(200, 200)
+offset_right = 40.0
+offset_bottom = 40.0

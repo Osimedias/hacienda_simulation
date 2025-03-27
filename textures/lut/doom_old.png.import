@@ -1,0 +1,26 @@
+[remap]
+
+importer="3d_texture"
+type="CompressedTexture3D"
+uid="uid://dqgt5usfxktxb"
+path="res://.godot/imported/doom_old.png-05a569e2e079b81cedb84f2c1415eb36.ctex3d"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://textures/lut/doom_old.png"
+dest_files=["res://.godot/imported/doom_old.png-05a569e2e079b81cedb84f2c1415eb36.ctex3d"]
+
+[params]
+
+compress/mode=0
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/channel_pack=0
+mipmaps/generate=false
+mipmaps/limit=-1
+slices/horizontal=32
+slices/vertical=2
