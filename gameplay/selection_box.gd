@@ -9,6 +9,8 @@ extends Node2D
 
 @export var group : StringName
 @export_flags_3d_physics var mask
+@export var line_color : Color
+@export var background_color : Color
 @export var world : Node3D
 var camera: Camera3D
 
@@ -30,12 +32,14 @@ func _input(event: InputEvent) -> void:
 				selection_start = get_global_mouse_position()
 				selection_rect.position = selection_start
 				selection_rect.size = Vector2.ZERO
+				_select_units()
 			else:
 				if is_selecting:
 					is_selecting = false
 					selection_rect = Rect2()
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			queue_redraw()
+			_clear_selection()
 			selection_rect = Rect2()
 			pass
 	elif event is InputEventMouseMotion:
@@ -60,4 +64,15 @@ func _process(_delta: float) -> void:
 
 
 func _draw() -> void:
-	draw_rect(selection_rect,Color.BLUE,false)
+	draw_rect(selection_rect,line_color,false,1.5)
+	draw_rect(selection_rect,background_color)
+	
+
+
+
+func _select_units() -> void:
+	
+	pass
+
+func _clear_selection() -> void:
+	pass

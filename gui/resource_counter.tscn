@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://cat75pcn4b7b1"]
+
+[ext_resource type="FontFile" uid="uid://dmm5pnodwaryw" path="res://fonts/Noto_Emoji/static/NotoEmoji-Bold.ttf" id="1_r6biy"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_gqaq8"]
+line_spacing = 1.0
+font = ExtResource("1_r6biy")
+
+[node name="ResourceCounter" type="HBoxContainer"]
+anchors_preset = -1
+anchor_right = 0.0737847
+anchor_bottom = 0.0617284
+metadata/_edit_use_anchors_ = true
+
+[node name="IconEmoji" type="Label" parent="."]
+layout_mode = 2
+text = "🏠"
+label_settings = SubResource("LabelSettings_gqaq8")
+
+[node name="Info" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0/0"

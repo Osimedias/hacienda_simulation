@@ -11,12 +11,28 @@ config_version=5
 [application]
 
 config/name="rts"
+run/main_scene="uid://dkg1i4gfjgld7"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+RaycastSystem="*res://world/raycast_system.tscn"
+SimpleGrass="*res://addons/simplegrasstextured/singleton.tscn"
+EntitiesManager="*res://gameplay/entities_manager.gd"
 
 [display]
 
 window/stretch/aspect="keep_width"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/simplegrasstextured/plugin.cfg")
+
+[global_group]
+
+terrain=""
+player=""
 
 [input]
 
@@ -87,4 +103,44 @@ tree_wind_size={
 tree_wind_power={
 "type": "vec3",
 "value": Vector3(0, 0, 0)
+}
+sgt_legacy_renderer={
+"type": "int",
+"value": 0
+}
+sgt_player_position={
+"type": "vec3",
+"value": Vector3(1e+06, 1e+06, 1e+06)
+}
+sgt_player_mov={
+"type": "vec3",
+"value": Vector3(0, 0, 0)
+}
+sgt_normal_displacement={
+"type": "sampler2D",
+"value": "res://addons/simplegrasstextured/images/normal.png"
+}
+sgt_motion_texture={
+"type": "sampler2D",
+"value": "res://addons/simplegrasstextured/images/motion.png"
+}
+sgt_wind_direction={
+"type": "vec3",
+"value": Vector3(1, 0, 0)
+}
+sgt_wind_movement={
+"type": "vec3",
+"value": Vector2(0, 0)
+}
+sgt_wind_strength={
+"type": "float",
+"value": 0.15
+}
+sgt_wind_turbulence={
+"type": "float",
+"value": 1.0
+}
+sgt_wind_pattern={
+"type": "sampler2D",
+"value": "res://addons/simplegrasstextured/images/wind_pattern.png"
 }

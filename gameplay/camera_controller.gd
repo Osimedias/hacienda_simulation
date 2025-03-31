@@ -5,14 +5,25 @@ extends Node3D
 @export var zoom_speed : float = 45.0
 @onready var camera_3d: Camera3D = $Head/Camera3D
 
+@export var terrain : Terrain
 
 var min_zoom : float = 0.0
 var max_zoom : float = 65.0
 
+var terrain_mesh : MeshInstance3D
+
 func _ready() -> void:
 	camera_3d.cull_mask = cull_mask
+	if terrain:
+		terrain_mesh = terrain.get_node("TerrainMesh")
+	
 
 func _process(_delta: float) -> void:
+	
+	position.x = clamp(position.x,terrain_mesh.get_aabb().position.x + 7,terrain_mesh.get_aabb().end.x - 7)
+	position.y = clamp(position.y,0.0,65.0)
+	position.z = clamp(position.z,terrain_mesh.get_aabb().position.z + 7,terrain_mesh.get_aabb().end.z - 7)
+	
 	
 	var direction : Vector2 = Input.get_vector("move_left","move_right","move_forward","move_backward")
 	
@@ -22,35 +33,3 @@ func _process(_delta: float) -> void:
 		$Head.transform.origin.y += 1
 	if Input.is_action_just_pressed("zoom_out"):
 		$Head.transform.origin.y -= 1
-
-
-func _on_up_mouse_entered() -> void:
-	transform.origin.z += 1
-
-
-func _on_down_mouse_entered() -> void:
-	transform.origin.z -= 1
-
-
-func _on_left_mouse_entered() -> void:
-	transform.origin.x += 1
-
-
-func _on_right_mouse_entered() -> void:
-	transform.origin.x -= 1
-
-
-func _on_up_mouse_exited() -> void:
-	transform.origin.z = 0
-
-
-func _on_down_mouse_exited() -> void:
-	transform.origin.z = 0
-
-
-func _on_left_mouse_exited() -> void:
-	transform.origin.x = 0
-
-
-func _on_right_mouse_exited() -> void:
-	transform.origin.x = 0

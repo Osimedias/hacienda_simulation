@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://dkun6bweobfug"]
+
+[ext_resource type="PackedScene" uid="uid://c6tximly8pm0b" path="res://models/structures/landowner_house.glb" id="1_7457m"]
+[ext_resource type="Script" uid="uid://bg6vs5fa0q40g" path="res://gameplay/state_machine.gd" id="2_b76hj"]
+[ext_resource type="Script" uid="uid://bj4iff0f138ny" path="res://gameplay/land_owner_house_manager.gd" id="2_ly3ro"]
+[ext_resource type="Script" uid="uid://d1n070s8b7f14" path="res://gameplay/main_build_state.gd" id="3_mcrsg"]
+[ext_resource type="Script" uid="uid://sck8vakplrm2" path="res://gameplay/state_spawn_peasents.gd" id="4_ly3ro"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7457m"]
+size = Vector3(12.4385, 8.8233, 11.9542)
+
+[node name="LandOwnerHouse" node_paths=PackedStringArray("spawn_entities_node", "reunion_marker") groups=["terrain"] instance=ExtResource("1_7457m")]
+collision_layer = 2
+spawn_entities_node = NodePath("SpawnEntities")
+reunion_marker = NodePath("ReunionMarker")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0103455, 4.3804, 0.0567017)
+shape = SubResource("BoxShape3D_7457m")
+
+[node name="SpawnEntities" type="Marker3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6.17885)
+
+[node name="ReunionMarker" type="Marker3D" parent="." index="3"]
+
+[node name="LandOwnerHouseManager" type="Node" parent="." index="4" node_paths=PackedStringArray("structure")]
+script = ExtResource("2_ly3ro")
+structure = NodePath("..")
+
+[node name="StateMachine" type="Node" parent="." index="5" node_paths=PackedStringArray("initial_state", "actor")]
+script = ExtResource("2_b76hj")
+initial_state = NodePath("StateMainBuilding")
+actor = NodePath("StateSpawnPeasents")
+metadata/_custom_type_script = "uid://bg6vs5fa0q40g"
+
+[node name="StateMainBuilding" type="Node" parent="StateMachine" index="0" node_paths=PackedStringArray("structure")]
+script = ExtResource("3_mcrsg")
+structure = NodePath("../..")
+metadata/_custom_type_script = "uid://d1n070s8b7f14"
+
+[node name="StateSpawnPeasents" type="Node" parent="StateMachine" index="1" node_paths=PackedStringArray("structure", "spawn_entitiy_loc", "reunion_loc")]
+script = ExtResource("4_ly3ro")
+structure = NodePath("../..")
+spawn_entitiy_loc = NodePath("../../SpawnEntities")
+reunion_loc = NodePath("../../ReunionMarker")
+metadata/_custom_type_script = "uid://sck8vakplrm2"

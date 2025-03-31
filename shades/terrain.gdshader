@@ -85,8 +85,8 @@ void fragment() {
 	NORMAL_MAP_DEPTH = 1.0;
 	AO = texture(heightmap,UV).r;
 	AO_LIGHT_AFFECT = 0.3;
-	ROUGHNESS = texture(roughness,UV).r * 00.2;
-	RADIANCE = texture(heightmap,UV).rgba * 0.2;
+	//ROUGHNESS = texture(roughness,UV).r * 00.2;
+	//RADIANCE = texture(heightmap,UV).rgba * 0.2;
 }
 
 void light(){

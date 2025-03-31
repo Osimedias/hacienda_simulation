@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2sojc2rdsyuu"]
+
+[ext_resource type="Script" uid="uid://cc1aqgkvekvrh" path="res://gameplay/territory.gd" id="1_u4fyb"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hlhf8"]
+
+[node name="Territory" type="Area3D"]
+script = ExtResource("1_u4fyb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_hlhf8")
+
+[node name="BackgroundColor" type="Decal" parent="."]
+
+[node name="DecalTexture" type="SubViewport" parent="BackgroundColor"]
+size = Vector2i(32, 32)
+
+[node name="Color" type="ColorRect" parent="BackgroundColor/DecalTexture"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true

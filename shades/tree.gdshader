@@ -37,30 +37,30 @@ varying float view_distance;
 void vertex() {
 	UV = UV * uv1_scale.xy + uv1_offset.xy;
 	UV2 = UV2 * uv1_scale.xy + uv2_offset.xy;
-	
+
 	vec3 world_position = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	vec3 world_camera = INV_VIEW_MATRIX[3].xyz;
 	vec4 tree_wind_timer = vec4(TIME) + vec4(NODE_POSITION_WORLD, 1.0);
 	view_distance = distance(world_position, world_camera);
-	
+
 	if (wind_enabled) {
 		vec3 world_normals = MODEL_NORMAL_MATRIX * NORMAL;
-		
+
 		vec3 global_wind = (world_position.xyz / tree_wind_size.x) + tree_wind_timer.x;
 		global_wind = vec3(cos(global_wind.x), 0, sin(global_wind.z));
 		global_wind.y = 1.0 + abs(dot(global_wind.x, global_wind.z));
-		
+
 		vec3 wind_force = (world_position / tree_wind_size.x) + tree_wind_timer.y - global_wind;
 		wind_force = vec3(cos(wind_force.x), 0, sin(wind_force.y));
-		
+
 		vec3 wind_animate = wind_force * tree_wind_power.x * (world_position.y / tree_wind_size.y);
 		float wind_variant = tree_wind_timer.z + (COLOR.y * 10.0);
-		
+
 		wind_animate.xz += vec2(cos(wind_variant), sin(wind_variant)) * COLOR.z * tree_wind_power.y * 0.1;
-		
+
 		vec3 wind_flutter = (world_position.xyz / tree_wind_size.w) + tree_wind_timer.w + COLOR.y;
 		wind_animate += abs(world_normals) * sin( dot(wind_flutter, vec3(1)) * tree_wind_size.w ) * COLOR.x * (tree_wind_power.z / tree_wind_size.w);
-		
+
 		world_position += wind_animate * global_wind.y;
 		VERTEX = (inverse(MODEL_MATRIX) * vec4(world_position, 1.0)).xyz;
 	}
@@ -71,13 +71,13 @@ void fragment() {
 	vec4 diffuse_alpha_tex = texture(texture_albedo, UV);
 	vec4 normal_rough_tex = texture(texture_normal, UV);
 	float threshold_dist_modifier = 1.0 - min(view_distance / max_distance, 1.0);
-	
+
 	ALBEDO = diffuse_alpha_tex.rgb * albedo.rgb;
 	ROUGHNESS = normal_rough_tex.a * roughness;
 	SPECULAR = specular;
 	NORMAL_MAP = normal_rough_tex.rgb;
 	NORMAL_MAP_DEPTH = normal_scale;
-	
+
 	if (is_branch) {
 		ALPHA *= albedo.a * diffuse_alpha_tex.a;
 		ALPHA_SCISSOR_THRESHOLD = alpha_scissor_threshold * threshold_dist_modifier;

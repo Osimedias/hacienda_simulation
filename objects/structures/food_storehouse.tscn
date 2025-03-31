@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://6vkofyx1vdcv"]
+
+[ext_resource type="PackedScene" uid="uid://4u7jo1a4xn6f" path="res://models/structures/food_storehouse.glb" id="1_hxuo3"]
+[ext_resource type="Script" uid="uid://cyhltj4aem7qu" path="res://gameplay/food_stored.gd" id="2_31ayf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_31ayf"]
+size = Vector3(5.06714, 4.51196, 4.01599)
+
+[node name="FoodStorehouse" node_paths=PackedStringArray("spawn_entities_node", "reunion_marker") instance=ExtResource("1_hxuo3")]
+spawn_entities_node = NodePath("SpawnPoint")
+reunion_marker = NodePath("ReunionPoint")
+
+[node name="FoodStored" type="Node" parent="." index="0"]
+script = ExtResource("2_31ayf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.533081, 2.24377, -0.024231)
+shape = SubResource("BoxShape3D_31ayf")
+
+[node name="SpawnPoint" type="Marker3D" parent="." index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.08961)
+
+[node name="ReunionPoint" type="Marker3D" parent="." index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.33361)
