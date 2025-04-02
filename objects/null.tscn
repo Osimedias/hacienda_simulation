@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://det2gragjlco8"]
+
+[ext_resource type="PackedScene" uid="uid://dygo7852p8f0" path="res://models/null.glb" id="1_qbcne"]
+
+[node name="null" instance=ExtResource("1_qbcne")]
+
+[node name="AnimationPlayer" parent="." index="1"]
+autoplay = "Idle"

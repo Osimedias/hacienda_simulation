@@ -1,0 +1,80 @@
+[gd_scene load_steps=6 format=3 uid="uid://doroeexa8bk8a"]
+
+[ext_resource type="Script" uid="uid://b6jqobpag4r3f" path="res://objects/structures/structure.gd" id="1_8u0sp"]
+[ext_resource type="PackedScene" uid="uid://d2qrnjmainrdd" path="res://models/structures/small_storehouse.glb" id="2_66w7f"]
+[ext_resource type="PackedScene" uid="uid://det2gragjlco8" path="res://objects/null.tscn" id="2_q2acd"]
+[ext_resource type="PackedScene" uid="uid://dcod60hp7sxlr" path="res://objects/props/agave_plant.tscn" id="3_q2acd"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0c1in"]
+size = Vector3(4.39307, 4.10974, 4.42419)
+
+[node name="AgavePlantation" type="StaticBody3D" node_paths=PackedStringArray("spawn_entities_node", "reunion_marker", "null_worker_model")]
+collision_layer = 2
+script = ExtResource("1_8u0sp")
+spawn_entities_node = NodePath("SpawnPoint")
+reunion_marker = NodePath("ReunionPoint")
+null_worker_model = NodePath("null")
+amount_of_workers_for_this_structure = 1
+metadata/_custom_type_script = "uid://b6jqobpag4r3f"
+
+[node name="null" parent="." instance=ExtResource("2_q2acd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.81171, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.203642, 2.04852, -2.16248)
+shape = SubResource("BoxShape3D_0c1in")
+
+[node name="small_storehouse" parent="." instance=ExtResource("2_66w7f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.203886, 0, -2.16706)
+
+[node name="FoodZone" type="Node3D" parent="."]
+
+[node name="AgavePlant" parent="FoodZone" instance=ExtResource("3_q2acd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.26907, 0, 0.759713)
+
+[node name="RayCast3D" type="RayCast3D" parent="FoodZone/AgavePlant"]
+
+[node name="AgavePlant2" parent="FoodZone" instance=ExtResource("3_q2acd")]
+transform = Transform3D(0.943645, 0, -0.330959, 0, 1, 0, 0.330959, 0, 0.943645, 0.276722, 0, 0.759713)
+
+[node name="RayCast3D" type="RayCast3D" parent="FoodZone/AgavePlant2"]
+
+[node name="AgavePlant3" parent="FoodZone" instance=ExtResource("3_q2acd")]
+transform = Transform3D(0.920628, 0, 0.390442, 0, 1, 0, -0.390442, 0, 0.920628, 1.786, 0, 0.759713)
+
+[node name="RayCast3D" type="RayCast3D" parent="FoodZone/AgavePlant3"]
+
+[node name="AgavePlant4" parent="FoodZone" instance=ExtResource("3_q2acd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.26907, 0, 2.40288)
+
+[node name="RayCast3D" type="RayCast3D" parent="FoodZone/AgavePlant4"]
+
+[node name="AgavePlant5" parent="FoodZone" instance=ExtResource("3_q2acd")]
+transform = Transform3D(0.943645, 0, -0.330959, 0, 1, 0, 0.330959, 0, 0.943645, 0.276722, 0, 2.40288)
+
+[node name="RayCast3D" type="RayCast3D" parent="FoodZone/AgavePlant5"]
+
+[node name="AgavePlant6" parent="FoodZone" instance=ExtResource("3_q2acd")]
+transform = Transform3D(0.920628, 0, 0.390442, 0, 1, 0, -0.390442, 0, 0.920628, 1.786, 0, 2.40288)
+
+[node name="RayCast3D" type="RayCast3D" parent="FoodZone/AgavePlant6"]
+
+[node name="AgavePlant7" parent="FoodZone" instance=ExtResource("3_q2acd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.26907, 0, 4.00581)
+
+[node name="RayCast3D" type="RayCast3D" parent="FoodZone/AgavePlant7"]
+
+[node name="AgavePlant8" parent="FoodZone" instance=ExtResource("3_q2acd")]
+transform = Transform3D(0.943645, 0, -0.330959, 0, 1, 0, 0.330959, 0, 0.943645, 0.276722, 0, 4.00581)
+
+[node name="RayCast3D" type="RayCast3D" parent="FoodZone/AgavePlant8"]
+
+[node name="AgavePlant9" parent="FoodZone" instance=ExtResource("3_q2acd")]
+transform = Transform3D(0.920628, 0, 0.390442, 0, 1, 0, -0.390442, 0, 0.920628, 1.786, 0, 4.00581)
+
+[node name="RayCast3D" type="RayCast3D" parent="FoodZone/AgavePlant9"]
+
+[node name="SpawnPoint" type="Marker3D" parent="."]
+
+[node name="ReunionPoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.632897, 0, 4.43426)

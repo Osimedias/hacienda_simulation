@@ -5,12 +5,16 @@ class_name Structure extends StaticBody3D
 @export var reunion_marker : Marker3D
 
 @export var action_event_key_list : Array[InputEventKey]
+@export var null_worker_model : Node3D
+@export var amount_of_workers_for_this_structure : int = 0
 
 var click_on_valid_terrain : bool
 var terrain_navigation : NavigationRegion3D
 
 var this_structure_can_spawn_units : bool
 var in_floor : bool = false
+
+var has_a_worker : bool = false
 
 func _ready() -> void:
 	terrain_navigation = get_parent_node_3d().get_node_or_null("TerrainNavigation")
@@ -22,6 +26,10 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	if click_on_valid_terrain == false:
 		transform.origin = RaycastSystem.get_mouse_world_position(collision_mask)
+	if has_a_worker:
+		null_worker_model.hide()
+	else:
+		null_worker_model.show()
 
 
 func _input(event: InputEvent) -> void:

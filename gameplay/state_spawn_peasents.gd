@@ -1,5 +1,6 @@
 class_name StateSpawnPeasents extends State
 
+@export var amount_of_peasents : int = 8
 @export var peasant : PackedScene
 @export var structure : Structure
 @export var spawn_entitiy_loc : Marker3D
@@ -18,13 +19,16 @@ func enter() -> void:
 func exit() -> void:
 	
 	pass
+
 ## Update Logic of this state
 func update(_delta : float) -> void:
 	
 	if player.current_houseing_space > 1 or player.current_worker_population != player.current_houseing_space:
 		await get_tree().create_timer(2.5).timeout
-		#EntitiesManager.spawn_entitie_on_world(peasant,spawn_point,structure.get_parent_node_3d(),peasant.resource_name)
-		player.current_worker_population += 1
+		EntitiesManager.spawn_entitie_on_world(peasant,spawn_point,structure.get_parent_node_3d(),peasant.resource_name)
+		if player.current_worker_population != amount_of_peasents:
+			player.current_worker_population += 1
+			transitioned.emit(self,"StateMainBuilding")
 	else:
 		pass
 ## Update Logic of this state

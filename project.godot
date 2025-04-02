@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="rts"
-run/main_scene="uid://dkg1i4gfjgld7"
+run/main_scene="uid://gj1adculurwf"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 RaycastSystem="*res://world/raycast_system.tscn"
 SimpleGrass="*res://addons/simplegrasstextured/singleton.tscn"
 EntitiesManager="*res://gameplay/entities_manager.gd"
+ConfigurationManager="*res://gameplay/configuration_manager.gd"
 
 [display]
 

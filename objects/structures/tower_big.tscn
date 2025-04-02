@@ -6,10 +6,13 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_eaqty"]
 size = Vector3(5.81836, 8.91751, 6.19446)
 
-[node name="TowerBig" groups=["terrain"] instance=ExtResource("1_5in1n")]
+[node name="TowerBig" node_paths=PackedStringArray("null_worker_model") groups=["terrain"] instance=ExtResource("1_5in1n")]
 collision_layer = 2
 script = ExtResource("2_eaqty")
+null_worker_model = NodePath("Node3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00415039, 4.41539, 0.224915)
 shape = SubResource("BoxShape3D_eaqty")
+
+[node name="Node3D" type="Node3D" parent="." index="2"]

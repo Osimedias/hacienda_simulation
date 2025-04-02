@@ -48,15 +48,6 @@ float shard_noise(in vec3 p, in float _sharpness) {
     return ((v / t) * .5) + .5;
 }
 
-//varying float height;
-//varying vec3 world_pos;
-
-//void vertex() {
-	//world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-	//height = texture(heightmap, world_pos.xz / height_scale).r;
-	//VERTEX.y += height * height_scale;
-//}
-
 void vertex() {
 	float height = texture(heightmap,UV).r;
 	VERTEX.y += height * height_scale;
@@ -84,12 +75,6 @@ void fragment() {
 	NORMAL_MAP = texture(normalmap, UV).xyz + final_normal.xyz;
 	NORMAL_MAP_DEPTH = 1.0;
 	AO = texture(heightmap,UV).r;
-	AO_LIGHT_AFFECT = 0.3;
-	//ROUGHNESS = texture(roughness,UV).r * 00.2;
-	//RADIANCE = texture(heightmap,UV).rgba * 0.2;
-}
-
-void light(){
-	DIFFUSE_LIGHT += clamp(dot(NORMAL, LIGHT), 0.0, 1.0) * ATTENUATION * LIGHT_COLOR / PI;
-	SPECULAR_LIGHT += METALLIC * ATTENUATION * 0.002;
+	AO_LIGHT_AFFECT = 5.5;
+	ROUGHNESS = texture(roughness,UV).r * 0.002;
 }

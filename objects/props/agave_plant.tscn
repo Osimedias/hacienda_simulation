@@ -1,0 +1,15 @@
+[gd_scene load_steps=5 format=3 uid="uid://dcod60hp7sxlr"]
+
+[ext_resource type="PackedScene" uid="uid://dc4m3bcm2fo3a" path="res://objects/flora/agave_plant.glb" id="1_eaiap"]
+[ext_resource type="Texture2D" uid="uid://bdbi4rxbwwwln" path="res://objects/flora/agave_plant_desert_a.png" id="2_153t8"]
+[ext_resource type="Texture2D" uid="uid://88genykuuxdq" path="res://objects/flora/agave_plant_desert_a_normal.png" id="3_e6xxo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x1y7k"]
+albedo_texture = ExtResource("2_153t8")
+normal_enabled = true
+normal_texture = ExtResource("3_e6xxo")
+
+[node name="AgavePlant" instance=ExtResource("1_eaiap")]
+
+[node name="Cube" parent="." index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_x1y7k")

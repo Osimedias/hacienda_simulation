@@ -11,12 +11,13 @@ unicode = 122
 [sub_resource type="BoxShape3D" id="BoxShape3D_tmn6b"]
 size = Vector3(8.32907, 4.65216, 7.04907)
 
-[node name="Barracks" node_paths=PackedStringArray("spawn_entities_node", "reunion_marker") groups=["terrain"] instance=ExtResource("1_3ibuj")]
+[node name="Barracks" node_paths=PackedStringArray("spawn_entities_node", "reunion_marker", "null_worker_model") groups=["terrain"] instance=ExtResource("1_3ibuj")]
 collision_layer = 2
 script = ExtResource("2_niaav")
 spawn_entities_node = NodePath("SpawnEntities")
 reunion_marker = NodePath("ReunionMarker")
 action_event_key_list = Array[InputEventKey]([SubResource("InputEventKey_cwk73")])
+null_worker_model = NodePath("Node3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1" groups=["terrain"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0151825, 2.32553, 1.40759)
@@ -26,3 +27,5 @@ shape = SubResource("BoxShape3D_tmn6b")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6.17885)
 
 [node name="ReunionMarker" type="Marker3D" parent="." index="3"]
+
+[node name="Node3D" type="Node3D" parent="." index="4"]

@@ -40,6 +40,12 @@ func _on_land_owner_house_pressed() -> void:
 
 
 func _on_food_storehouse_pressed() -> void:
-	var food_storehouse = preload("res://objects/structures/land_owner_house.tscn").instantiate()
-	food_storehouse.name = "land_owner_house_"+str(food_storehouse.get_rid().get_id())
+	var food_storehouse = preload("res://objects/structures/food_storehouse.tscn").instantiate()
+	food_storehouse.name = "food_storehouse_"+str(food_storehouse.get_rid().get_id())
 	world_node.add_child(food_storehouse)
+
+
+func _on_agave_plantation_pressed() -> void:
+	var agave_plantation = preload("res://objects/structures/agave_plantation.tscn").instantiate()
+	agave_plantation.name = "food_storehouse_"+str(agave_plantation.get_rid().get_id())
+	world_node.add_child(agave_plantation)
