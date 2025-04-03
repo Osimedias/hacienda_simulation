@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://dp2tpdgskwvqh"]
+
+[ext_resource type="Script" uid="uid://dexukcysaujrc" path="res://gui/elements/options_menu_dropdown.gd" id="1_a82td"]
+
+[node name="OptionsMenuDropdown" type="HBoxContainer"]
+offset_right = 373.0
+offset_bottom = 63.0
+script = ExtResource("1_a82td")
+list_name = "[List Name Here]"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "[Options Text]"
+horizontal_alignment = 1
+
+[node name="OptionsList" type="OptionButton" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.35
+
+[connection signal="item_selected" from="OptionsList" to="." method="_on_options_list_item_selected"]

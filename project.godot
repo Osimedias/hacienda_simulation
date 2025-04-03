@@ -21,6 +21,7 @@ RaycastSystem="*res://world/raycast_system.tscn"
 SimpleGrass="*res://addons/simplegrasstextured/singleton.tscn"
 EntitiesManager="*res://gameplay/entities_manager.gd"
 ConfigurationManager="*res://gameplay/configuration_manager.gd"
+GraphicsManager="*res://globals/graphics_manager.gd"
 
 [display]
 
@@ -28,7 +29,7 @@ window/stretch/aspect="keep_width"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/simplegrasstextured/plugin.cfg")
+enabled=PackedStringArray("res://addons/dreadpon.spatial_gardener/plugin.cfg", "res://addons/simplegrasstextured/plugin.cfg")
 
 [global_group]
 

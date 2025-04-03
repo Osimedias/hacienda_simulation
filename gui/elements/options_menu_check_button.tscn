@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://bbajyobs5ebm"]
+
+[ext_resource type="Script" uid="uid://cnaxarobmkryd" path="res://gui/elements/options_menu_check_button.gd" id="1_uv0ly"]
+
+[node name="options_menu_check_button" type="CheckButton"]
+offset_right = 44.0
+offset_bottom = 24.0
+text = "[Insert text here]"
+alignment = 1
+script = ExtResource("1_uv0ly")
+
+[connection signal="toggled" from="." to="." method="_on_toggled"]
