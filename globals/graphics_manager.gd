@@ -26,24 +26,33 @@ func get_resolution_from_list(index : int) -> void:
 	get_window().position = center_screen - get_window().get_size_with_decorations()/2
 
 ##TODO: Implement this functions
+@warning_ignore("unused_parameter")
 func get_graphics_mode_change(index : int) -> void:
 	
 	pass
+@warning_ignore("unused_parameter")
 func get_shader_mode_change(index : int) -> void:
 	pass
+@warning_ignore("unused_parameter")
 func get_lighting_mode_change(index : int) -> void:
 	pass
+@warning_ignore("unused_parameter")
 func get_shadows_mode_change(index : int) -> void:
 	pass
+@warning_ignore("unused_parameter")
 func get_terrain_mode_change(index : int) -> void:
 	pass
+@warning_ignore("unused_parameter")
 func get_reflections_mode_change(index : int) -> void:
 	pass
+@warning_ignore("unused_parameter")
 func get_effects_mode_change(index : int) -> void:
 	pass
+@warning_ignore("unused_parameter")
 func get_texture_mode_change(index : int) -> void:
 	pass
 func get_post_processing_mode_change() -> void:
 	pass
+@warning_ignore("unused_parameter")
 func get_physics_mode_change(index : int) -> void:
 	pass

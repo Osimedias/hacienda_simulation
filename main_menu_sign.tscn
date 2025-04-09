@@ -1,0 +1,55 @@
+[gd_scene load_steps=7 format=3 uid="uid://c5bjgayxg0plq"]
+
+[ext_resource type="PackedScene" uid="uid://crmwaricq3yxp" path="res://models/main_menu/sign.blend" id="1_g7wp8"]
+[ext_resource type="Script" uid="uid://n1lwvokdox0i" path="res://main_menu_sign.gd" id="2_62jbl"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_g7wp8"]
+viewport_path = NodePath("Letters/Text")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g7wp8"]
+resource_local_to_scene = true
+transparency = 1
+albedo_texture = SubResource("ViewportTexture_g7wp8")
+
+[sub_resource type="LabelSettings" id="LabelSettings_g7wp8"]
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_62jbl"]
+font_size = 64
+
+[node name="sign" instance=ExtResource("1_g7wp8")]
+script = ExtResource("2_62jbl")
+player_name = &"Hola Ke Ase"
+
+[node name="Letters" parent="." index="1"]
+surface_material_override/0 = SubResource("StandardMaterial3D_g7wp8")
+
+[node name="Text" type="SubViewport" parent="Letters" index="0"]
+transparent_bg = true
+
+[node name="V" type="VBoxContainer" parent="Letters/Text" index="0"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="YourNameMaster" type="Label" parent="Letters/Text/V" index="0"]
+layout_mode = 2
+size_flags_vertical = 6
+size_flags_stretch_ratio = 0.79
+text = "Your Name Master:"
+label_settings = SubResource("LabelSettings_g7wp8")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Name" type="Label" parent="Letters/Text/V" index="1"]
+layout_mode = 2
+size_flags_vertical = 6
+size_flags_stretch_ratio = 8.74
+text = "Hola Mundo"
+label_settings = SubResource("LabelSettings_62jbl")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
