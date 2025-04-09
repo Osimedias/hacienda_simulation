@@ -1,114 +1,70 @@
 shader_type spatial;
 
+uniform vec3 water_color : source_color;
+uniform sampler2D noise_a;
+uniform sampler2D noise_b;
+uniform sampler2D sun_highlights : hint_default_white;
+
 uniform sampler2D DEPTH_TEXTURE : hint_depth_texture;
-uniform sampler2D SCREEN_TEXTURE : hint_screen_texture;
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture,repeat_disable;
 
-uniform vec3 albedo : source_color;
-uniform vec3 albedo2 : source_color;
-uniform float metallic : hint_range(0.0, 1.0) = 0;
-uniform float roughness : hint_range(0.0, 1.0) = 0.02;
-uniform sampler2D wave;
-uniform sampler2D texture_normal;
-uniform sampler2D texture_normal2;
-uniform vec2 wave_direction = vec2(2.0,0.0); // Direction of wave 1
-uniform vec2 wave_direction2 = vec2(0.0,1.0); // Direction of wave 2
-uniform float time_scale : hint_range(0.0, 0.2, 0.005) = 0.025; // Rate of movement multiplied by TIME
-uniform float noise_scale = 10.0;
-uniform float height_scale = 0.15;
+uniform float depth_distance : hint_range(0.0, 10.0, 0.1) = 0.5;
+uniform float water_color_ratio : hint_range(0.0, 1.0, 0.1) = 0.5;
+uniform float beers_law : hint_range(0.0, 20.0, 0.1) = 3.0;
+uniform float normal_scale : hint_range(0.0, 1.0, 0.1) = 0.5;
+uniform float roughness_scale : hint_range(0.0, 1.0, 0.1) = 0.2;
+uniform float time_scale : hint_range(0.0, 10.0, 0.1) = 5.0;
 
-uniform vec4 color_deep : source_color; // Deep depth color
-uniform vec4 color_shallow : source_color; // Shallow depth color
-uniform float beers_law = 2.0; // Beer's law application
-uniform float depth_offset = -0.75; // Offset
+uniform float uv_scale : hint_range(0.0, 10.0, 0.1) = 1.0;
+// a curve texture can be better
+uniform sampler2D abberation : source_color;
 
-uniform float edge_scale = 0.1;
-uniform float near = 1.0;
-uniform float far = 100.0;
-uniform vec3 edge_color : source_color;
 
-// Varying variables
-varying float height;
-varying vec3 world_pos;
 
-float fresnel(float amount, vec3 normal, vec3 view)
-{
-	return pow((1.0 - clamp(dot(normalize(normal), normalize(view)), 0.0, 1.0 )), amount);
-}
-float edge(float depth){
-	depth = 2.0 * depth - 1.0;
-	return near * far / (far + depth * (near - far));
+varying vec4 world_uv;
+
+vec3 soft_light(vec3 base, vec3 blend){
+	vec3 limit = step(0.5,blend);
+	return mix(2.0 * base * blend + base * base * (1.0 - 2.0 * blend),sqrt(base) * (2.0 * blend - 1.0) + (2.0*base) * (1.0 - blend),limit);
 }
 
-// Hash function for noise generation
-float hash(vec2 p) {
-    return fract(sin(dot(p * 17.17, vec2(14.91, 67.31))) * 4791.9511);
+
+void vertex(){
+
+	world_uv = MODEL_MATRIX * vec4(VERTEX,1.0);
 }
 
-// 2D noise function
-float noise(vec2 x) {
-    vec2 p = floor(x);
-    vec2 f = fract(x);
-    f = f * f * (3.0 - 2.0 * f);
-    vec2 a = vec2(1.0, 0.0);
-    return mix(mix(hash(p + a.yy), hash(p + a.xy), f.x),
-               mix(hash(p + a.yx), hash(p + a.xx), f.x), f.y);
-}
 
-// Fractional Brownian Motion (fBM) function for generating complex noise
-float fbm(vec2 x) {
-    float noise_height = 0.0;
-    float amplitude = 0.5;
-    float frequency = 3.0;
-    for (int i = 0; i < 6; i++) {
-        noise_height += noise(x * frequency) * amplitude;
-        amplitude *= 0.5;
-        frequency *= 2.0;
-    }
-    return height;
-}
+void fragment(){
+	vec2 _uv = world_uv.xz * uv_scale;
+	vec2 _suv = SCREEN_UV;
+	_uv.x += sin(TIME * time_scale + (_uv.x + _uv.y) * 25.0) * 0.01;
+	_uv.y += sin(TIME * time_scale + (_uv.x - _uv.y) * 25.0) * 0.01;
 
-void vertex() {
-	world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-	height = texture(wave, world_pos.xz / noise_scale + TIME * time_scale).r;
-	VERTEX.y += height * height_scale;
-}
+	_suv.x += sin(TIME * time_scale + (_suv.x + _suv.y) * 25.0) * 0.01;
+	_suv.y += sin(TIME * time_scale + (_suv.x - _suv.y) * 25.0) * 0.01;
 
-void fragment() {
-	// Depth variables and calc
-	float depth_texture = texture(DEPTH_TEXTURE, SCREEN_UV).r;
-	float depth = PROJECTION_MATRIX[3][2] / (depth_texture + PROJECTION_MATRIX[2][2]);
-	vec3 ndc = vec3(SCREEN_UV * 2.0 - 1.0,depth);
-	vec4 view = INV_PROJECTION_MATRIX * vec4(ndc,1.0);
-	view.xyz /= view.w;
-	float depth_blend = exp((depth+VERTEX.z + depth_offset) * -beers_law);
-	depth_blend = clamp(1.0 - depth_blend, 0.0, 1.0);
-	float depth_blend_power = clamp(pow(depth_blend, 2.5), 0.0, 1.0);
+	float depth_r = textureLod(DEPTH_TEXTURE,SCREEN_UV,0.0).r;
+	vec4 world = INV_PROJECTION_MATRIX * vec4(SCREEN_UV,depth_r,1.0);
+	world.xyz /= world.w;
+	float depth_blend = 1.0 - smoothstep(world.z + depth_distance,world.z,VERTEX.z);
+	depth_blend = exp(depth_blend * -beers_law);
+	depth_blend = clamp(pow(depth_blend,3.0),0.0,1.0);
+	vec3 screen = textureLod(SCREEN_TEXTURE,SCREEN_UV,0.0).rgb;
+	vec3 curve = texture(abberation,UV).rgb;
 
-	// Retrieving depth color and applying the deep and shallow colors
-	vec3 screen_color = textureLod(SCREEN_TEXTURE, SCREEN_UV, depth_blend_power * 2.5).rgb;
-	vec3 depth_color = mix(color_shallow.rgb, color_deep.rgb, depth_blend_power);
-	vec3 color = mix(screen_color * depth_color, depth_color * 0.25, depth_blend_power * 0.5);
+	float r = texture(sun_highlights,_uv * curve.r).r;
+	float g = texture(sun_highlights,_uv * curve.g).g;
+	float b = texture(sun_highlights,_uv * curve.b).b;
 
-	// Getting edge depth calc
-	float z_depth = edge(texture(DEPTH_TEXTURE, SCREEN_UV).x);
-	float z_pos = edge(FRAGCOORD.z);
-	float z_dif = z_depth - z_pos;
 
-	// Time calculations for wave (normal map) movement
-	vec2 time = (TIME * wave_direction) * time_scale; // Movement rate of first wave
-	vec2 time2 = (TIME * wave_direction2) * time_scale; // Movement rate of second wave
+	vec3 blended = soft_light(screen,vec3(r,g,b));
 
-	// Blend normal maps into one
-	vec3 normal_blend = mix(texture(texture_normal,world_pos.xz + time).rgb, texture(texture_normal2,world_pos.xz + time2).rgb, 0.5);
+	vec3 water_color_final = mix(water_color.rgb,blended.rgb,0.4);
 
-	// Calculate Fresnel
-	float fresnel = fresnel(5.0, NORMAL, VIEW);
-	vec3 surface_color = mix(albedo, albedo2, fresnel); // Interpolate albedo values by frensel
-
-	vec3 depth_color_adj = mix(edge_color, color, step(edge_scale, z_dif));
-
-	ALBEDO = clamp(surface_color + depth_color_adj,vec3(0.0),vec3(1.0));
-	METALLIC = metallic;
-	ROUGHNESS = roughness;
-	NORMAL_MAP = normal_blend;
+	ALBEDO = mix(screen * depth_blend,water_color_final,water_color_ratio);
+	NORMAL_MAP = mix(texture(noise_a,_uv).rgb,texture(noise_b,_uv).rgb,(sin(TIME * time_scale)*1.0/2.0));
+	NORMAL_MAP_DEPTH = 1.0;
+	NORMAL += normal_scale;
+	ROUGHNESS = roughness_scale;
 }

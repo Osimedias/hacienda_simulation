@@ -1,7 +1,8 @@
-[gd_scene load_steps=54 format=3 uid="uid://dkg1i4gfjgld7"]
+[gd_scene load_steps=64 format=3 uid="uid://dkg1i4gfjgld7"]
 
 [ext_resource type="Script" uid="uid://bcrfsjgobsf2w" path="res://world/scenario_manager.gd" id="1_b2suy"]
 [ext_resource type="Script" uid="uid://cfv5e65p6d13r" path="res://world/player.gd" id="1_h8lre"]
+[ext_resource type="Script" uid="uid://ce5yn2vx3g2re" path="res://world/navigation_system.gd" id="1_j34ew"]
 [ext_resource type="Script" uid="uid://ckmgtsba0bh6q" path="res://world/terrain.gd" id="1_urdn3"]
 [ext_resource type="Shader" uid="uid://d4gqffwpnby4s" path="res://shades/terrain.gdshader" id="2_cksxu"]
 [ext_resource type="Script" uid="uid://c4yeaw1rhxngs" path="res://terrain/terrain_data.gd" id="2_h8lre"]
@@ -13,10 +14,9 @@
 [ext_resource type="Texture2D" uid="uid://cabpy5u11co56" path="res://textures/terrain/grass_normal.png" id="6_18lh8"]
 [ext_resource type="PackedScene" uid="uid://xg280y03twfe" path="res://gameplay/camera_controller.tscn" id="8_t77ya"]
 [ext_resource type="Script" uid="uid://1xeh0hw5xdcr" path="res://world/game_controler.gd" id="9_2k48e"]
+[ext_resource type="Script" uid="uid://82on6reciyja" path="res://world/water_body.gd" id="12_m0cxt"]
 [ext_resource type="Script" uid="uid://idlduo8y2b7g" path="res://gameplay/selection_box.gd" id="13_ocfjn"]
 [ext_resource type="Shader" uid="uid://8nxn0wl1gsde" path="res://shades/Water.gdshader" id="16_o1net"]
-[ext_resource type="Texture2D" uid="uid://cw0jekiklcmo" path="res://textures/water/Water_N_A.png" id="17_3ljsx"]
-[ext_resource type="Texture2D" uid="uid://cda388ombq1ko" path="res://textures/water/Water_N_B.png" id="18_gi7ib"]
 [ext_resource type="FontFile" uid="uid://dmm5pnodwaryw" path="res://fonts/Noto_Emoji/static/NotoEmoji-Bold.ttf" id="19_p2iis"]
 [ext_resource type="PackedScene" uid="uid://dcod60hp7sxlr" path="res://objects/props/agave_plant.tscn" id="20_p2iis"]
 
@@ -150,11 +150,25 @@ color_ramp = SubResource("Gradient_j34ew")
 noise = SubResource("FastNoiseLite_p2iis")
 
 [sub_resource type="Gradient" id="Gradient_dqqhb"]
-offsets = PackedFloat32Array(0.00645161, 0.445161, 1)
+offsets = PackedFloat32Array(0.00645161, 0.467532, 0.636364)
 colors = PackedColorArray(0.886736, 0.000280578, 0.161706, 1, 0.157162, 0.536919, 1.92523e-07, 1, 0.167344, 0.27457, 1, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_h8lre"]
-frequency = 0.1318
+noise_type = 3
+frequency = 0.0146
+fractal_type = 3
+fractal_octaves = 10
+fractal_lacunarity = 3.57
+fractal_gain = 0.43
+fractal_weighted_strength = 1.0
+fractal_ping_pong_strength = 2.24
+domain_warp_enabled = true
+domain_warp_type = 2
+domain_warp_frequency = 0.33
+domain_warp_fractal_type = 0
+domain_warp_fractal_octaves = 10
+domain_warp_fractal_lacunarity = 6.185
+domain_warp_fractal_gain = 0.81
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ysn08"]
 invert = true
@@ -192,6 +206,12 @@ domain_warp_fractal_gain = 0.635
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_dqqhb"]
 noise = SubResource("FastNoiseLite_ocfjn")
 
+[sub_resource type="Curve" id="Curve_p2iis"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_m0cxt"]
+
 [sub_resource type="HeightMapShape3D" id="HeightMapShape3D_mad0u"]
 map_width = 201
 map_depth = 201
@@ -202,47 +222,78 @@ size = Vector2(200, 200)
 subdivide_width = 600
 subdivide_depth = 600
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_0pnie"]
+[sub_resource type="Curve" id="Curve_ysn08"]
+_data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
+point_count = 2
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_llyeo"]
-width = 32
-height = 32
-invert = true
-in_3d_space = true
+[sub_resource type="Curve" id="Curve_m0cxt"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_j34ew"]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 1, Vector2(1, 0.5), 0.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_p2iis"]
+curve_x = SubResource("Curve_ysn08")
+curve_y = SubResource("Curve_m0cxt")
+curve_z = SubResource("Curve_j34ew")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_a202f"]
+seed = 6
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_noarx"]
 seamless = true
 seamless_blend_skirt = 1.0
 as_normal_map = true
-noise = SubResource("FastNoiseLite_0pnie")
+noise = SubResource("FastNoiseLite_a202f")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dqqhb"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_a0tk4"]
+seed = 7
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_r3fl7"]
+seamless = true
+seamless_blend_skirt = 1.0
+as_normal_map = true
+noise = SubResource("FastNoiseLite_a0tk4")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_noarx"]
+seed = 9
+frequency = 0.0439
+fractal_type = 2
+fractal_octaves = 10
+fractal_lacunarity = 0.395
+fractal_weighted_strength = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_a0tk4"]
+seamless = true
+seamless_blend_skirt = 1.0
+noise = SubResource("FastNoiseLite_noarx")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ysn08"]
 render_priority = 0
 shader = ExtResource("16_o1net")
-shader_parameter/albedo = Color(0.336384, 0.589107, 0.997918, 1)
-shader_parameter/albedo2 = Color(0.0954578, 0.764867, 0.989658, 1)
-shader_parameter/metallic = 0.0
-shader_parameter/roughness = 0.02
-shader_parameter/wave = SubResource("NoiseTexture2D_llyeo")
-shader_parameter/texture_normal = ExtResource("17_3ljsx")
-shader_parameter/texture_normal2 = ExtResource("18_gi7ib")
-shader_parameter/wave_direction = Vector2(2.235, 0)
-shader_parameter/wave_direction2 = Vector2(0, 1)
-shader_parameter/time_scale = 0.025
-shader_parameter/noise_scale = 10.0
-shader_parameter/height_scale = 0.15
-shader_parameter/color_deep = Color(0.230892, 0.397826, 0.801357, 1)
-shader_parameter/color_shallow = Color(0.231124, 0.56353, 0.838604, 1)
-shader_parameter/beers_law = 2.205
-shader_parameter/depth_offset = -0.75
-shader_parameter/edge_scale = 0.1
-shader_parameter/near = 1.0
-shader_parameter/far = 100.0
-shader_parameter/edge_color = Color(0, 0, 0, 1)
+shader_parameter/water_color = Color(0.326467, 0.590462, 0.68632, 1)
+shader_parameter/noise_a = SubResource("NoiseTexture2D_noarx")
+shader_parameter/noise_b = SubResource("NoiseTexture2D_r3fl7")
+shader_parameter/sun_highlights = SubResource("NoiseTexture2D_a0tk4")
+shader_parameter/depth_distance = 2.1
+shader_parameter/water_color_ratio = 1.0
+shader_parameter/beers_law = 3.0
+shader_parameter/normal_scale = 0.5
+shader_parameter/roughness_scale = 0.2
+shader_parameter/time_scale = 7.0
+shader_parameter/uv_scale = 1.1
+shader_parameter/abberation = SubResource("CurveXYZTexture_p2iis")
 
 [sub_resource type="LabelSettings" id="LabelSettings_gqaq8"]
 line_spacing = 1.0
 font = ExtResource("19_p2iis")
 
 [node name="World" type="Node3D"]
+
+[node name="NavigationSystem" type="Node3D" parent="."]
+script = ExtResource("1_j34ew")
 
 [node name="Player" type="Node" parent="." groups=["player"]]
 script = ExtResource("1_h8lre")
@@ -334,19 +385,20 @@ texture = SubResource("NoiseTexture2D_dqqhb")
 metadata/_edit_use_anchors_ = true
 
 [node name="WaterBody" type="StaticBody3D" parent="." groups=["water_body"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.89928, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 31.1007, 0)
 collision_layer = 8
 collision_mask = 6
+script = ExtResource("12_m0cxt")
+y_range = SubResource("Curve_p2iis")
+noise = SubResource("FastNoiseLite_m0cxt")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="WaterBody"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.468659, 36.8712, -0.200989)
 shape = SubResource("HeightMapShape3D_mad0u")
 
 [node name="WaterMesh" type="MeshInstance3D" parent="WaterBody" groups=["water_body"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.468659, 37.2069, -0.200989)
 mesh = SubResource("PlaneMesh_hdvpj")
 skeleton = NodePath("../../Terrain")
-surface_material_override/0 = SubResource("ShaderMaterial_dqqhb")
+surface_material_override/0 = SubResource("ShaderMaterial_ysn08")
 
 [node name="EntitiesRoot" type="Node3D" parent="."]
 
@@ -462,7 +514,7 @@ world = NodePath("..")
 [node name="Plants" type="Node3D" parent="."]
 
 [node name="AgavePlant" parent="Plants" instance=ExtResource("20_p2iis")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.9064, 36.685, -41.5215)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.0711, 30.4624, -29.057)
 
 [node name="AgavePlant2" parent="Plants" instance=ExtResource("20_p2iis")]
 transform = Transform3D(0.849239, 0, 0.528009, 0, 1, 0, -0.528009, 0, 0.849239, -49.7539, 36.685, -41.5215)

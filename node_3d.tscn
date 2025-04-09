@@ -1,0 +1,66 @@
+[gd_scene load_steps=11 format=3 uid="uid://cee826hfhkpa4"]
+
+[ext_resource type="Shader" uid="uid://8nxn0wl1gsde" path="res://shades/Water.gdshader" id="1_a202f"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_noarx"]
+subdivide_width = 500
+subdivide_depth = 500
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_a202f"]
+seed = 6
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_noarx"]
+seamless = true
+seamless_blend_skirt = 1.0
+as_normal_map = true
+noise = SubResource("FastNoiseLite_a202f")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_a0tk4"]
+seed = 7
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_r3fl7"]
+seamless = true
+seamless_blend_skirt = 1.0
+as_normal_map = true
+noise = SubResource("FastNoiseLite_a0tk4")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_noarx"]
+seed = 9
+frequency = 0.0439
+fractal_type = 2
+fractal_octaves = 10
+fractal_lacunarity = 0.395
+fractal_weighted_strength = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_a0tk4"]
+seamless = true
+seamless_blend_skirt = 1.0
+noise = SubResource("FastNoiseLite_noarx")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a0tk4"]
+render_priority = 0
+shader = ExtResource("1_a202f")
+shader_parameter/water_color = Color(0.326467, 0.590462, 0.68632, 1)
+shader_parameter/noise_a = SubResource("NoiseTexture2D_noarx")
+shader_parameter/noise_b = SubResource("NoiseTexture2D_r3fl7")
+shader_parameter/sun_highlights = SubResource("NoiseTexture2D_a0tk4")
+shader_parameter/depth_distance = 1.7
+shader_parameter/water_color_ratio = 0.4
+shader_parameter/beers_law = 0.5
+shader_parameter/normal_scale = 0.5
+shader_parameter/roughness_scale = 0.2
+shader_parameter/time_scale = 5.0
+shader_parameter/uv_scale = 1.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_r3fl7"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.08922, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("PlaneMesh_noarx")
+surface_material_override/0 = SubResource("ShaderMaterial_a0tk4")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.600024, 0)
+mesh = SubResource("SphereMesh_r3fl7")
