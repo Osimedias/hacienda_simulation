@@ -1,0 +1,46 @@
+[gd_scene load_steps=8 format=3 uid="uid://ct3q0f44sv5r3"]
+
+[ext_resource type="PackedScene" uid="uid://crmwaricq3yxp" path="res://models/main_menu/sign.blend" id="1_1s4tk"]
+[ext_resource type="Script" uid="uid://n1lwvokdox0i" path="res://main_menu_sign.gd" id="2_6p3jv"]
+[ext_resource type="PackedScene" uid="uid://bwu8ixydxik1a" path="res://options_main_menu.tscn" id="3_ctt6t"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_g1bba"]
+size = Vector2(3.75, 1.785)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_6p3jv"]
+viewport_path = NodePath("Letters/Text")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ctt6t"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_6p3jv")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7tnn8"]
+size = Vector3(3.81543, 1.81067, 0.266724)
+
+[node name="sign" instance=ExtResource("1_1s4tk")]
+script = ExtResource("2_6p3jv")
+
+[node name="Letters" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0482572, 1.4, 0.405757)
+mesh = SubResource("QuadMesh_g1bba")
+surface_material_override/0 = SubResource("StandardMaterial3D_ctt6t")
+
+[node name="Text" type="SubViewport" parent="Letters" index="0"]
+transparent_bg = true
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="OptionsMainMenu" parent="Letters/Text" index="0" node_paths=PackedStringArray("parent") instance=ExtResource("3_ctt6t")]
+parent = NodePath("../../..")
+
+[node name="Area3D" type="Area3D" parent="." index="2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0356445, 1.39682, 0.366638)
+shape = SubResource("BoxShape3D_7tnn8")
+
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
+[connection signal="area_exited" from="Area3D" to="." method="_on_area_3d_area_exited"]
+[connection signal="input_event" from="Area3D" to="." method="_on_area_3d_input_event"]

@@ -1,6 +1,7 @@
 class_name State extends Node
 
 
+@warning_ignore("unused_signal")
 signal transitioned(state : State, next_state : StringName)
 
 ## Run starting code

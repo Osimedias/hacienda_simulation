@@ -12,13 +12,19 @@ class_name Player extends Node
 @export var land_own_by_you : int = 1
 
 
+@warning_ignore("unused_signal")
 signal is_not_food_in_the_hacienda
+@warning_ignore("unused_signal")
 signal is_not_money_in_the_hacienda
+@warning_ignore("unused_signal")
 signal peapole_is_leaving_the_hacienda
+@warning_ignore("unused_signal")
 signal happines_is_low
+@warning_ignore("unused_signal")
 signal is_not_goods_in_the_storehouse(goods : Goods)
 
-func _process(delta: float) -> void:
+@warning_ignore("unused_parameter")
+func _process(_delta: float) -> void:
 	happines = clampi(happines,0,100)
 	current_houseing_space = clampi(current_houseing_space,0,300)
 	current_worker_population = clampi(current_worker_population,0,current_houseing_space)

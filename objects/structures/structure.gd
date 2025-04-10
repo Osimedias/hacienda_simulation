@@ -49,10 +49,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		if action_event_key_list.size() > 0:
 			if event is InputEventKey:
 				if event.is_pressed() and event.keycode == OS.find_keycode_from_string(action_event_key_list[0].as_text_keycode()):
-					spawn_unit(1,2.0)
+					spawn_unit(2.0)
 
 
-func spawn_unit(num : int,time : float) -> void:
+func spawn_unit(time : float) -> void:
 	var timer = get_tree().create_timer(time)
 	
 	if timer.timeout:

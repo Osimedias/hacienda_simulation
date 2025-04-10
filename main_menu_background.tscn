@@ -1,0 +1,91 @@
+[gd_scene load_steps=15 format=3 uid="uid://dys26mpxtxs2q"]
+
+[ext_resource type="PackedScene" uid="uid://yeb7xqqovk1c" path="res://models/main_menu/main_menu_background.blend" id="1_30sdh"]
+[ext_resource type="Shader" uid="uid://bmdp6hbwx6d1y" path="res://shades/splatmap_texturing.gdshader" id="2_mw6cc"]
+[ext_resource type="Shader" uid="uid://waruaprnsua1" path="res://shades/building_main_menu.gdshader" id="2_ychtm"]
+[ext_resource type="Texture2D" uid="uid://ddprscrpsofah" path="res://demo/assets/textures/ground037_alb_ht.png" id="3_66pqt"]
+[ext_resource type="Texture2D" uid="uid://c88j3oj0lf6om" path="res://demo/assets/textures/rock023_alb_ht.png" id="3_811q8"]
+[ext_resource type="Texture2D" uid="uid://06hc8a1ulrai" path="res://textures/main_menu/bricks.tga" id="3_cc2c2"]
+[ext_resource type="Texture2D" uid="uid://cyf6mooxj27nt" path="res://textures/main_menu/bricks_norm.tga" id="7_811q8"]
+
+[sub_resource type="Gradient" id="Gradient_occ4w"]
+colors = PackedColorArray(0, 1, 0, 1, 0.643249, 0, 0.0553679, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rijwq"]
+frequency = 0.0023
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_l2drg"]
+seamless = true
+seamless_blend_skirt = 1.0
+color_ramp = SubResource("Gradient_occ4w")
+noise = SubResource("FastNoiseLite_rijwq")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ny2x1"]
+render_priority = 0
+shader = ExtResource("2_mw6cc")
+shader_parameter/splatmap = SubResource("NoiseTexture2D_l2drg")
+shader_parameter/tex_red = ExtResource("3_66pqt")
+shader_parameter/tex_green = ExtResource("3_811q8")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cc2c2"]
+render_priority = 0
+shader = ExtResource("2_ychtm")
+shader_parameter/albedo = ExtResource("3_cc2c2")
+shader_parameter/norm = ExtResource("7_811q8")
+shader_parameter/dirt_color = Color(0.628527, 0.375034, 0.206974, 1)
+shader_parameter/rotate_uv_angle = 11.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_811q8"]
+albedo_color = Color(0.255659, 0.255659, 0.255659, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_occ4w"]
+albedo_color = Color(0.255659, 0.255659, 0.255659, 1)
+
+[node name="main_menu_background" instance=ExtResource("1_30sdh")]
+
+[node name="Grid" parent="." index="0"]
+surface_material_override/0 = SubResource("ShaderMaterial_ny2x1")
+
+[node name="Camera" parent="." index="1"]
+fov = 25.9507
+near = 0.05
+far = 4000.0
+
+[node name="Cube_001" parent="." index="2"]
+surface_material_override/0 = SubResource("ShaderMaterial_cc2c2")
+
+[node name="Cube_002" parent="." index="3"]
+surface_material_override/0 = SubResource("ShaderMaterial_cc2c2")
+
+[node name="Cube_003" parent="." index="4"]
+surface_material_override/0 = SubResource("ShaderMaterial_cc2c2")
+
+[node name="Cube_004" parent="." index="5"]
+surface_material_override/0 = SubResource("ShaderMaterial_cc2c2")
+
+[node name="Cube_006" parent="." index="6"]
+material_override = SubResource("StandardMaterial3D_811q8")
+
+[node name="Cube_007" parent="." index="7"]
+material_override = SubResource("StandardMaterial3D_occ4w")
+
+[node name="Cube_005" parent="." index="8"]
+surface_material_override/0 = SubResource("ShaderMaterial_cc2c2")
+
+[node name="Cube_008" parent="." index="9"]
+surface_material_override/0 = SubResource("ShaderMaterial_cc2c2")
+
+[node name="Cube_009" parent="." index="10"]
+surface_material_override/0 = SubResource("ShaderMaterial_cc2c2")
+
+[node name="Sun" parent="." index="11"]
+transform = Transform3D(-0.68387, 0.618968, 0.386264, 0.565117, 0.114511, 0.817025, 0.461481, 0.777023, -0.4281, 0, 12.1325, 0)
+light_energy = 6.688
+shadow_enabled = true
+shadow_bias = 0.0
+shadow_blur = 0.0
+directional_shadow_split_1 = 0.3
+directional_shadow_split_2 = 0.517
+directional_shadow_split_3 = 0.542
+directional_shadow_max_distance = 65.1
+directional_shadow_pancake_size = 37.3

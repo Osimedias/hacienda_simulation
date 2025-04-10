@@ -1,86 +1,83 @@
-[gd_scene load_steps=10 format=3 uid="uid://gj1adculurwf"]
+[gd_scene load_steps=13 format=3 uid="uid://gj1adculurwf"]
 
 [ext_resource type="Script" uid="uid://boohcc358wx0x" path="res://main_menu.gd" id="1_06t4h"]
 [ext_resource type="PackedScene" uid="uid://c5bjgayxg0plq" path="res://main_menu_sign.tscn" id="2_7vrkn"]
+[ext_resource type="PackedScene" uid="uid://dys26mpxtxs2q" path="res://main_menu_background.tscn" id="2_fu7sn"]
+[ext_resource type="PackedScene" uid="uid://ct3q0f44sv5r3" path="res://sign_options.tscn" id="4_jix8l"]
 
-[sub_resource type="Gradient" id="Gradient_06t4h"]
-offsets = PackedFloat32Array(0.2, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_30sdh"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_7vrkn"]
-noise_type = 2
-frequency = 0.03
-cellular_jitter = 3.0
-cellular_return_type = 0
-domain_warp_enabled = true
-domain_warp_type = 1
-domain_warp_amplitude = 50.0
-domain_warp_fractal_type = 2
-domain_warp_fractal_lacunarity = 1.5
-domain_warp_fractal_gain = 1.0
+[sub_resource type="Sky" id="Sky_ychtm"]
+sky_material = SubResource("ProceduralSkyMaterial_30sdh")
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_fu7sn"]
-seamless = true
-color_ramp = SubResource("Gradient_06t4h")
-noise = SubResource("FastNoiseLite_7vrkn")
+[sub_resource type="Environment" id="Environment_jix8l"]
+background_mode = 2
+background_energy_multiplier = 2.82
+sky = SubResource("Sky_ychtm")
+ambient_light_source = 3
+ambient_light_color = Color(0.366921, 0.663569, 0.866157, 1)
+ambient_light_energy = 3.17
+reflected_light_source = 2
+tonemap_mode = 4
+tonemap_exposure = 1.43
+tonemap_white = 5.15
+ssr_enabled = true
+ssao_enabled = true
+ssao_radius = 4.98
+ssao_intensity = 10.3
+ssao_detail = 1.42
+ssao_horizon = 0.31
+ssao_light_affect = 1.0
+ssao_ao_channel_affect = 0.97
+ssil_enabled = true
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 1.23
+glow_strength = 0.66
+glow_bloom = 0.04
+glow_map_strength = 0.52
+fog_enabled = true
+fog_light_color = Color(0.0537975, 0.165341, 0.425354, 1)
+fog_light_energy = 2.74
+fog_sun_scatter = 1.0
+fog_density = 0.0154
+fog_aerial_perspective = 0.146
+fog_sky_affect = 0.973
+adjustment_enabled = true
+adjustment_brightness = 1.22
+adjustment_contrast = 1.3
+adjustment_saturation = 2.12
 
-[sub_resource type="Terrain3DMaterial" id="Terrain3DMaterial_jix8l"]
-_shader_parameters = {
-&"auto_base_texture": 0,
-&"auto_height_reduction": 0.1,
-&"auto_overlay_texture": 1,
-&"auto_slope": 1.0,
-&"bias_distance": 512.0,
-&"blend_sharpness": 0.87,
-&"depth_blur": 0.0,
-&"dual_scale_far": 170.0,
-&"dual_scale_near": 100.0,
-&"dual_scale_reduction": 0.3,
-&"dual_scale_texture": 0,
-&"enable_macro_variation": true,
-&"enable_projection": true,
-&"height_blending": true,
-&"macro_variation1": Color(1, 1, 1, 1),
-&"macro_variation2": Color(1, 1, 1, 1),
-&"macro_variation_slope": 0.333,
-&"mipmap_bias": 1.0,
-&"noise1_angle": 0.0,
-&"noise1_offset": Vector2(0.5, 0.5),
-&"noise1_scale": 0.04,
-&"noise2_scale": 0.076,
-&"noise3_scale": 0.225,
-&"noise_texture": SubResource("NoiseTexture2D_fu7sn"),
-&"projection_angular_division": 2.0,
-&"projection_threshold": 0.8,
-&"tri_scale_reduction": 0.3,
-&"world_space_normal_blend": true
-}
-auto_shader = true
-dual_scaling = true
-show_checkered = true
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_jix8l"]
+exposure_multiplier = 8.0
+auto_exposure_enabled = true
+auto_exposure_speed = 64.0
+dof_blur_far_enabled = true
+dof_blur_far_distance = 0.53
+dof_blur_far_transition = 137.86
+auto_exposure_min_sensitivity = 207.57
+auto_exposure_max_sensitivity = 2529.7
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glbon"]
-transparency = 4
-cull_mode = 2
-vertex_color_use_as_albedo = true
-backlight_enabled = true
-backlight = Color(0.5, 0.5, 0.5, 1)
-distance_fade_mode = 1
-distance_fade_min_distance = 128.0
-distance_fade_max_distance = 96.0
+[sub_resource type="Compositor" id="Compositor_jix8l"]
 
-[sub_resource type="Terrain3DMeshAsset" id="Terrain3DMeshAsset_nlkkf"]
-generated_type = 1
-height_offset = 0.5
-material_override = SubResource("StandardMaterial3D_glbon")
-last_lod = 0
-last_shadow_lod = 0
-lod0_range = 128.0
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jix8l"]
 
-[sub_resource type="Terrain3DAssets" id="Terrain3DAssets_qe12f"]
-mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_nlkkf")])
+[sub_resource type="Sky" id="Sky_glbon"]
+sky_material = SubResource("ProceduralSkyMaterial_jix8l")
+
+[sub_resource type="Environment" id="Environment_nlkkf"]
+background_mode = 2
+sky = SubResource("Sky_glbon")
+ssao_enabled = true
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+sdfgi_cascades = 7
+sdfgi_energy = 1.06
 
 [node name="MainMenu" type="Control"]
+editor_description = "i will move all this control nodes to signs like player name sign"
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -88,6 +85,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_06t4h")
+
+[node name="Back" type="Button" parent="."]
+visible = false
+layout_mode = 0
+anchor_left = 0.916667
+anchor_top = 0.891975
+anchor_right = 0.955729
+anchor_bottom = 0.939815
+disabled = true
+text = "Back"
+metadata/_edit_use_anchors_ = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -122,6 +130,11 @@ size_flags_horizontal = 13
 size_flags_vertical = 15
 text = "Options"
 
+[node name="PlayerName" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Player Name"
+
 [node name="Exit" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 13
@@ -136,21 +149,33 @@ size_flags_stretch_ratio = 1.82
 
 [node name="Node3D" type="Node3D" parent="."]
 
-[node name="Terrain3D" type="Terrain3D" parent="Node3D"]
-data_directory = "res://"
-material = SubResource("Terrain3DMaterial_jix8l")
-assets = SubResource("Terrain3DAssets_qe12f")
-save_16_bit = true
-show_checkered = true
-top_level = true
+[node name="main_menu_background" parent="Node3D" instance=ExtResource("2_fu7sn")]
 
-[node name="Camera3D" type="Camera3D" parent="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.27468, 1.58649)
+[node name="sign2" parent="Node3D" instance=ExtResource("4_jix8l")]
+transform = Transform3D(0.0710099, 0, 0.997476, 0, 1, 0, -0.997476, 0, 0.0710099, -6.4693, 1.62275, 17.7848)
 
 [node name="sign" parent="Node3D" instance=ExtResource("2_7vrkn")]
-transform = Transform3D(0.979575, 0, -0.201078, 0, 1, 0, 0.201078, 0, 0.979575, 1.39679, 0, -3.94374)
+transform = Transform3D(0.906521, 0, -0.42216, 0, 1, 0, 0.42216, 0, 0.906521, 2.92197, 0, 26.2772)
 
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Node3D"]
+transform = Transform3D(0.887462, -0.455277, -0.0716528, 0, -0.155469, 0.987841, -0.460881, -0.876671, -0.137973, 0, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Node3D"]
+environment = SubResource("Environment_jix8l")
+camera_attributes = SubResource("CameraAttributesPractical_jix8l")
+compositor = SubResource("Compositor_jix8l")
+
+[node name="OptionsCamera" type="Camera3D" parent="Node3D"]
+transform = Transform3D(0.0694083, 0, 0.997588, 0, 1, 0, -0.997588, 0, 0.0694083, -4.44891, 3.31676, 18.0556)
+environment = SubResource("Environment_nlkkf")
+
+[node name="PlayerNameCamera" type="Camera3D" parent="Node3D"]
+transform = Transform3D(0.877833, 0, -0.478968, 0, 1, 0, 0.478968, 0, 0.877833, 1.647, 1.797, 28.385)
+environment = SubResource("Environment_nlkkf")
+
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="VBoxContainer/StartGame" to="." method="_on_start_game_pressed"]
 [connection signal="pressed" from="VBoxContainer/LoadGame" to="." method="_on_load_game_pressed"]
 [connection signal="pressed" from="VBoxContainer/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="VBoxContainer/PlayerName" to="." method="_on_player_name_pressed"]
 [connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]

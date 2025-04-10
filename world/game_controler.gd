@@ -13,7 +13,7 @@ func _ready() -> void:
 	money_counter.text = str(player.money)
 
 # i can use signals or some thing else but i am lasy
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	population_counter_formating()
 	pass
 

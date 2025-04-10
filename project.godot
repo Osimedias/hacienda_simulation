@@ -10,9 +10,12 @@ config_version=5
 
 [application]
 
-config/name="rts"
+config/name="Hacienda Simulator"
+config/description="A stronghold like game"
+config/version="0.0.0"
 run/main_scene="uid://gj1adculurwf"
 config/features=PackedStringArray("4.4", "Forward Plus")
+boot_splash/bg_color=Color(0.214383, 0.156838, 0.0976578, 1)
 config/icon="res://icon.svg"
 
 [autoload]
@@ -22,6 +25,7 @@ SimpleGrass="*res://addons/simplegrasstextured/singleton.tscn"
 EntitiesManager="*res://gameplay/entities_manager.gd"
 ConfigurationManager="*res://gameplay/configuration_manager.gd"
 GraphicsManager="*res://globals/graphics_manager.gd"
+PlayerData="*res://globals/player_data.tscn"
 
 [display]
 

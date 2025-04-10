@@ -10,7 +10,7 @@ extends Node
 
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	## I can simplify this but for now nop
 	if wheat == 0 and corn == 0 and tuna == 0 and meat == 0 and bread == 0:
 		## Seend a signal to player to do something not implemented

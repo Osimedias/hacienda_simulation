@@ -7,7 +7,7 @@ const CELL_SIZE = 2
 
 
 var astar : AStar3D
-var astar_capacity : int = 0  #Total number of points in the graph, usefull for size
+#var astar_capacity : int = 0  #Total number of points in the graph, usefull for size
 
 func _ready() -> void:
 	add_to_group("navigation_system")# optional

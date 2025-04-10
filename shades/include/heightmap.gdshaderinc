@@ -48,4 +48,20 @@ float sample_height_from_viewport(sampler2D screen, vec2 uv){
 	float h = mix(mix(h00, h10, f.x), mix(h01, h11, f.x), f.y);
 	return h;
 }
-
+//https://forum.godotengine.org/t/how-to-get-a-single-pixel-color-value-from-a-texture-in-shader/52707
+//https://forum.godotengine.org/t/how-to-check-color-of-adjacent-pixels-in-fragment-shader/27296/2
+//https://forum.godotengine.org/t/get-values-from-sampler2d-gradient-in-shader-code/5687/3
+float linearToSrgbF(float x)
+{
+	if(x <= 0.0)
+		return 0.0;
+	else if(x >= 1.0)
+		return 1.0;
+	else if(x < 0.0031308)
+		return x * 12.92;
+	else
+		return pow(x, 1.0 / 2.4) * 1.055 - 0.055;
+}
+vec4 get_gradient_color(sampler2D sampler,float position) {
+    return texture(sampler, vec2(position, 0.5));
+}

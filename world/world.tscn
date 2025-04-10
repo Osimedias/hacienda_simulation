@@ -1,8 +1,7 @@
-[gd_scene load_steps=64 format=3 uid="uid://dkg1i4gfjgld7"]
+[gd_scene load_steps=63 format=3 uid="uid://dkg1i4gfjgld7"]
 
 [ext_resource type="Script" uid="uid://bcrfsjgobsf2w" path="res://world/scenario_manager.gd" id="1_b2suy"]
 [ext_resource type="Script" uid="uid://cfv5e65p6d13r" path="res://world/player.gd" id="1_h8lre"]
-[ext_resource type="Script" uid="uid://ce5yn2vx3g2re" path="res://world/navigation_system.gd" id="1_j34ew"]
 [ext_resource type="Script" uid="uid://ckmgtsba0bh6q" path="res://world/terrain.gd" id="1_urdn3"]
 [ext_resource type="Shader" uid="uid://d4gqffwpnby4s" path="res://shades/terrain.gdshader" id="2_cksxu"]
 [ext_resource type="Script" uid="uid://c4yeaw1rhxngs" path="res://terrain/terrain_data.gd" id="2_h8lre"]
@@ -273,17 +272,17 @@ noise = SubResource("FastNoiseLite_noarx")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ysn08"]
 render_priority = 0
 shader = ExtResource("16_o1net")
-shader_parameter/water_color = Color(0.326467, 0.590462, 0.68632, 1)
+shader_parameter/water_color = Color(0.193149, 0.328944, 0.350785, 1)
 shader_parameter/noise_a = SubResource("NoiseTexture2D_noarx")
 shader_parameter/noise_b = SubResource("NoiseTexture2D_r3fl7")
 shader_parameter/sun_highlights = SubResource("NoiseTexture2D_a0tk4")
-shader_parameter/depth_distance = 2.1
-shader_parameter/water_color_ratio = 1.0
+shader_parameter/depth_distance = 0.5
+shader_parameter/water_color_ratio = 0.5
 shader_parameter/beers_law = 3.0
 shader_parameter/normal_scale = 0.5
 shader_parameter/roughness_scale = 0.2
-shader_parameter/time_scale = 7.0
-shader_parameter/uv_scale = 1.1
+shader_parameter/time_scale = 5.0
+shader_parameter/uv_scale = 0.3
 shader_parameter/abberation = SubResource("CurveXYZTexture_p2iis")
 
 [sub_resource type="LabelSettings" id="LabelSettings_gqaq8"]
@@ -291,9 +290,6 @@ line_spacing = 1.0
 font = ExtResource("19_p2iis")
 
 [node name="World" type="Node3D"]
-
-[node name="NavigationSystem" type="Node3D" parent="."]
-script = ExtResource("1_j34ew")
 
 [node name="Player" type="Node" parent="." groups=["player"]]
 script = ExtResource("1_h8lre")
@@ -385,7 +381,7 @@ texture = SubResource("NoiseTexture2D_dqqhb")
 metadata/_edit_use_anchors_ = true
 
 [node name="WaterBody" type="StaticBody3D" parent="." groups=["water_body"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 31.1007, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 35.7827, 0)
 collision_layer = 8
 collision_mask = 6
 script = ExtResource("12_m0cxt")

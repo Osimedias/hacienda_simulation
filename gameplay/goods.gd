@@ -9,7 +9,7 @@ class_name Goods extends Resource
 
 
 func json_to_resource(path : String) -> Goods:
-	var goods : Goods
+	var goods : Goods = Goods.new()
 	var data : Dictionary = {}
 	if FileAccess.file_exists(path):
 		var file = FileAccess.open(path,FileAccess.READ)

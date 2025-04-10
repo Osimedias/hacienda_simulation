@@ -35,15 +35,6 @@ anchor_bottom = 0.939815
 text = "Accept"
 metadata/_edit_use_anchors_ = true
 
-[node name="Back" type="Button" parent="."]
-layout_mode = 0
-anchor_left = 0.864583
-anchor_top = 0.876543
-anchor_right = 0.965278
-anchor_bottom = 0.939815
-text = "Back"
-metadata/_edit_use_anchors_ = true
-
 [node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 0
 anchor_left = 0.0199653
@@ -215,4 +206,3 @@ layout_mode = 2
 metadata/_tab_index = 2
 
 [connection signal="pressed" from="Accept" to="." method="_on_accept_pressed"]
-[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
