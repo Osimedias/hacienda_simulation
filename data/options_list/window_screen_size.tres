@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="OptionsList" load_steps=2 format=3 uid="uid://qgflsrw1alh6"]
+
+[ext_resource type="Script" uid="uid://bymhpj3yifpor" path="res://scripts/OptionsList.cs" id="1_7y36a"]
+
+[resource]
+script = ExtResource("1_7y36a")
+Elements = Dictionary[String, Variant]({
+"1920x1080": Vector2i(1920, 1080),
+"3840x1080": Vector2i(3840, 1080)
+})
+metadata/_custom_type_script = "uid://bymhpj3yifpor"

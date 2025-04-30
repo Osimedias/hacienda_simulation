@@ -1,0 +1,85 @@
+[gd_scene load_steps=5 format=3 uid="uid://bfn4aylyevdo6"]
+
+[ext_resource type="Theme" uid="uid://4r1xofhpny11" path="res://data/themes/main_menu.theme" id="1_ekxnf"]
+[ext_resource type="Script" uid="uid://dimgvhr7p0h0v" path="res://scripts/MainMenu.cs" id="1_l6cm7"]
+[ext_resource type="PackedScene" uid="uid://cpp8be2ic57cw" path="res://scenes/gui/background_wood.tscn" id="3_bqqt6"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vue75"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_ekxnf")
+script = ExtResource("1_l6cm7")
+newGameScene = "uid://bp8s5bsy23fh7"
+loadGameScene = "uid://cxkk5t8p0pwgw"
+optionScene = "uid://cjajv884jnumk"
+
+[node name="BackgroundWood" parent="." instance=ExtResource("3_bqqt6")]
+layout_mode = 1
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(269, 413)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -134.5
+offset_top = -206.5
+offset_right = 134.5
+offset_bottom = 206.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Hacienda Simulation"
+label_settings = SubResource("LabelSettings_vue75")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NewGame" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Start a New Game"
+text = "New Game"
+
+[node name="LoadGame" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Load Game"
+text = "Load Game"
+
+[node name="Options" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Settings and tools"
+text = "Options"
+
+[node name="Exit" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Back to Desktop"
+text = "Quit Game"
+
+[node name="Control" type="Control" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.65
+
+[connection signal="pressed" from="Panel/VBoxContainer/NewGame" to="." method="OnNewGamePressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/LoadGame" to="." method="OnLoadGamePressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Options" to="." method="OnOptionsPressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Exit" to="." method="OnExitPressed"]

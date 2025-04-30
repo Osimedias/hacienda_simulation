@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://ddfvub6j2vxvt"]
+
+[ext_resource type="Script" uid="uid://b606vnmo6gm1v" path="res://scripts/Building.cs" id="1_3dtdc"]
+[ext_resource type="ArrayMesh" uid="uid://dp8ry3g5jry06" path="res://models/buildings/stockpile.obj" id="2_hjq4t"]
+[ext_resource type="Material" uid="uid://cul238yp8do68" path="res://materials/building.material" id="2_sgh0n"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6plsa"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hjq4t"]
+size = Vector3(11.7807, 3.76306, 6.17493)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sgh0n"]
+size = Vector3(11.8524, 3.61966, 6.17877)
+
+[node name="Stockpile" type="StaticBody3D" node_paths=PackedStringArray("rayDraw")]
+collision_layer = 2
+script = ExtResource("1_3dtdc")
+BuildingMaterial = ExtResource("2_sgh0n")
+GhostMaterial = SubResource("StandardMaterial3D_6plsa")
+rayDraw = NodePath("DrawRay")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = ExtResource("2_hjq4t")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0122833, 1.88043, -0.00628662)
+shape = SubResource("BoxShape3D_hjq4t")
+
+[node name="Detector" type="Area3D" parent="."]
+collision_layer = 9
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Detector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0168307, 1.97828, 0.00845295)
+shape = SubResource("BoxShape3D_sgh0n")
+
+[node name="DrawRay" type="MeshInstance3D" parent="."]

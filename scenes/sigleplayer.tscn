@@ -1,0 +1,91 @@
+[gd_scene load_steps=5 format=3 uid="uid://bp8s5bsy23fh7"]
+
+[ext_resource type="Theme" uid="uid://4r1xofhpny11" path="res://data/themes/main_menu.theme" id="1_e511x"]
+[ext_resource type="Script" uid="uid://c44g4scoygegg" path="res://scripts/Sigleplayer.cs" id="2_8fee2"]
+[ext_resource type="PackedScene" uid="uid://cpp8be2ic57cw" path="res://scenes/gui/background_wood.tscn" id="3_s2wtc"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_01q17"]
+size = Vector2(120, 120)
+
+[node name="Sigleplayer" type="Control" node_paths=PackedStringArray("MapList", "Description")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_e511x")
+script = ExtResource("2_8fee2")
+MapList = NodePath("CenterContainer/Panel/HBoxContainer/VBoxContainer/Tree")
+Description = NodePath("CenterContainer/Panel/HBoxContainer/VBoxContainer2/MapDescription")
+metadata/_edit_use_anchors_ = true
+
+[node name="BackgroundWood" parent="." instance=ExtResource("3_s2wtc")]
+layout_mode = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CenterContainer"]
+custom_minimum_size = Vector2(1024, 512)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+size_flags_stretch_ratio = 2.01
+
+[node name="Label" type="Label" parent="CenterContainer/Panel/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Maps"
+horizontal_alignment = 1
+
+[node name="Tree" type="Tree" parent="CenterContainer/Panel/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CenterContainer/Panel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+
+[node name="Label" type="Label" parent="CenterContainer/Panel/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Map Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MapMiniMap" type="TextureRect" parent="CenterContainer/Panel/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+texture = SubResource("PlaceholderTexture2D_01q17")
+stretch_mode = 3
+
+[node name="MapDescription" type="RichTextLabel" parent="CenterContainer/Panel/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Start" type="Button" parent="CenterContainer/Panel/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Start"
+
+[node name="Back" type="Button" parent="CenterContainer/Panel/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Back"
+
+[connection signal="custom_item_clicked" from="CenterContainer/Panel/HBoxContainer/VBoxContainer/Tree" to="." method="OnItemClicked"]
+[connection signal="pressed" from="CenterContainer/Panel/HBoxContainer/VBoxContainer2/Start" to="." method="OnStartPressed"]
+[connection signal="pressed" from="CenterContainer/Panel/HBoxContainer/VBoxContainer2/Back" to="." method="OnBackPressed"]

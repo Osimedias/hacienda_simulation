@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://cefaejtkbn518"]
+
+[ext_resource type="Script" uid="uid://b3wihbnsbepbd" path="res://scripts/BuildingButton.cs" id="1_5ryjb"]
+
+[node name="BuildingButton" type="Button"]
+custom_minimum_size = Vector2(64, 64)
+offset_right = 8.0
+offset_bottom = 8.0
+size_flags_horizontal = 3
+text = "Building"
+clip_text = true
+script = ExtResource("1_5ryjb")
+
+[connection signal="pressed" from="." to="." method="OnButtonPressed"]

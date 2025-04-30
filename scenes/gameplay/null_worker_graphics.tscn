@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://b63bbwrewrlxt"]
+
+[ext_resource type="Script" uid="uid://drdpakumn4tok" path="res://scripts/NullWorkerGraphics.cs" id="1_mp8kh"]
+[ext_resource type="ArrayMesh" uid="uid://dsvpevyu3hs3p" path="res://models/gameplay/null_worker.obj" id="2_c8ik7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r7kv6"]
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 1)
+
+[node name="NullWorkerGraphics" type="Node3D"]
+script = ExtResource("1_mp8kh")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_r7kv6")
+mesh = ExtResource("2_c8ik7")

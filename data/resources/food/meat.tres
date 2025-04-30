@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Goods" load_steps=2 format=3 uid="uid://0ytluxuuntim"]
+
+[ext_resource type="Script" uid="uid://bhyag28vjenko" path="res://scripts/Goods.cs" id="1_wojog"]
+
+[resource]
+script = ExtResource("1_wojog")
+Name = &"Meat"
+Description = "Meat for the peapole"
+Amount = 60
+CellGUIPosition = 1
+metadata/_custom_type_script = "uid://bhyag28vjenko"

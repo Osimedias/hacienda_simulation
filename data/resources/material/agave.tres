@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Goods" load_steps=2 format=3 uid="uid://b71stcuscvm3d"]
+
+[ext_resource type="Script" uid="uid://bhyag28vjenko" path="res://scripts/Goods.cs" id="1_qfrn4"]
+
+[resource]
+script = ExtResource("1_qfrn4")
+Name = &"Agave"
+Description = "Use for bear,clothes and tools"
+Amount = 0
+CellGUIPosition = 9
+metadata/_custom_type_script = "uid://bhyag28vjenko"

@@ -1,0 +1,760 @@
+[gd_scene load_steps=33 format=3 uid="uid://blhwt2tr7ral"]
+
+[ext_resource type="Script" uid="uid://brlfaddcjvb32" path="res://scripts/Player.cs" id="1_4wyf3"]
+[ext_resource type="Script" uid="uid://dimumir1jqakd" path="res://scripts/CameraController.cs" id="1_nnsk1"]
+[ext_resource type="Script" uid="uid://c6btror3l8l0e" path="res://scripts/Terrain.cs" id="1_rwgxs"]
+[ext_resource type="Script" uid="uid://ck5x4dfje5wk" path="res://scripts/World.cs" id="1_xo05s"]
+[ext_resource type="Script" uid="uid://03oubriu57ck" path="res://scripts/AStarPathfinder.cs" id="2_7iits"]
+[ext_resource type="Script" uid="uid://brtme8vtettk0" path="res://scripts/VoxelGiGenerator.cs" id="2_lakw3"]
+[ext_resource type="Texture2D" uid="uid://bcaea6batjm5h" path="res://data/maps/island_large_splatmap.png" id="3_4mrxx"]
+[ext_resource type="Material" uid="uid://c3t28m6aco153" path="res://materials/terrain.material" id="3_qfnet"]
+[ext_resource type="Texture2D" uid="uid://bob8outfwccum" path="res://data/maps/island_large.png" id="4_7r4gi"]
+[ext_resource type="PackedScene" uid="uid://cefaejtkbn518" path="res://scenes/gui/building_button.tscn" id="4_k0juu"]
+[ext_resource type="PackedScene" uid="uid://bfd0apaxvg1n" path="res://scenes/gui/resource_label.tscn" id="5_71j4m"]
+[ext_resource type="Shader" uid="uid://281sk0jeg8lx" path="res://shaders/water.gdshader" id="6_7r4gi"]
+[ext_resource type="Script" uid="uid://bccq4foyt3se7" path="res://scripts/Water.cs" id="6_e3hyu"]
+[ext_resource type="Texture2D" uid="uid://cah77esy6s3xe" path="res://data/maps/island_large_water_mask.png" id="7_q5onr"]
+[ext_resource type="Texture2D" uid="uid://ceu3x4061otdh" path="res://textures/water/water_color.tga" id="7_w7kh3"]
+[ext_resource type="Theme" uid="uid://4r1xofhpny11" path="res://data/themes/main_menu.theme" id="11_jhx03"]
+[ext_resource type="Script" uid="uid://ccxpbiqcviqjk" path="res://scripts/SessionGui.cs" id="13_dss4m"]
+[ext_resource type="PackedScene" uid="uid://ygbgyampy21a" path="res://scenes/gui/resource_show_icon.tscn" id="15_dss4m"]
+[ext_resource type="PackedScene" uid="uid://ctlb4br36cgmk" path="res://scenes/buildings/land_owner_house_large.tscn" id="16_lakw3"]
+[ext_resource type="PackedScene" uid="uid://dmt31om3dfus1" path="res://scenes/buildings/grannery.tscn" id="16_pm21f"]
+[ext_resource type="PackedScene" uid="uid://d3r34cktl77i5" path="res://scenes/gui/selection_box.tscn" id="20_2lf6f"]
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_7t5mc"]
+
+[sub_resource type="VoxelGIData" id="VoxelGIData_lakw3"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7t5mc"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_lakw3"]
+sky_material = SubResource("ProceduralSkyMaterial_7t5mc")
+
+[sub_resource type="Environment" id="Environment_pm21f"]
+background_mode = 2
+sky = SubResource("Sky_lakw3")
+ambient_light_source = 3
+reflected_light_source = 2
+tonemap_mode = 4
+ssao_enabled = true
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+glow_enabled = true
+fog_sun_scatter = 1.0
+fog_aerial_perspective = 0.204
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0015
+adjustment_enabled = true
+adjustment_brightness = 1.31
+adjustment_contrast = 1.13
+adjustment_saturation = 1.26
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_e3hyu"]
+seed = 50
+frequency = 0.004
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_q5onr"]
+seamless = true
+seamless_blend_skirt = 1.0
+as_normal_map = true
+bump_strength = 5.4
+noise = SubResource("FastNoiseLite_e3hyu")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jhx03"]
+seed = 45
+frequency = 0.0057
+offset = Vector3(173.91, 0, 173.91)
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_o8fc1"]
+seamless = true
+seamless_blend_skirt = 1.0
+as_normal_map = true
+bump_strength = 3.1
+noise = SubResource("FastNoiseLite_jhx03")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w7kh3"]
+render_priority = 0
+shader = ExtResource("6_7r4gi")
+shader_parameter/water_height = 60.0
+shader_parameter/water_color = ExtResource("7_w7kh3")
+shader_parameter/water_normal_a = SubResource("NoiseTexture2D_q5onr")
+shader_parameter/water_normal_b = SubResource("NoiseTexture2D_o8fc1")
+
+[sub_resource type="Environment" id="Environment_7t5mc"]
+background_mode = 1
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+reflected_light_source = 1
+
+[node name="World" type="Node3D" node_paths=PackedStringArray("sessionGUI")]
+script = ExtResource("1_xo05s")
+sessionGUI = NodePath("SessionGUI")
+
+[node name="AStar" type="Node3D" parent="."]
+script = ExtResource("2_7iits")
+
+[node name="Bounds" type="MeshInstance3D" parent="AStar"]
+skeleton = NodePath("../..")
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+bus = &"Music"
+
+[node name="InterfaceSounds" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+bus = &"Interface"
+
+[node name="VoxelGI" type="VoxelGI" parent="." node_paths=PackedStringArray("terrain")]
+layers = 11
+subdiv = 2
+camera_attributes = SubResource("CameraAttributesPhysical_7t5mc")
+data = SubResource("VoxelGIData_lakw3")
+script = ExtResource("2_lakw3")
+terrain = NodePath("../Terrain/TerrainMesh")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_pm21f")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.767165, -0.459081, 0.447998, 0, 0.698415, 0.715693, -0.64145, 0.549055, -0.5358, 0, 0, 0)
+shadow_enabled = true
+directional_shadow_max_distance = 500.0
+
+[node name="Player" type="Node" parent="."]
+script = ExtResource("1_4wyf3")
+
+[node name="Terrain" type="StaticBody3D" parent="." node_paths=PackedStringArray("terrainMesh", "terrainShape")]
+script = ExtResource("1_rwgxs")
+terrainMesh = NodePath("TerrainMesh")
+terrainShape = NodePath("TerrainShape")
+splatMapTexture = ExtResource("3_4mrxx")
+heightMapTexture = ExtResource("4_7r4gi")
+
+[node name="TerrainMesh" type="MeshInstance3D" parent="Terrain"]
+material_override = ExtResource("3_qfnet")
+
+[node name="TerrainShape" type="CollisionShape3D" parent="Terrain"]
+
+[node name="Water" type="StaticBody3D" parent="." node_paths=PackedStringArray("waterMesh", "waterShape")]
+collision_layer = 16
+collision_mask = 16
+script = ExtResource("6_e3hyu")
+waterMesh = NodePath("WaterMesh")
+waterShape = NodePath("WaterShape")
+waterMask = ExtResource("7_q5onr")
+
+[node name="WaterMesh" type="MeshInstance3D" parent="Water"]
+layers = 2
+material_override = SubResource("ShaderMaterial_w7kh3")
+
+[node name="WaterShape" type="CollisionShape3D" parent="Water"]
+
+[node name="CameraController" type="Node3D" parent="." node_paths=PackedStringArray("meshBounds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.236, 0, -11.9859)
+script = ExtResource("1_nnsk1")
+meshBounds = NodePath("../Terrain/TerrainMesh")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraController"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 53.8664, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraController/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 0.698415, 0.715693, 0, -0.715693, 0.698415, 0, 0, 0)
+current = true
+size = 1.952
+
+[node name="SessionGUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("11_jhx03")
+script = ExtResource("13_dss4m")
+metadata/_edit_use_anchors_ = true
+
+[node name="CommandPanel" type="Panel" parent="SessionGUI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.737654
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SessionGUI/CommandPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="MiniMap" type="SubViewportContainer" parent="SessionGUI/CommandPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.8
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SessionGUI/CommandPanel/HBoxContainer/MiniMap"]
+handle_input_locally = false
+size = Vector2i(158, 170)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="SessionGUI/CommandPanel/HBoxContainer/MiniMap/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 342.866, 0)
+environment = SubResource("Environment_7t5mc")
+projection = 1
+size = 515.78
+
+[node name="Buildings" type="TabContainer" parent="SessionGUI/CommandPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 5.0
+current_tab = 4
+
+[node name="Labor" type="HBoxContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="StockPile" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Labor" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="WoodCut" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Labor" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="StoneMason" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Labor" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="IronMine" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Labor" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="WheatField" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Labor" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="AgaveField" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Labor" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="FlavorMill" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Labor" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="Distillery" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Labor" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="Food" type="HBoxContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Granary" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Food" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+Building = ExtResource("16_pm21f")
+world = NodePath("../../../../../..")
+
+[node name="MeatFarm" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Food" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="CornField" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Food" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="CheaseFarm" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Food" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="Beakery" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Food" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="Control" type="Control" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Food"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Civic" type="HBoxContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="House" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Civic" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="Church" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Civic" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="CompanyStore" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Civic" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="Merchant\'sStall" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Civic" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="Control" type="Control" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Civic"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Military" type="HBoxContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="Barracks" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Military" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="Armory" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Military" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="GunpownderWorkshop" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Military" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="Control" type="Control" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Military"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.72
+
+[node name="Hacienda" type="HBoxContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings"]
+layout_mode = 2
+metadata/_tab_index = 4
+
+[node name="LandOwnerHouseSmall" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Hacienda" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="LandOwnerHouseNormal" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Hacienda" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="LandOwnerHouseLarge" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Hacienda" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "LandOwnerHouse
+Large"
+Building = ExtResource("16_lakw3")
+world = NodePath("../../../../../..")
+
+[node name="Garden" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Hacienda" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="Statue" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Hacienda" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="GardenChair" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Hacienda" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="Defense" type="HBoxContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 5
+
+[node name="WallSmall" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Defense" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="WallNormal" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Defense" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="WallLarge" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Defense" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="WallGate" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Defense" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="WoodFance" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Defense" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="WoodGate" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Defense" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="Blockout" parent="SessionGUI/CommandPanel/HBoxContainer/Buildings/Defense" node_paths=PackedStringArray("world") instance=ExtResource("4_k0juu")]
+layout_mode = 2
+text = "Wood
+Cut"
+world = NodePath("../../../../../..")
+
+[node name="ContextGoodsResourcePanel" type="Panel" parent="SessionGUI/CommandPanel/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 5.0
+
+[node name="CenterContainer" type="CenterContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel"]
+custom_minimum_size = Vector2(900, 170)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer"]
+custom_minimum_size = Vector2(980, 160)
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 5.0
+columns = 11
+
+[node name="ResourceShowIcon" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon2" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon3" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon4" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon5" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon6" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon7" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon8" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon9" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon10" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon11" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon12" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon13" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon14" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon15" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon16" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon17" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon18" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon19" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon20" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon21" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon22" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon23" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon24" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon25" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon26" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon27" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon28" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon29" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon30" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon31" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon32" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon33" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.89
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(2, 2)
+render_target_update_mode = 0
+
+[node name="Control" type="Control" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.79
+
+[node name="ContextFoodResourcePanel" type="Panel" parent="SessionGUI/CommandPanel/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 5.0
+
+[node name="CenterContainer" type="CenterContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel"]
+custom_minimum_size = Vector2(900, 170)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer"]
+custom_minimum_size = Vector2(980, 160)
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.42
+columns = 11
+
+[node name="ResourceShowIcon" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon2" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon3" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="ResourceShowIcon4" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.57
+
+[node name="Control" type="Control" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 13
+size_flags_vertical = 15
+
+[node name="FoodRateSliderLabel" type="Label" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Food Rate"
+horizontal_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+value = 50.0
+
+[node name="GridContainer" type="GridContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 4
+
+[node name="CornBlock" type="Button" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="MeatBlock" type="Button" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="CheaseBlock" type="Button" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="BreadBlock" type="Button" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="Control2" type="Control" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 13
+size_flags_vertical = 15
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.89
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(2, 2)
+render_target_update_mode = 0
+
+[node name="Control" type="Control" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.79
+
+[node name="MenuPanel" type="Panel" parent="SessionGUI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.0648148
+grow_horizontal = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SessionGUI/MenuPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Money" parent="SessionGUI/MenuPanel/HBoxContainer" node_paths=PackedStringArray("Player") instance=ExtResource("5_71j4m")]
+layout_mode = 2
+size_flags_horizontal = 3
+Player = NodePath("../../../../Player")
+
+[node name="Food" parent="SessionGUI/MenuPanel/HBoxContainer" node_paths=PackedStringArray("Player") instance=ExtResource("5_71j4m")]
+layout_mode = 2
+size_flags_horizontal = 3
+CounterType = 1
+Player = NodePath("../../../../Player")
+
+[node name="Goods" parent="SessionGUI/MenuPanel/HBoxContainer" node_paths=PackedStringArray("Player") instance=ExtResource("5_71j4m")]
+layout_mode = 2
+size_flags_horizontal = 3
+CounterType = 2
+Player = NodePath("../../../../Player")
+
+[node name="Popularity" parent="SessionGUI/MenuPanel/HBoxContainer" node_paths=PackedStringArray("Player") instance=ExtResource("5_71j4m")]
+layout_mode = 2
+size_flags_horizontal = 3
+CounterType = 3
+Player = NodePath("../../../../Player")
+
+[node name="Population" parent="SessionGUI/MenuPanel/HBoxContainer" node_paths=PackedStringArray("Player") instance=ExtResource("5_71j4m")]
+layout_mode = 2
+size_flags_horizontal = 3
+CounterType = 4
+Player = NodePath("../../../../Player")
+
+[node name="Control" type="Control" parent="SessionGUI/MenuPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 4.44
+
+[node name="Menu" type="MenuButton" parent="SessionGUI/MenuPanel/HBoxContainer"]
+layout_mode = 2
+text = "Menu"
+
+[node name="SelectionBox" parent="." node_paths=PackedStringArray("World") instance=ExtResource("20_2lf6f")]
+World = NodePath("..")
+
+[connection signal="TerrainGenerateFinish" from="Terrain" to="VoxelGI" method="OnTerrainGenerationFinish"]
+[connection signal="ChangeContext" from="SessionGUI" to="." method="OnGUIChangeContext"]

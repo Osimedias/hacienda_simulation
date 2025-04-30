@@ -1,0 +1,68 @@
+[gd_scene load_steps=13 format=3 uid="uid://ctlb4br36cgmk"]
+
+[ext_resource type="Script" uid="uid://b606vnmo6gm1v" path="res://scripts/Building.cs" id="1_1jiha"]
+[ext_resource type="ArrayMesh" uid="uid://bdgs3mq1g4bn1" path="res://models/buildings/land_owner_house_large.obj" id="1_ykj00"]
+[ext_resource type="Material" uid="uid://cul238yp8do68" path="res://materials/building.material" id="2_1jiha"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3no1n"]
+
+[sub_resource type="Gradient" id="Gradient_3no1n"]
+offsets = PackedFloat32Array(0, 0.257627, 0.613559, 0.833898, 1)
+colors = PackedColorArray(0.316114, 0.199267, 0, 1, 0.788062, 0.755179, 0.828169, 1, 0.28467, 0.249456, 0.102739, 1, 0.457137, 0.401653, 0.222014, 1, 0.277758, 0.284549, 0.0590797, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_j6mrw"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_q3lbb"]
+invert = true
+in_3d_space = true
+seamless = true
+seamless_blend_skirt = 1.0
+color_ramp = SubResource("Gradient_3no1n")
+noise = SubResource("FastNoiseLite_j6mrw")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mgns1"]
+albedo_texture = SubResource("NoiseTexture2D_q3lbb")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ykj00"]
+size = Vector3(12.3716, 4.32031, 10.879)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1jiha"]
+size = Vector3(12.3716, 4.22217, 10.879)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j6mrw"]
+shading_mode = 0
+albedo_color = Color(0, 1, 0, 1)
+grow = true
+grow_amount = 2.56
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_q3lbb"]
+
+[node name="LandOwnerHouseLarge" type="StaticBody3D" node_paths=PackedStringArray("rayDraw")]
+collision_layer = 2
+script = ExtResource("1_1jiha")
+collisionMask = 1
+BuildingMaterial = ExtResource("2_1jiha")
+GhostMaterial = SubResource("StandardMaterial3D_3no1n")
+rayDraw = NodePath("DrawRays")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_ykj00")
+surface_material_override/0 = ExtResource("2_1jiha")
+surface_material_override/1 = SubResource("StandardMaterial3D_mgns1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00991821, 2.17969, 0.0195923)
+shape = SubResource("BoxShape3D_ykj00")
+
+[node name="Detector" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.36064, 1.12678)
+collision_layer = 9
+monitorable = false
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Detector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00991821, -3.13188, -1.10719)
+shape = SubResource("BoxShape3D_1jiha")
+
+[node name="DrawRays" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_j6mrw")
+mesh = SubResource("ImmediateMesh_q3lbb")

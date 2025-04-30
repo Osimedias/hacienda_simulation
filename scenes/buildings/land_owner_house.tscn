@@ -1,0 +1,51 @@
+[gd_scene load_steps=9 format=3 uid="uid://bwsev80f74x3l"]
+
+[ext_resource type="PackedScene" uid="uid://bfteqsn13gejx" path="res://models/buildings/land_owner_house.glb" id="1_vxtch"]
+[ext_resource type="Script" uid="uid://b606vnmo6gm1v" path="res://scripts/Building.cs" id="2_hlat2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_62o0q"]
+albedo_color = Color(0.529777, 0.362375, 0.133403, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rs2dg"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hlat2"]
+size = Vector3(21.3066, 9.48932, 10.6827)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_62o0q"]
+size = Vector3(21.3066, 9.48932, 10.6827)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v767j"]
+shading_mode = 0
+albedo_color = Color(0, 1, 0, 1)
+grow = true
+grow_amount = 2.56
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_62o0q"]
+
+[node name="land_owner_house" node_paths=PackedStringArray("rayDraw") instance=ExtResource("1_vxtch")]
+collision_layer = 2
+script = ExtResource("2_hlat2")
+collisionMask = 1
+BuildingMaterial = SubResource("StandardMaterial3D_62o0q")
+GhostMaterial = SubResource("StandardMaterial3D_rs2dg")
+rayDraw = NodePath("DrawRays")
+
+[node name="Cube" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+layers = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.75557, 1.12678)
+shape = SubResource("BoxShape3D_hlat2")
+
+[node name="Detector" type="Area3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.36064, 1.12678)
+collision_layer = 9
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Detector" index="0"]
+shape = SubResource("BoxShape3D_62o0q")
+
+[node name="DrawRays" type="MeshInstance3D" parent="." index="3"]
+material_override = SubResource("StandardMaterial3D_v767j")
+mesh = SubResource("ImmediateMesh_62o0q")

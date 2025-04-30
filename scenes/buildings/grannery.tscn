@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://dmt31om3dfus1"]
+
+[ext_resource type="ArrayMesh" uid="uid://cfta2uelk55nk" path="res://models/buildings/grannery.obj" id="1_3od8u"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pm047"]
+size = Vector3(2.427, 2.27228, 2.48291)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3od8u"]
+size = Vector3(2.46326, 2.14581, 2.52612)
+
+[node name="Grannery" type="StaticBody3D" groups=["grannery"]]
+collision_layer = 2
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_3od8u")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00524902, 1.13614, -0.000244141)
+shape = SubResource("BoxShape3D_pm047")
+
+[node name="Detector" type="Area3D" parent="."]
+collision_layer = 9
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Detector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00848389, 1.24136, -0.0057373)
+shape = SubResource("BoxShape3D_3od8u")

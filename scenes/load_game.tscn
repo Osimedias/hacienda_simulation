@@ -1,0 +1,95 @@
+[gd_scene load_steps=6 format=3 uid="uid://cxkk5t8p0pwgw"]
+
+[ext_resource type="Theme" uid="uid://4r1xofhpny11" path="res://data/themes/main_menu.theme" id="1_32anb"]
+[ext_resource type="Script" uid="uid://c4poyxakyl60u" path="res://scripts/LoadGameMenu.cs" id="2_id630"]
+[ext_resource type="PackedScene" uid="uid://cpp8be2ic57cw" path="res://scenes/gui/background_wood.tscn" id="2_ykbq1"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_32anb"]
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_ykbq1"]
+font_size = 32
+
+[node name="LoadGame" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_32anb")
+script = ExtResource("2_id630")
+
+[node name="BackgroundWood" parent="." instance=ExtResource("2_ykbq1")]
+layout_mode = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(1024, 512)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+size_flags_stretch_ratio = 2.56
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Save Games"
+label_settings = SubResource("LabelSettings_32anb")
+horizontal_alignment = 1
+
+[node name="Tree" type="Tree" parent="CenterContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CenterContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Save Game Info"
+label_settings = SubResource("LabelSettings_ykbq1")
+horizontal_alignment = 1
+
+[node name="Tree" type="Tree" parent="CenterContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -230.0
+offset_top = -54.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Load" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+text = "Load"
+
+[node name="Back" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+text = "Back"
+
+[connection signal="pressed" from="HBoxContainer/Load" to="." method="OnLoadPressed"]
+[connection signal="pressed" from="HBoxContainer/Back" to="." method="OnBackPressed"]

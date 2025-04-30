@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://kua1uwos2ma4"]
+
+[ext_resource type="Script" uid="uid://c5b2vdsomvht6" path="res://scripts/MenuOptionButton.cs" id="1_cyn7p"]
+
+[node name="OptionButton" type="HBoxContainer"]
+script = ExtResource("1_cyn7p")
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+
+[node name="OptionButton" type="OptionButton" parent="."]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+
+[connection signal="item_selected" from="OptionButton" to="." method="OnItemSelected"]

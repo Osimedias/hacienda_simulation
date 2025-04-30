@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Goods" load_steps=2 format=3 uid="uid://la3nwq8hrhki"]
+
+[ext_resource type="Script" uid="uid://bhyag28vjenko" path="res://scripts/Goods.cs" id="1_8u72v"]
+
+[resource]
+script = ExtResource("1_8u72v")
+Name = &"Iron"
+Description = "Use for some buildings and for weapons and tools"
+Amount = 0
+CellGUIPosition = 2
+metadata/_custom_type_script = "uid://bhyag28vjenko"

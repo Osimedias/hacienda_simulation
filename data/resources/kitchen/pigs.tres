@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Goods" load_steps=2 format=3 uid="uid://d3t5h3djy0sbv"]
+
+[ext_resource type="Script" uid="uid://bhyag28vjenko" path="res://scripts/Goods.cs" id="1_qm8ny"]
+
+[resource]
+script = ExtResource("1_qm8ny")
+Name = null
+Description = ""
+Amount = 0
+CellGUIPosition = 0
+metadata/_custom_type_script = "uid://bhyag28vjenko"

@@ -1,0 +1,56 @@
+[gd_scene load_steps=8 format=3 uid="uid://ygbgyampy21a"]
+
+[ext_resource type="Script" uid="uid://cb0w5gxfceyu0" path="res://scripts/ResourceShowIcon.cs" id="1_edbms"]
+[ext_resource type="Texture2D" uid="uid://di8jkvj6koel7" path="res://icon.svg" id="1_reb6i"]
+[ext_resource type="Script" uid="uid://bhyag28vjenko" path="res://scripts/Goods.cs" id="2_5rrmt"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_y8ibo"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_m3inh"]
+width = 64
+height = 64
+noise = SubResource("FastNoiseLite_y8ibo")
+
+[sub_resource type="Resource" id="Resource_7wfon"]
+script = ExtResource("2_5rrmt")
+Icon = SubResource("NoiseTexture2D_m3inh")
+Name = &"FastNoiseLite"
+Description = "A Noise Function"
+Amount = 4
+CellGUIPosition = 0
+metadata/_custom_type_script = "uid://bhyag28vjenko"
+
+[sub_resource type="LabelSettings" id="LabelSettings_5rrmt"]
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[node name="ResourceShowIcon" type="Button" node_paths=PackedStringArray("GoodIcon")]
+custom_minimum_size = Vector2(42, 42)
+offset_right = 42.0
+offset_bottom = 42.0
+script = ExtResource("1_edbms")
+GoodIcon = NodePath("TextureRect")
+goods = SubResource("Resource_7wfon")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+offset_right = 42.0
+offset_bottom = 42.0
+texture = ExtResource("1_reb6i")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -23.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "99"
+label_settings = SubResource("LabelSettings_5rrmt")
+horizontal_alignment = 2
+vertical_alignment = 1

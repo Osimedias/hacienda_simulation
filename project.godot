@@ -10,71 +10,52 @@ config_version=5
 
 [application]
 
-config/name="Hacienda Simulator"
-config/description="A stronghold like game"
-config/version="0.0.0"
-run/main_scene="uid://gj1adculurwf"
-config/features=PackedStringArray("4.4", "Forward Plus")
-boot_splash/bg_color=Color(0.214383, 0.156838, 0.0976578, 1)
+config/name="Hacienda Simulation"
+config/description="Hacienda Simulation.
+Build and administrate an hacienda"
+config/version="pre-alpha 1"
+run/main_scene="uid://bfn4aylyevdo6"
+config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-RaycastSystem="*res://world/raycast_system.tscn"
-SimpleGrass="*res://addons/simplegrasstextured/singleton.tscn"
-EntitiesManager="*res://gameplay/entities_manager.gd"
-ConfigurationManager="*res://gameplay/configuration_manager.gd"
-GraphicsManager="*res://globals/graphics_manager.gd"
-PlayerData="*res://globals/player_data.tscn"
+MapData="*res://scenes/MapData.tscn"
+SceneTransition="*res://scenes/scene_transition.tscn"
 
 [display]
 
-window/stretch/aspect="keep_width"
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
-[editor_plugins]
+[dotnet]
 
-enabled=PackedStringArray("res://addons/dreadpon.spatial_gardener/plugin.cfg", "res://addons/simplegrasstextured/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
-
-[global_group]
-
-terrain=""
-player=""
+project/assembly_name="hacienda_simulation_csharp_experiments"
 
 [input]
 
 move_forward={
-"deadzone": 0.5,
+"deadzone": 0.2,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":87,"key_label":0,"unicode":119,"location":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194320,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
 move_backward={
-"deadzone": 0.5,
+"deadzone": 0.2,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":83,"key_label":0,"unicode":115,"location":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194322,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
 move_left={
-"deadzone": 0.5,
+"deadzone": 0.2,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":65,"key_label":0,"unicode":97,"location":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194319,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
 move_right={
-"deadzone": 0.5,
+"deadzone": 0.2,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":68,"key_label":0,"unicode":100,"location":0,"echo":false,"script":null)
-]
-}
-zoom_in={
-"deadzone": 0.5,
-"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":16,"position":Vector2(265, 14),"global_position":Vector2(274, 60),"factor":1.0,"button_index":5,"canceled":false,"pressed":true,"double_click":false,"script":null)
-]
-}
-zoom_out={
-"deadzone": 0.5,
-"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":8,"position":Vector2(277, 17),"global_position":Vector2(286, 63),"factor":1.0,"button_index":4,"canceled":false,"pressed":true,"double_click":false,"script":null)
-]
-}
-mouse_and_control={
-"deadzone": 0.5,
-"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":true,"meta_pressed":false,"button_mask":1,"position":Vector2(250, 15),"global_position":Vector2(259, 61),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194321,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
 
@@ -82,71 +63,9 @@ mouse_and_control={
 
 3d_render/layer_1="terrain"
 3d_render/layer_2="water"
-3d_render/layer_3="entities"
-3d_render/layer_4="effects"
-2d_navigation/layer_1="terrain"
-3d_physics/layer_1="terrain"
-3d_navigation/layer_1="terrain"
-2d_navigation/layer_2="water"
-3d_physics/layer_2="structures"
-3d_navigation/layer_2="water"
-2d_navigation/layer_3="structures"
-3d_physics/layer_3="units"
-3d_navigation/layer_3="structures"
-3d_physics/layer_4="water"
-
-[physics]
-
-3d/run_on_separate_thread=true
-3d/physics_engine="Jolt Physics"
-
-[shader_globals]
-
-tree_wind_size={
-"type": "vec4",
-"value": Vector4(0, 0, 0, 0)
-}
-tree_wind_power={
-"type": "vec3",
-"value": Vector3(0, 0, 0)
-}
-sgt_legacy_renderer={
-"type": "int",
-"value": 0
-}
-sgt_player_position={
-"type": "vec3",
-"value": Vector3(1e+06, 1e+06, 1e+06)
-}
-sgt_player_mov={
-"type": "vec3",
-"value": Vector3(0, 0, 0)
-}
-sgt_normal_displacement={
-"type": "sampler2D",
-"value": "res://addons/simplegrasstextured/images/normal.png"
-}
-sgt_motion_texture={
-"type": "sampler2D",
-"value": "res://addons/simplegrasstextured/images/motion.png"
-}
-sgt_wind_direction={
-"type": "vec3",
-"value": Vector3(1, 0, 0)
-}
-sgt_wind_movement={
-"type": "vec3",
-"value": Vector2(0, 0)
-}
-sgt_wind_strength={
-"type": "float",
-"value": 0.15
-}
-sgt_wind_turbulence={
-"type": "float",
-"value": 1.0
-}
-sgt_wind_pattern={
-"type": "sampler2D",
-"value": "res://addons/simplegrasstextured/images/wind_pattern.png"
-}
+3d_render/layer_3="player_entities"
+3d_render/layer_4="terrain_objects"
+3d_physics/layer_1="Terrain"
+3d_physics/layer_2="Buildings"
+3d_physics/layer_4="Areas"
+3d_physics/layer_5="water"

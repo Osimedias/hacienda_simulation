@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="OptionsList" load_steps=2 format=3 uid="uid://c6tr7cbvmvfwy"]
+
+[ext_resource type="Script" uid="uid://bymhpj3yifpor" path="res://scripts/OptionsList.cs" id="1_4fpgv"]
+
+[resource]
+script = ExtResource("1_4fpgv")
+Elements = Dictionary[String, Variant]({
+"Complex": 1,
+"Simple": 0
+})
+metadata/_custom_type_script = "uid://bymhpj3yifpor"

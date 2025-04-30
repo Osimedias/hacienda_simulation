@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://c41sje1tgndm2"]
+
+[ext_resource type="Script" uid="uid://23hq53n3tisw" path="res://scripts/LightFlicker.cs" id="1_eadih"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_eadih"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_84b2x"]
+sky_material = SubResource("ProceduralSkyMaterial_eadih")
+
+[sub_resource type="Environment" id="Environment_jfx37"]
+background_mode = 1
+sky = SubResource("Sky_84b2x")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_eadih"]
+
+[node name="TestLight" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_jfx37")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.85476)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.311593)
+light_energy = 16.0
+shadow_enabled = true
+script = ExtResource("1_eadih")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.963528, 0.267608, 0, -0.267608, 0.963528, 0, 0, -1.08811)
+mesh = SubResource("BoxMesh_eadih")
