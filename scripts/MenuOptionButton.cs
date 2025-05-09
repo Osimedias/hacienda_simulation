@@ -12,7 +12,7 @@ using Godot.Collections;
     This code manager all posible options for this cain of controler, it use a Resource to populate the items(less code).
 */
 
-namespace Trinketos.HaciendaSimulator 
+namespace Trinketos.HaciendaSimulator
 {
     public partial class MenuOptionButton : HBoxContainer
     {
@@ -30,7 +30,7 @@ namespace Trinketos.HaciendaSimulator
             _Title = GetNode<Label>("Title");
             _OptionsButton = GetNode<OptionButton>("OptionButton");
             _Title.Text = Title;
-            if(Options != null)
+            if (Options != null)
             {
                 CreateButtonsList();
             }
@@ -44,7 +44,7 @@ namespace Trinketos.HaciendaSimulator
 
             for (int i = 0; i < keys.Count; i++)
             {
-            AddItem(elements[i]);
+                AddItem(elements[i]);
             }
         }
 

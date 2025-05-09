@@ -2,7 +2,7 @@
     "information" : {
         "name" : "Isla Clarión",
         "description": "La isla Clarión, antiguamente llamada isla de Santa Rosa, es la segunda isla más extensa y la más occidental de las islas Revillagigedo(actualmente pertenecientes a México, especificamente al estado de Colima.",
-        "resource" : ["iron","Stone","Oil","Fertil lands"] 
+        "goods" : ["iron","Stone","Oil","Fertil lands"] 
     },
     "textures":
     {

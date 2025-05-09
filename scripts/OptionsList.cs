@@ -11,12 +11,12 @@ using Godot.Collections;
 
     This scripts is for Manager the options of a MenuOptionButton.cs(less code)
 */
-namespace Trinketos.HaciendaSimulator 
+namespace Trinketos.HaciendaSimulator
 {
     [GlobalClass]
     public partial class OptionsList : Resource
     {
         [Export]
-        public Dictionary<string,Variant> Elements;
+        public Dictionary<string, Variant> Elements;
     }
 }

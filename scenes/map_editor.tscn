@@ -1,0 +1,404 @@
+[gd_scene load_steps=26 format=3 uid="uid://bytbj4pjllrke"]
+
+[ext_resource type="Script" uid="uid://b60ieqah5qpkj" path="res://scripts/MapEditor.cs" id="1_l5hcm"]
+[ext_resource type="Script" uid="uid://c6btror3l8l0e" path="res://scripts/Terrain.cs" id="2_0oln8"]
+[ext_resource type="Material" uid="uid://c3t28m6aco153" path="res://materials/terrain.material" id="3_rlpmc"]
+[ext_resource type="Script" uid="uid://bccq4foyt3se7" path="res://scripts/Water.cs" id="4_u4ibt"]
+[ext_resource type="Shader" uid="uid://281sk0jeg8lx" path="res://shaders/water.gdshader" id="5_24rlk"]
+[ext_resource type="Texture2D" uid="uid://ceu3x4061otdh" path="res://textures/water/water_color.tga" id="6_gxr6b"]
+[ext_resource type="Script" uid="uid://dimumir1jqakd" path="res://scripts/CameraController.cs" id="7_78cw8"]
+[ext_resource type="Theme" uid="uid://4r1xofhpny11" path="res://data/themes/main_menu.theme" id="8_rlpmc"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rlpmc"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_u4ibt"]
+sky_material = SubResource("ProceduralSkyMaterial_rlpmc")
+
+[sub_resource type="Environment" id="Environment_24rlk"]
+background_mode = 1
+sky = SubResource("Sky_u4ibt")
+ambient_light_source = 3
+reflected_light_source = 2
+tonemap_mode = 4
+glow_enabled = true
+adjustment_enabled = true
+adjustment_brightness = 1.56
+adjustment_contrast = 1.24
+adjustment_saturation = 1.28
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_oio3n"]
+seed = 50
+frequency = 0.004
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_q5onr"]
+seamless = true
+seamless_blend_skirt = 1.0
+as_normal_map = true
+bump_strength = 5.4
+noise = SubResource("FastNoiseLite_oio3n")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_xvx8q"]
+seed = 45
+frequency = 0.0057
+offset = Vector3(173.91, 0, 173.91)
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_o8fc1"]
+seamless = true
+seamless_blend_skirt = 1.0
+as_normal_map = true
+bump_strength = 3.1
+noise = SubResource("FastNoiseLite_xvx8q")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fqaxq"]
+render_priority = 0
+shader = ExtResource("5_24rlk")
+shader_parameter/water_height = 60.0
+shader_parameter/water_color = ExtResource("6_gxr6b")
+shader_parameter/water_normal_a = SubResource("NoiseTexture2D_q5onr")
+shader_parameter/water_normal_b = SubResource("NoiseTexture2D_o8fc1")
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_24rlk"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_rlpmc"]
+device = -1
+shift_pressed = true
+keycode = 65
+unicode = 97
+
+[sub_resource type="Shortcut" id="Shortcut_u4ibt"]
+events = [SubResource("InputEventKey_rlpmc")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_24rlk"]
+device = -1
+shift_pressed = true
+keycode = 87
+unicode = 119
+
+[sub_resource type="Shortcut" id="Shortcut_gxr6b"]
+events = [SubResource("InputEventKey_24rlk")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_78cw8"]
+device = -1
+shift_pressed = true
+keycode = 69
+unicode = 101
+
+[sub_resource type="Shortcut" id="Shortcut_oio3n"]
+events = [SubResource("InputEventKey_78cw8")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_xvx8q"]
+device = -1
+shift_pressed = true
+keycode = 82
+unicode = 114
+
+[sub_resource type="Shortcut" id="Shortcut_fqaxq"]
+events = [SubResource("InputEventKey_xvx8q")]
+
+[node name="MapEditor" type="Node3D" node_paths=PackedStringArray("terrain", "water")]
+script = ExtResource("1_l5hcm")
+terrain = NodePath("Terrain")
+water = NodePath("Water")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_24rlk")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.888617, 0.426442, -0.16884, 0, 0.368125, 0.929776, 0.45865, -0.826215, 0.327122, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Terrain" type="StaticBody3D" parent="." node_paths=PackedStringArray("terrainMesh", "terrainShape")]
+script = ExtResource("2_0oln8")
+terrainMesh = NodePath("TerrainMesh")
+terrainShape = NodePath("TerrainShape")
+
+[node name="TerrainMesh" type="MeshInstance3D" parent="Terrain"]
+material_override = ExtResource("3_rlpmc")
+
+[node name="TerrainShape" type="CollisionShape3D" parent="Terrain"]
+
+[node name="Water" type="StaticBody3D" parent="." node_paths=PackedStringArray("waterMesh", "waterShape")]
+collision_layer = 16
+collision_mask = 16
+script = ExtResource("4_u4ibt")
+waterMesh = NodePath("WaterMesh")
+waterShape = NodePath("WaterShape")
+
+[node name="WaterMesh" type="MeshInstance3D" parent="Water"]
+layers = 2
+material_override = SubResource("ShaderMaterial_fqaxq")
+
+[node name="WaterShape" type="CollisionShape3D" parent="Water"]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_24rlk")
+
+[node name="CameraController" type="Node3D" parent="." node_paths=PackedStringArray("meshBounds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.236, 0, -11.9859)
+script = ExtResource("7_78cw8")
+meshBounds = NodePath("../Terrain/TerrainMesh")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraController"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 53.8664, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraController/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 0.698415, 0.715693, 0, -0.715693, 0.698415, 0, 0, 0)
+current = true
+size = 1.952
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("8_rlpmc")
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuBar" type="MenuBar" parent="Control/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="File" type="PopupMenu" parent="Control/VBoxContainer/MenuBar"]
+
+[node name="Edit" type="PopupMenu" parent="Control/VBoxContainer/MenuBar"]
+auto_translate_mode = 1
+
+[node name="Data" type="PopupMenu" parent="Control/VBoxContainer/MenuBar"]
+auto_translate_mode = 1
+
+[node name="Help" type="PopupMenu" parent="Control/VBoxContainer/MenuBar"]
+auto_translate_mode = 1
+
+[node name="Control" type="Control" parent="Control/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 20.0
+mouse_filter = 2
+
+[node name="Control" type="Control" parent="Control/VBoxContainer/Control"]
+layout_mode = 1
+anchor_right = 0.0711806
+anchor_bottom = 1.0
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/VBoxContainer/Control/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Raise" type="Button" parent="Control/VBoxContainer/Control/Control/VBoxContainer"]
+custom_minimum_size = Vector2(0, 82)
+layout_mode = 2
+tooltip_text = "Raise terrain"
+shortcut = SubResource("Shortcut_u4ibt")
+text = "1"
+
+[node name="Lower" type="Button" parent="Control/VBoxContainer/Control/Control/VBoxContainer"]
+custom_minimum_size = Vector2(0, 82)
+layout_mode = 2
+tooltip_text = "Lower terrain"
+shortcut = SubResource("Shortcut_gxr6b")
+text = "2"
+
+[node name="Smooth" type="Button" parent="Control/VBoxContainer/Control/Control/VBoxContainer"]
+custom_minimum_size = Vector2(0, 82)
+layout_mode = 2
+tooltip_text = "Smooth terrain"
+shortcut = SubResource("Shortcut_oio3n")
+text = "3"
+
+[node name="Paint" type="Button" parent="Control/VBoxContainer/Control/Control/VBoxContainer"]
+custom_minimum_size = Vector2(0, 82)
+layout_mode = 2
+tooltip_text = "Paint terrain whit texture palets"
+shortcut = SubResource("Shortcut_fqaxq")
+text = "4"
+
+[node name="EditorSections" type="TabContainer" parent="Control/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 15.22
+current_tab = 0
+
+[node name="Map" type="Panel" parent="Control/VBoxContainer/EditorSections"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer/EditorSections/Map"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+
+[node name="LineEdit" type="LineEdit" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Map Name"
+alignment = 1
+
+[node name="TextEdit" type="TextEdit" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.28
+placeholder_text = "Map Description"
+
+[node name="LineEdit2" type="LineEdit" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Preview"
+
+[node name="CheckButton" type="CheckButton" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Reveal Map"
+alignment = 1
+
+[node name="CheckButton2" type="CheckButton" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Ally View"
+alignment = 1
+
+[node name="CheckButton3" type="CheckButton" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Lock Teams"
+alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+
+[node name="CheckButton" type="CheckButton" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Capture Regions"
+
+[node name="CheckButton2" type="CheckButton" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Conquest Territories"
+
+[node name="CheckButton3" type="CheckButton" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Capture Center Map"
+
+[node name="CheckButton4" type="CheckButton" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Regicide"
+
+[node name="CheckButton5" type="CheckButton" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Trade"
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+
+[node name="CheckButton" type="CheckButton" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer4"]
+layout_mode = 2
+text = "Demo"
+
+[node name="CheckButton2" type="CheckButton" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer4"]
+layout_mode = 2
+text = "Naval"
+
+[node name="CheckButton3" type="CheckButton" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer4"]
+layout_mode = 2
+text = "New"
+
+[node name="CheckButton4" type="CheckButton" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer4"]
+layout_mode = 2
+text = "Trigger"
+
+[node name="VBoxContainer5" type="VBoxContainer" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+
+[node name="RMSMap" type="OptionButton" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer5"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer5"]
+layout_mode = 2
+text = "Change PLayers"
+
+[node name="Biome" type="OptionButton" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer5"]
+layout_mode = 2
+
+[node name="PlayerPlacement" type="OptionButton" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer5"]
+layout_mode = 2
+
+[node name="MapSize" type="OptionButton" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer5"]
+layout_mode = 2
+
+[node name="CheckBox" type="CheckBox" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer5"]
+layout_mode = 2
+text = "Nomad"
+
+[node name="RandomSeed" type="SpinBox" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer5"]
+layout_mode = 2
+
+[node name="VBoxContainer6" type="VBoxContainer" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+
+[node name="Button" type="Button" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer6"]
+layout_mode = 2
+text = "Generate Map"
+
+[node name="Button2" type="Button" parent="Control/VBoxContainer/EditorSections/Map/HBoxContainer/VBoxContainer6"]
+layout_mode = 2
+text = "Resize/Recenter Map"
+
+[node name="Player" type="Panel" parent="Control/VBoxContainer/EditorSections"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Terrain" type="Panel" parent="Control/VBoxContainer/EditorSections"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="Object" type="Panel" parent="Control/VBoxContainer/EditorSections"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="Enviroment" type="Panel" parent="Control/VBoxContainer/EditorSections"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 4
+
+[node name="CinemaAndTriggers" type="Panel" parent="Control/VBoxContainer/EditorSections"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 5
+
+[connection signal="pressed" from="Control/VBoxContainer/Control/Control/VBoxContainer/Raise" to="." method="OnRaisePressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Control/Control/VBoxContainer/Lower" to="." method="OnLowerPressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Control/Control/VBoxContainer/Smooth" to="." method="OnSmoothPressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Control/Control/VBoxContainer/Paint" to="." method="OnPaintPressed"]

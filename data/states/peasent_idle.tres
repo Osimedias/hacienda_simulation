@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="FiniteState" load_steps=2 format=3 uid="uid://dsm380wk2fsaa"]
+
+[ext_resource type="Script" uid="uid://damdbtul8v3bp" path="res://scripts/FiniteState.cs" id="1_t62sd"]
+
+[resource]
+script = ExtResource("1_t62sd")
+Name = "Idle"
+Duration = 60.0
+CanInterrupt = true
+transitionConditions = null
+Actions = null
+metadata/_custom_type_script = "uid://damdbtul8v3bp"

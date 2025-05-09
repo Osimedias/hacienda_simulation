@@ -14,24 +14,25 @@ using Godot.Collections;
 */
 
 
-namespace Trinketos.HaciendaSimulator {
+namespace Trinketos.HaciendaSimulator
+{
     [GlobalClass]
     public partial class Player : Node
     {
-        [Export] 
+        [Export]
         public StringName name = "Trinketos";
-        [Export(PropertyHint.Range,"0,900,1,hide_slider")]
+        [Export(PropertyHint.Range, "0,900,1,hide_slider")]
         public int currentPopulation = 0;
-        [Export(PropertyHint.Range,"0,99999999,1,hide_slider")]
+        [Export(PropertyHint.Range, "0,99999999,1,hide_slider")]
         public int maxCurrentPopulation = 0;
-        [Export(PropertyHint.Range,"0,99999999,1,hide_slider")]
+        [Export(PropertyHint.Range, "0,99999999,1,hide_slider")]
         public int money = 500;
-        [Export(PropertyHint.Range,"0,100,1,hide_slider")]
+        [Export(PropertyHint.Range, "0,100,1,hide_slider")]
         public int popularity = 100;
 
-        [Export(PropertyHint.Range,"0,100,1,hide_slider")]
+        [Export(PropertyHint.Range, "0,100,1,hide_slider")]
         int taxesRate = 50;
-        [Export(PropertyHint.Range,"0,100,1,hide_slider")]
+        [Export(PropertyHint.Range, "0,100,1,hide_slider")]
         int foodRations = 50;
 
         public int foodAmount = 0;
@@ -50,7 +51,7 @@ namespace Trinketos.HaciendaSimulator {
         public override void _Ready()
         {
             base._Ready();
-            if(GetTree().GetNodeCountInGroup("House") > 0)
+            if (GetTree().GetNodeCountInGroup("House") > 0)
             {
                 GetHousePopulation();
             }
@@ -63,7 +64,7 @@ namespace Trinketos.HaciendaSimulator {
         {
             base._PhysicsProcess(delta);
 
-            if(_Stockpile == null || _Grannery == null || _Stockpile == null && _Grannery == null)
+            if (_Stockpile == null || _Grannery == null || _Stockpile == null && _Grannery == null)
             {
                 FindStockBuildings();
             }
@@ -72,11 +73,11 @@ namespace Trinketos.HaciendaSimulator {
 
         public int GetPopularityFromTaxesRates()
         {
-            return 1 * taxesRate + (8*currentPopulation/maxCurrentPopulation);
+            return 1 * taxesRate + (8 * currentPopulation / maxCurrentPopulation);
         }
         public int GetPopularityFromFood()
         {
-            return 10 * foodRations + (5*currentPopulation);
+            return 10 * foodRations + (5 * currentPopulation);
         }
         public int GetGlobalPopularity()
         {
@@ -86,12 +87,13 @@ namespace Trinketos.HaciendaSimulator {
 
         public int GetHousePopulation()
         {
-            if(GetTree().GetNodeCountInGroup("House") == 0)
+            if (GetTree().GetNodeCountInGroup("House") == 0)
             {
                 return 0;
             }
-            
-            else {
+
+            else
+            {
                 int houseRooms = 0;
                 for (int i = 0; i < _Houses.Count; i++)
                 {
@@ -137,12 +139,12 @@ namespace Trinketos.HaciendaSimulator {
 
         public void FindStockBuildings()
         {
-            if(_Stockpile == null)
+            if (_Stockpile == null)
                 _Stockpile = GetTree().GetFirstNodeInGroup("stockpile") as Building;
-            if(_Grannery == null)
+            if (_Grannery == null)
                 _Grannery = GetTree().GetFirstNodeInGroup("granery") as Building;
         }
 
-        
+
     }
 }

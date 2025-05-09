@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=4 format=3 uid="uid://cd33s4mpfw2uk"]
+
+[ext_resource type="Resource" uid="uid://cktsq2toqivsx" path="res://data/resources/food/bread.tres" id="1_0h2nt"]
+[ext_resource type="Script" uid="uid://d3y4ys7h2svgb" path="res://scripts/Recipe.cs" id="1_fe6ca"]
+[ext_resource type="Resource" uid="uid://d3tb8nsbjq87s" path="res://data/resources/material/flour.tres" id="2_4nelc"]
+
+[resource]
+script = ExtResource("1_fe6ca")
+Ingredients = Dictionary[Object, int]({
+ExtResource("2_4nelc"): 1
+})
+FinalGood = ExtResource("1_0h2nt")
+AmountOfOutput = 5
+CraftTime = 1.5
+metadata/_custom_type_script = "uid://d3y4ys7h2svgb"

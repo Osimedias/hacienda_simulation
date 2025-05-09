@@ -13,15 +13,15 @@ using Godot;
 
 namespace Trinketos.HaciendaSimulator
 {
-	public partial class LoadGameMenu : Control
-	{
-		void OnLoadPressed()
-		{
-			GetTree().ChangeSceneToFile("res://scenes/world.tscn");
-		}
-		void OnBackPressed()
-		{
-			GetTree().ChangeSceneToFile("res://scenes/main_menu.tscn");
-		}
-	}
+    public partial class LoadGameMenu : Control
+    {
+        void OnLoadPressed()
+        {
+            GetTree().ChangeSceneToFile("res://scenes/world.tscn");
+        }
+        void OnBackPressed()
+        {
+            GetTree().ChangeSceneToFile("res://scenes/main_menu.tscn");
+        }
+    }
 }

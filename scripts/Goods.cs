@@ -19,13 +19,13 @@ namespace Trinketos.HaciendaSimulator
         [Export]
         public Texture2D Icon;
         [Export]
-        public StringName Name {get; set;}
+        public StringName Name { get; set; }
         [Export(PropertyHint.MultilineText)]
         public string Description;
         [Export]
-        public int Amount {get; set;}
+        public int Amount { get; set; }
         [Export]
-        public int CellGUIPosition  {get; set;}
+        public int CellGUIPosition { get; set; }
 
 
         public Goods()

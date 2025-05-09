@@ -1,0 +1,57 @@
+[gd_scene load_steps=10 format=3 uid="uid://jhfsupx4m4pv"]
+
+[ext_resource type="Script" uid="uid://b606vnmo6gm1v" path="res://scripts/Building.cs" id="1_dtgkt"]
+[ext_resource type="Material" uid="uid://cul238yp8do68" path="res://materials/building.material" id="2_d7hmf"]
+[ext_resource type="ArrayMesh" uid="uid://dek3w5eoxm6ok" path="res://models/buildings/bakery.obj" id="3_56hdu"]
+[ext_resource type="PackedScene" uid="uid://b63bbwrewrlxt" path="res://scenes/gameplay/null_worker_graphics.tscn" id="4_56hdu"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_56hdu"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d7hmf"]
+size = Vector3(4.83844, 3.17535, 4.23328)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_56hdu"]
+size = Vector3(4.83965, 3.02908, 4.24347)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kwp4a"]
+shading_mode = 0
+albedo_color = Color(0, 1, 0, 1)
+grow = true
+grow_amount = 2.56
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_v0myu"]
+
+[node name="Bakery" type="StaticBody3D" node_paths=PackedStringArray("NullWorkerGraphic", "rayDraw")]
+collision_layer = 2
+script = ExtResource("1_dtgkt")
+collisionMask = 1
+StoreGoods = Array[Object]([])
+BuildingMaterial = ExtResource("2_d7hmf")
+GhostMaterial = SubResource("StandardMaterial3D_56hdu")
+NullWorkerGraphic = NodePath("NullWorkerGraphics")
+WorkersNeeded = 1
+rayDraw = NodePath("DrawRays")
+metadata/_custom_type_script = "uid://b606vnmo6gm1v"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = ExtResource("2_d7hmf")
+mesh = ExtResource("3_56hdu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.312653, 1.60776, -6.10352e-05)
+shape = SubResource("BoxShape3D_d7hmf")
+
+[node name="Detector" type="Area3D" parent="."]
+collision_layer = 9
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Detector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.306708, 1.683, -0.000214159)
+shape = SubResource("BoxShape3D_56hdu")
+
+[node name="DrawRays" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_kwp4a")
+mesh = SubResource("ImmediateMesh_v0myu")
+
+[node name="NullWorkerGraphics" parent="." instance=ExtResource("4_56hdu")]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 5, 0)

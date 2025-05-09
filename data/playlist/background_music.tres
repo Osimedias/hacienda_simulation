@@ -1,0 +1,118 @@
+[gd_resource type="AudioStreamPlaylist" load_steps=57 format=3 uid="uid://c3mq147hwlvs"]
+
+[ext_resource type="AudioStream" uid="uid://cwkjb352b6j7r" path="res://sound/music/Alba_Longa_Burns.ogg" id="1_k5vqk"]
+[ext_resource type="AudioStream" uid="uid://cwqbgvyoxhiaq" path="res://sound/music/Albian_Nocturne.ogg" id="2_pitr4"]
+[ext_resource type="AudioStream" uid="uid://yugnq2sukewu" path="res://sound/music/Celtic_Pride.ogg" id="3_rbj2t"]
+[ext_resource type="AudioStream" uid="uid://o21ki5c5xrre" path="res://sound/music/Cisalpine_Gaul.ogg" id="4_furp7"]
+[ext_resource type="AudioStream" uid="uid://b56dcwy7uk7ep" path="res://sound/music/Cradle_of_Civilization.ogg" id="5_qbmcr"]
+[ext_resource type="AudioStream" uid="uid://cml0l7dijqygd" path="res://sound/music/Dried_Tears.ogg" id="6_7uf7b"]
+[ext_resource type="AudioStream" uid="uid://gki5ijr0xv0t" path="res://sound/music/Eastern_Dreams.ogg" id="7_uscxg"]
+[ext_resource type="AudioStream" uid="uid://brvd0ljl6qhvw" path="res://sound/music/Elysian_Fields.ogg" id="8_hhpne"]
+[ext_resource type="AudioStream" uid="uid://b7hmnctsjtvrq" path="res://sound/music/Epitaph.ogg" id="9_b5ko7"]
+[ext_resource type="AudioStream" uid="uid://cstya3qbavvxa" path="res://sound/music/Expedition.ogg" id="10_p4p2y"]
+[ext_resource type="AudioStream" uid="uid://cb3mwnlmiputr" path="res://sound/music/Along_the_Nile.ogg" id="11_kw4e0"]
+[ext_resource type="AudioStream" uid="uid://c21n2mhatcd8e" path="res://sound/music/Forging_a_City-State.ogg" id="11_lpv3a"]
+[ext_resource type="AudioStream" uid="uid://xqicrvxsm22u" path="res://sound/music/Ammon-Ra.ogg" id="12_afi3o"]
+[ext_resource type="AudioStream" uid="uid://ddsefv2001t8f" path="res://sound/music/From_Every_Corner.ogg" id="12_jsg0p"]
+[ext_resource type="AudioStream" uid="uid://ckiid6vqo7v1k" path="res://sound/music/An_old_Warhorse_goes_to_Pasture.ogg" id="13_5sh2j"]
+[ext_resource type="AudioStream" uid="uid://dmhxkd8qokmkl" path="res://sound/music/Harsh_Lands_Rugged_People.ogg" id="14_40yq5"]
+[ext_resource type="AudioStream" uid="uid://bknoinxjyyb44" path="res://sound/music/As_Seasons_Change.ogg" id="14_xlmny"]
+[ext_resource type="AudioStream" uid="uid://giqb1jrb5k7y" path="res://sound/music/Bandit_Country.ogg" id="15_5u7ym"]
+[ext_resource type="AudioStream" uid="uid://5wmx3mjh6gxj" path="res://sound/music/Harvest_Festival.ogg" id="15_304nr"]
+[ext_resource type="AudioStream" uid="uid://bi05yjnbv43lf" path="res://sound/music/Harvest_Moon.ogg" id="16_dvr75"]
+[ext_resource type="AudioStream" uid="uid://dlb463c2txucw" path="res://sound/music/Beyond_The_Indus.ogg" id="16_twqea"]
+[ext_resource type="AudioStream" uid="uid://c1kx8ysn3j5au" path="res://sound/music/Helen_Leaves_Sparta.ogg" id="17_6cesu"]
+[ext_resource type="AudioStream" uid="uid://1j021wknjunr" path="res://sound/music/Calm_Before_the_Storm.ogg" id="17_rltrl"]
+[ext_resource type="AudioStream" uid="uid://1p2gn3xhbs43" path="res://sound/music/Highland_Mist.ogg" id="18_tw7js"]
+[ext_resource type="AudioStream" uid="uid://cmtiyttqpd4v" path="res://sound/music/Celtica.ogg" id="18_ur1vf"]
+[ext_resource type="AudioStream" uid="uid://23nlikyfljdl" path="res://sound/music/Hill_of_Sorrows.ogg" id="19_4wsfd"]
+[ext_resource type="AudioStream" uid="uid://bgedaqwvoxi4o" path="res://sound/music/In_the_Shadow_of_Olympus.ogg" id="20_ykods"]
+[ext_resource type="AudioStream" uid="uid://cx418dcdge1i6" path="res://sound/music/Juno_Protect_You.ogg" id="21_nieka"]
+[ext_resource type="AudioStream" uid="uid://cv0uehojdkovw" path="res://sound/music/Karmic_Confluence.ogg" id="22_d6o1p"]
+[ext_resource type="AudioStream" uid="uid://bel3s04ia1fym" path="res://sound/music/Land_Between_Rivers.ogg" id="23_1ub7y"]
+[ext_resource type="AudioStream" uid="uid://bpjag0uv87gun" path="res://sound/music/Land_between_the_two_Seas.ogg" id="25_24xi5"]
+[ext_resource type="AudioStream" uid="uid://c4kh7gt5rx6s7" path="res://sound/music/Mediterranean_Waves.ogg" id="26_nl7ya"]
+[ext_resource type="AudioStream" uid="uid://cnjcyrtg4k8dt" path="res://sound/music/Midwinter.ogg" id="27_v7avj"]
+[ext_resource type="AudioStream" uid="uid://ra1aa3r1pfnn" path="res://sound/music/Mirage.ogg" id="28_l0gbf"]
+[ext_resource type="AudioStream" uid="uid://rgj63ot8a8cs" path="res://sound/music/Mountain_Idyll.ogg" id="29_nnosx"]
+[ext_resource type="AudioStream" uid="uid://bkvwj4ug6ltya" path="res://sound/music/Northern_Frontier.ogg" id="30_vcqs4"]
+[ext_resource type="AudioStream" uid="uid://b6dj4kg5xpyxw" path="res://sound/music/Only_300_Stood.ogg" id="31_hsdcc"]
+[ext_resource type="AudioStream" uid="uid://d3q2lqkgk7dh7" path="res://sound/music/Peaks_of_Atlas.ogg" id="32_14a3q"]
+[ext_resource type="AudioStream" uid="uid://f2n7knjoqf2f" path="res://sound/music/Point_of_No_Return.ogg" id="33_mek5t"]
+[ext_resource type="AudioStream" uid="uid://crnf0oitlr1mv" path="res://sound/music/Red_Dawn.ogg" id="34_4rg5u"]
+[ext_resource type="AudioStream" uid="uid://6crt5l35mtyh" path="res://sound/music/Rise_of_Macedon.ogg" id="36_ey25t"]
+[ext_resource type="AudioStream" uid="uid://b3p4qeoe1opyx" path="res://sound/music/Roman_Ingenuity.ogg" id="37_sor8y"]
+[ext_resource type="AudioStream" uid="uid://dyockprscxp3v" path="res://sound/music/Sands_of_Time.ogg" id="38_pfldx"]
+[ext_resource type="AudioStream" uid="uid://f4c770uxg7op" path="res://sound/music/Solstice_Festival.ogg" id="39_x6jik"]
+[ext_resource type="AudioStream" uid="uid://bvweftfaxg6n7" path="res://sound/music/Sunrise.ogg" id="40_oga11"]
+[ext_resource type="AudioStream" uid="uid://ewwd18oov055" path="res://sound/music/Tale_of_Warriors.ogg" id="41_1ub7y"]
+[ext_resource type="AudioStream" uid="uid://duwy6v2lrqsby" path="res://sound/music/Tavern_in_the_Mist.ogg" id="42_24xi5"]
+[ext_resource type="AudioStream" uid="uid://cgqjampuvqmxh" path="res://sound/music/The_Fledgling_Kingdom.ogg" id="43_nl7ya"]
+[ext_resource type="AudioStream" uid="uid://mg70ytwjf2p8" path="res://sound/music/The_Governor.ogg" id="44_v7avj"]
+[ext_resource type="AudioStream" uid="uid://dj6vxlfdabarr" path="res://sound/music/The_Hellespont.ogg" id="45_l0gbf"]
+[ext_resource type="AudioStream" uid="uid://b0fqbqsdtbl35" path="res://sound/music/The_Pillars_of_Hercules.ogg" id="47_nnosx"]
+[ext_resource type="AudioStream" uid="uid://bnwa6yqhwjhgn" path="res://sound/music/The_Road_Ahead.ogg" id="48_vcqs4"]
+[ext_resource type="AudioStream" uid="uid://buusayc28pyey" path="res://sound/music/Valley_of_the_Nile.ogg" id="49_hsdcc"]
+[ext_resource type="AudioStream" uid="uid://dxr6b4i0hnxy0" path="res://sound/music/Upstart_King.ogg" id="50_14a3q"]
+[ext_resource type="AudioStream" uid="uid://cxcjgr1xjbuvd" path="res://sound/music/Water's_Edge.ogg" id="51_mek5t"]
+[ext_resource type="AudioStream" uid="uid://b4m37n7ct43od" path="res://sound/music/Whistler.ogg" id="52_4rg5u"]
+
+[resource]
+shuffle = true
+stream_count = 56
+stream_0 = ExtResource("1_k5vqk")
+stream_1 = ExtResource("2_pitr4")
+stream_2 = ExtResource("11_kw4e0")
+stream_3 = ExtResource("12_afi3o")
+stream_4 = ExtResource("13_5sh2j")
+stream_5 = ExtResource("14_xlmny")
+stream_6 = ExtResource("15_5u7ym")
+stream_7 = ExtResource("16_twqea")
+stream_8 = ExtResource("17_rltrl")
+stream_9 = ExtResource("18_ur1vf")
+stream_10 = ExtResource("3_rbj2t")
+stream_11 = ExtResource("4_furp7")
+stream_12 = ExtResource("5_qbmcr")
+stream_13 = ExtResource("6_7uf7b")
+stream_14 = ExtResource("7_uscxg")
+stream_15 = ExtResource("8_hhpne")
+stream_16 = ExtResource("9_b5ko7")
+stream_17 = ExtResource("10_p4p2y")
+stream_18 = ExtResource("11_lpv3a")
+stream_19 = ExtResource("12_jsg0p")
+stream_20 = ExtResource("14_40yq5")
+stream_21 = ExtResource("15_304nr")
+stream_22 = ExtResource("16_dvr75")
+stream_23 = ExtResource("17_6cesu")
+stream_24 = ExtResource("18_tw7js")
+stream_25 = ExtResource("19_4wsfd")
+stream_26 = ExtResource("20_ykods")
+stream_27 = ExtResource("21_nieka")
+stream_28 = ExtResource("22_d6o1p")
+stream_29 = ExtResource("23_1ub7y")
+stream_30 = ExtResource("25_24xi5")
+stream_31 = ExtResource("26_nl7ya")
+stream_32 = ExtResource("27_v7avj")
+stream_33 = ExtResource("28_l0gbf")
+stream_34 = ExtResource("29_nnosx")
+stream_35 = ExtResource("30_vcqs4")
+stream_36 = ExtResource("31_hsdcc")
+stream_37 = ExtResource("32_14a3q")
+stream_38 = ExtResource("33_mek5t")
+stream_39 = ExtResource("34_4rg5u")
+stream_40 = ExtResource("36_ey25t")
+stream_41 = ExtResource("37_sor8y")
+stream_42 = ExtResource("38_pfldx")
+stream_43 = ExtResource("39_x6jik")
+stream_44 = ExtResource("40_oga11")
+stream_45 = ExtResource("41_1ub7y")
+stream_46 = ExtResource("42_24xi5")
+stream_47 = ExtResource("43_nl7ya")
+stream_48 = ExtResource("44_v7avj")
+stream_49 = ExtResource("45_l0gbf")
+stream_50 = ExtResource("47_nnosx")
+stream_51 = ExtResource("48_vcqs4")
+stream_52 = ExtResource("49_hsdcc")
+stream_53 = ExtResource("50_14a3q")
+stream_54 = ExtResource("51_mek5t")
+stream_55 = ExtResource("52_4rg5u")

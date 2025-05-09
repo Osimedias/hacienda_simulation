@@ -37,7 +37,7 @@ grow_amount = 2.56
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_q3lbb"]
 
-[node name="LandOwnerHouseLarge" type="StaticBody3D" node_paths=PackedStringArray("rayDraw")]
+[node name="LandOwnerHouseLarge" type="StaticBody3D" node_paths=PackedStringArray("rayDraw") groups=["Main"]]
 collision_layer = 2
 script = ExtResource("1_1jiha")
 collisionMask = 1

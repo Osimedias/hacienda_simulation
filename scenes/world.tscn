@@ -1,19 +1,17 @@
-[gd_scene load_steps=33 format=3 uid="uid://blhwt2tr7ral"]
+[gd_scene load_steps=32 format=3 uid="uid://blhwt2tr7ral"]
 
 [ext_resource type="Script" uid="uid://brlfaddcjvb32" path="res://scripts/Player.cs" id="1_4wyf3"]
 [ext_resource type="Script" uid="uid://dimumir1jqakd" path="res://scripts/CameraController.cs" id="1_nnsk1"]
 [ext_resource type="Script" uid="uid://c6btror3l8l0e" path="res://scripts/Terrain.cs" id="1_rwgxs"]
 [ext_resource type="Script" uid="uid://ck5x4dfje5wk" path="res://scripts/World.cs" id="1_xo05s"]
-[ext_resource type="Script" uid="uid://03oubriu57ck" path="res://scripts/AStarPathfinder.cs" id="2_7iits"]
 [ext_resource type="Script" uid="uid://brtme8vtettk0" path="res://scripts/VoxelGiGenerator.cs" id="2_lakw3"]
-[ext_resource type="Texture2D" uid="uid://bcaea6batjm5h" path="res://data/maps/island_large_splatmap.png" id="3_4mrxx"]
 [ext_resource type="Material" uid="uid://c3t28m6aco153" path="res://materials/terrain.material" id="3_qfnet"]
-[ext_resource type="Texture2D" uid="uid://bob8outfwccum" path="res://data/maps/island_large.png" id="4_7r4gi"]
+[ext_resource type="AudioStream" uid="uid://c3mq147hwlvs" path="res://data/playlist/background_music.tres" id="4_ctatt"]
 [ext_resource type="PackedScene" uid="uid://cefaejtkbn518" path="res://scenes/gui/building_button.tscn" id="4_k0juu"]
 [ext_resource type="PackedScene" uid="uid://bfd0apaxvg1n" path="res://scenes/gui/resource_label.tscn" id="5_71j4m"]
+[ext_resource type="AudioStream" uid="uid://dnq28meb7ja74" path="res://sound/gui/click_button.wav" id="5_xgqkh"]
 [ext_resource type="Shader" uid="uid://281sk0jeg8lx" path="res://shaders/water.gdshader" id="6_7r4gi"]
 [ext_resource type="Script" uid="uid://bccq4foyt3se7" path="res://scripts/Water.cs" id="6_e3hyu"]
-[ext_resource type="Texture2D" uid="uid://cah77esy6s3xe" path="res://data/maps/island_large_water_mask.png" id="7_q5onr"]
 [ext_resource type="Texture2D" uid="uid://ceu3x4061otdh" path="res://textures/water/water_color.tga" id="7_w7kh3"]
 [ext_resource type="Theme" uid="uid://4r1xofhpny11" path="res://data/themes/main_menu.theme" id="11_jhx03"]
 [ext_resource type="Script" uid="uid://ccxpbiqcviqjk" path="res://scripts/SessionGui.cs" id="13_dss4m"]
@@ -56,7 +54,7 @@ adjustment_saturation = 1.26
 seed = 50
 frequency = 0.004
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_q5onr"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_2lf6f"]
 seamless = true
 seamless_blend_skirt = 1.0
 as_normal_map = true
@@ -69,7 +67,7 @@ frequency = 0.0057
 offset = Vector3(173.91, 0, 173.91)
 fractal_type = 2
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_o8fc1"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7iits"]
 seamless = true
 seamless_blend_skirt = 1.0
 as_normal_map = true
@@ -81,8 +79,12 @@ render_priority = 0
 shader = ExtResource("6_7r4gi")
 shader_parameter/water_height = 60.0
 shader_parameter/water_color = ExtResource("7_w7kh3")
-shader_parameter/water_normal_a = SubResource("NoiseTexture2D_q5onr")
-shader_parameter/water_normal_b = SubResource("NoiseTexture2D_o8fc1")
+shader_parameter/water_normal_a = SubResource("NoiseTexture2D_2lf6f")
+shader_parameter/water_normal_b = SubResource("NoiseTexture2D_7iits")
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_oo54l"]
+geometry_parsed_geometry_type = 1
+geometry_collision_mask = 4278190083
 
 [sub_resource type="Environment" id="Environment_7t5mc"]
 background_mode = 1
@@ -94,18 +96,15 @@ reflected_light_source = 1
 script = ExtResource("1_xo05s")
 sessionGUI = NodePath("SessionGUI")
 
-[node name="AStar" type="Node3D" parent="."]
-script = ExtResource("2_7iits")
-
-[node name="Bounds" type="MeshInstance3D" parent="AStar"]
-skeleton = NodePath("../..")
-
 [node name="Music" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
+stream = ExtResource("4_ctatt")
+autoplay = true
 bus = &"Music"
 
 [node name="InterfaceSounds" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
+stream = ExtResource("5_xgqkh")
 bus = &"Interface"
 
 [node name="VoxelGI" type="VoxelGI" parent="." node_paths=PackedStringArray("terrain")]
@@ -120,7 +119,7 @@ terrain = NodePath("../Terrain/TerrainMesh")
 environment = SubResource("Environment_pm21f")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.767165, -0.459081, 0.447998, 0, 0.698415, 0.715693, -0.64145, 0.549055, -0.5358, 0, 0, 0)
+transform = Transform3D(-0.146151, -0.708008, 0.690916, -3.03565e-08, 0.698415, 0.715693, -0.989262, 0.1046, -0.102075, 0, 0, 0)
 shadow_enabled = true
 directional_shadow_max_distance = 500.0
 
@@ -131,8 +130,6 @@ script = ExtResource("1_4wyf3")
 script = ExtResource("1_rwgxs")
 terrainMesh = NodePath("TerrainMesh")
 terrainShape = NodePath("TerrainShape")
-splatMapTexture = ExtResource("3_4mrxx")
-heightMapTexture = ExtResource("4_7r4gi")
 
 [node name="TerrainMesh" type="MeshInstance3D" parent="Terrain"]
 material_override = ExtResource("3_qfnet")
@@ -145,13 +142,15 @@ collision_mask = 16
 script = ExtResource("6_e3hyu")
 waterMesh = NodePath("WaterMesh")
 waterShape = NodePath("WaterShape")
-waterMask = ExtResource("7_q5onr")
 
 [node name="WaterMesh" type="MeshInstance3D" parent="Water"]
 layers = 2
 material_override = SubResource("ShaderMaterial_w7kh3")
 
 [node name="WaterShape" type="CollisionShape3D" parent="Water"]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_oo54l")
 
 [node name="CameraController" type="Node3D" parent="." node_paths=PackedStringArray("meshBounds")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.236, 0, -11.9859)

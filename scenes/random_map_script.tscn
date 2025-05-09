@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c7xkuai43prin"]
+
+[ext_resource type="Script" uid="uid://c8qusg7nm0b5" path="res://scripts/RandomMapGenerator.cs" id="1_i5iiq"]
+
+[node name="RandomMapScript" type="Node"]
+script = ExtResource("1_i5iiq")

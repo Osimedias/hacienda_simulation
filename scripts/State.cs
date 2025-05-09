@@ -21,12 +21,12 @@ namespace Trinketos.HaciendaSimulator
 
         // Note use a timer for manager TransitionTo in StateMachine
 
-        public virtual void Enter(){}
-        public virtual void Exit(){}
+        public virtual void Enter() { }
+        public virtual void Exit() { }
 
-        public virtual void StateReady(){}
-        public virtual void Update(double delta){}
-        public virtual void PhysicsUpdate(double delta){}
-        public virtual void HandleInput(InputEvent @event){}
+        public virtual void StateReady() { }
+        public virtual void Update(double delta) { }
+        public virtual void PhysicsUpdate(double delta) { }
+        public virtual void HandleInput(InputEvent @event) { }
     }
 }

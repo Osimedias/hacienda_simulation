@@ -1,6 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://dmt31om3dfus1"]
+[gd_scene load_steps=9 format=3 uid="uid://dmt31om3dfus1"]
 
 [ext_resource type="ArrayMesh" uid="uid://cfta2uelk55nk" path="res://models/buildings/grannery.obj" id="1_3od8u"]
+[ext_resource type="Script" uid="uid://b606vnmo6gm1v" path="res://scripts/Building.cs" id="1_pm047"]
+[ext_resource type="Material" uid="uid://cul238yp8do68" path="res://materials/building.material" id="2_pnbuv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jhiin"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pm047"]
 size = Vector3(2.427, 2.27228, 2.48291)
@@ -8,8 +12,21 @@ size = Vector3(2.427, 2.27228, 2.48291)
 [sub_resource type="BoxShape3D" id="BoxShape3D_3od8u"]
 size = Vector3(2.46326, 2.14581, 2.52612)
 
-[node name="Grannery" type="StaticBody3D" groups=["grannery"]]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sj3dv"]
+shading_mode = 0
+albedo_color = Color(0, 1, 0, 1)
+grow = true
+grow_amount = 2.56
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_kaggf"]
+
+[node name="Grannery" type="StaticBody3D" node_paths=PackedStringArray("rayDraw") groups=["grannery"]]
 collision_layer = 2
+script = ExtResource("1_pm047")
+collisionMask = 1
+BuildingMaterial = ExtResource("2_pnbuv")
+GhostMaterial = SubResource("StandardMaterial3D_jhiin")
+rayDraw = NodePath("DrawRays")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = ExtResource("1_3od8u")
@@ -25,3 +42,7 @@ monitorable = false
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Detector"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00848389, 1.24136, -0.0057373)
 shape = SubResource("BoxShape3D_3od8u")
+
+[node name="DrawRays" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_sj3dv")
+mesh = SubResource("ImmediateMesh_kaggf")

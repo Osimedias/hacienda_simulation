@@ -1,0 +1,16 @@
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.cs]  # Configuración específica para archivos C#
+dotnet_diagnostic.CA1801.severity = warning  # Detecta parámetros no usados
+dotnet_diagnostic.CS0168.severity = suggestion  # Variables declaradas pero no usadas
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_prefer_braces = true
+csharp_indent_case_contents = true

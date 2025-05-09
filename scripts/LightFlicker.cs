@@ -13,27 +13,27 @@ using Godot;
 
 namespace Trinketos.HaciendaSimulator
 {
-	public partial class LightFlicker : OmniLight3D
-	{
-		private FastNoiseLite _noise = new FastNoiseLite();
-		private float _energy;
+    public partial class LightFlicker : OmniLight3D
+    {
+        private FastNoiseLite _noise = new FastNoiseLite();
+        private float _energy;
 
-		private const float _MAX_ENERGY = 1000000;
+        private const float _MAX_ENERGY = 1000000;
 
-		// Called when the node enters the scene tree for the first time.
-		public override void _Ready()
-		{
-			GD.Randomize();
-			_noise.Frequency = GD.Randf();
-		}
+        // Called when the node enters the scene tree for the first time.
+        public override void _Ready()
+        {
+            GD.Randomize();
+            _noise.Frequency = GD.Randf();
+        }
 
-		// Called every frame. 'delta' is the elapsed time since the previous frame.
-		public override void _Process(double delta)
-		{
-			_energy += 0.5f;
-			if(_energy > _MAX_ENERGY) _energy = 0f;
+        // Called every frame. 'delta' is the elapsed time since the previous frame.
+        public override void _Process(double delta)
+        {
+            _energy += 0.5f;
+            if (_energy > _MAX_ENERGY) _energy = 0f;
 
-			LightEnergy = _noise.GetNoise1D((_energy + 1)/ 4f) + 0.5f;
-		}
-	}
+            LightEnergy = _noise.GetNoise1D((_energy + 1) / 4f) + 0.5f;
+        }
+    }
 }

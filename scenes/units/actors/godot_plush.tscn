@@ -1,0 +1,70 @@
+[gd_scene load_steps=10 format=3 uid="uid://b1sgpt77ca2jr"]
+
+[ext_resource type="PackedScene" uid="uid://cbkhjmoqikn10" path="res://models/units/godot_plush.glb" id="1_2ar8s"]
+[ext_resource type="Script" uid="uid://iccyl7h7hdri" path="res://scripts/Actor.cs" id="2_be0pd"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_2ar8s"]
+size = Vector3(0.095, 0.095, 0.89)
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_be0pd"]
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_t8y6n"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jc2st"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_t6wnp"]
+animation = &"Walk"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4chyw"]
+animation = &"WoodCut"
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_4xry8"]
+graph_offset = Vector2(-396.677, -2.25365)
+nodes/Blend2/node = SubResource("AnimationNodeBlend2_t8y6n")
+nodes/Blend2/position = Vector2(0, 40)
+"nodes/Blend2 2/node" = SubResource("AnimationNodeBlend2_be0pd")
+"nodes/Blend2 2/position" = Vector2(220, 140)
+nodes/Idle/node = SubResource("AnimationNodeAnimation_jc2st")
+nodes/Idle/position = Vector2(-240, 20)
+nodes/Walk/node = SubResource("AnimationNodeAnimation_t6wnp")
+nodes/Walk/position = Vector2(-240, 200)
+nodes/WoodCut/node = SubResource("AnimationNodeAnimation_4chyw")
+nodes/WoodCut/position = Vector2(-60, 300)
+nodes/output/position = Vector2(460, 140)
+node_connections = [&"Blend2", 0, &"Idle", &"Blend2", 1, &"Walk", &"Blend2 2", 0, &"Blend2", &"Blend2 2", 1, &"WoodCut", &"output", 0, &"Blend2 2"]
+
+[node name="godot_plush" node_paths=PackedStringArray("BonesAttachments", "animationTree") instance=ExtResource("1_2ar8s")]
+script = ExtResource("2_be0pd")
+BonesAttachments = [NodePath("Armature/Skeleton3D/toolAtachment")]
+animationTree = NodePath("AnimationTree")
+
+[node name="Skeleton3D" parent="Armature" index="0"]
+bones/2/rotation = Quaternion(-2.855e-06, -1.65734e-06, 0.910126, -0.414331)
+bones/3/rotation = Quaternion(1.48817e-07, 3.44342e-08, 0.020354, 0.999793)
+bones/4/rotation = Quaternion(0.844149, -0.00976904, -0.533562, 0.0512629)
+bones/5/rotation = Quaternion(-2.55744e-07, 4.75859e-07, 0.429629, 0.903006)
+bones/6/rotation = Quaternion(-2.8539e-07, 7.13401e-08, -0.446259, 0.894904)
+bones/8/rotation = Quaternion(2.855e-06, -1.65734e-06, 0.910127, 0.414331)
+bones/11/rotation = Quaternion(-2.58667e-07, -4.755e-07, -0.429629, 0.903006)
+bones/12/rotation = Quaternion(-2.8539e-07, -7.13402e-08, 0.446259, 0.894904)
+
+[node name="toolAtachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="0"]
+transform = Transform3D(-0.625421, 0.780287, -4.09602e-06, -0.780288, -0.625421, -5.24463e-06, -6.65405e-06, -8.40318e-08, 1, 0.760747, 0.679209, -1.1028e-07)
+bone_name = "Hand.L"
+bone_idx = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Armature/Skeleton3D/toolAtachment" index="0"]
+transform = Transform3D(1, 5.59153e-13, -4.54747e-13, 5.59157e-13, 1, -1.98952e-13, -4.54747e-13, -2.84217e-13, 1, -1.01328e-06, 0, 0.149709)
+visible = false
+mesh = SubResource("BoxMesh_2ar8s")
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="2"]
+root_motion_track = NodePath("Armature/Skeleton3D:Bone")
+root_motion_local = false
+tree_root = SubResource("AnimationNodeBlendTree_4xry8")
+anim_player = NodePath("../AnimationPlayer")
+parameters/Blend2/blend_amount = 0.0
+"parameters/Blend2 2/blend_amount" = 0.0
+
+[node name="RootMotionView" type="RootMotionView" parent="." index="4"]

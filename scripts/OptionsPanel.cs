@@ -12,7 +12,8 @@ using Godot;
 */
 
 
-namespace Trinketos.HaciendaSimulator {
+namespace Trinketos.HaciendaSimulator
+{
     public partial class OptionsPanel : Control
     {
         [Export]
@@ -20,21 +21,21 @@ namespace Trinketos.HaciendaSimulator {
 
         [Export]
         OptionButton ScreenSize;
-         [Export]
+        [Export]
         OptionButton ShaderQuality;
-         [Export]
+        [Export]
         OptionButton ParticleQuality;
-         [Export]
+        [Export]
         OptionButton ShadowQuality;
-         [Export]
+        [Export]
         OptionButton SAOQuality;
-         [Export]
+        [Export]
         OptionButton ModelQuality;
-         [Export]
+        [Export]
         OptionButton ModelTextureQuality;
-         [Export]
+        [Export]
         OptionButton TerrainTextureQuality;
-         [Export]
+        [Export]
         CheckButton TerrainDetails;
         [Export]
         Slider MasterVolume;
@@ -48,19 +49,19 @@ namespace Trinketos.HaciendaSimulator {
         void OnSavePressed()
         {
             ConfigFile configFile = new ConfigFile();
-            configFile.SetValue("Screen","Size",ScreenSize.Selected);
-            configFile.SetValue("Effects","Shader",ShaderQuality.Selected);
-            configFile.SetValue("Effects","Particles",ParticleQuality.Selected);
-            configFile.SetValue("Effects","Shadows",ShadowQuality.Selected);
-            configFile.SetValue("Effects","ScreenSpaceAmbientOcclusion",SAOQuality.Selected);
-            configFile.SetValue("Models","Model",ModelQuality.Selected);
-            configFile.SetValue("Models","Texture",ModelTextureQuality.Selected);
-            configFile.SetValue("Terrain","Texture",TerrainTextureQuality.Selected);
-            configFile.SetValue("Terrain","DetailObjects",TerrainDetails.ButtonPressed);
-            configFile.SetValue("Sound","Master",MasterVolume.Value);
-            configFile.SetValue("Sound","Music",MusicVolume.Value);
-            configFile.SetValue("Sound","Effects",EffectVolume.Value);
-            configFile.SetValue("Sound","Interface",InterfaceVolume.Value);
+            configFile.SetValue("Screen", "Size", ScreenSize.Selected);
+            configFile.SetValue("Effects", "Shader", ShaderQuality.Selected);
+            configFile.SetValue("Effects", "Particles", ParticleQuality.Selected);
+            configFile.SetValue("Effects", "Shadows", ShadowQuality.Selected);
+            configFile.SetValue("Effects", "ScreenSpaceAmbientOcclusion", SAOQuality.Selected);
+            configFile.SetValue("Models", "Model", ModelQuality.Selected);
+            configFile.SetValue("Models", "Texture", ModelTextureQuality.Selected);
+            configFile.SetValue("Terrain", "Texture", TerrainTextureQuality.Selected);
+            configFile.SetValue("Terrain", "DetailObjects", TerrainDetails.ButtonPressed);
+            configFile.SetValue("Sound", "Master", MasterVolume.Value);
+            configFile.SetValue("Sound", "Music", MusicVolume.Value);
+            configFile.SetValue("Sound", "Effects", EffectVolume.Value);
+            configFile.SetValue("Sound", "Interface", InterfaceVolume.Value);
 
             configFile.Save(SavePath);
         }

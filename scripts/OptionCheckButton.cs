@@ -12,9 +12,10 @@ using System;
     Not used now.
 */
 
-namespace Trinketos.HaciendaSimulator{
+namespace Trinketos.HaciendaSimulator
+{
     public partial class OptionCheckButton : CheckButton
     {
-        
+
     }
 }

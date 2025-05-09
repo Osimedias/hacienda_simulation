@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://celsp71no1pwk"]
+
+[ext_resource type="Script" uid="uid://dheukikfjo3i4" path="res://scripts/LuaReader.cs" id="1_xh33g"]
+
+[node name="Lua" type="Node"]
+script = ExtResource("1_xh33g")

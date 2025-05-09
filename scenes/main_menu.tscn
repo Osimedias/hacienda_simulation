@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bfn4aylyevdo6"]
+[gd_scene load_steps=6 format=3 uid="uid://bfn4aylyevdo6"]
 
 [ext_resource type="Theme" uid="uid://4r1xofhpny11" path="res://data/themes/main_menu.theme" id="1_ekxnf"]
 [ext_resource type="Script" uid="uid://dimgvhr7p0h0v" path="res://scripts/MainMenu.cs" id="1_l6cm7"]
 [ext_resource type="PackedScene" uid="uid://cpp8be2ic57cw" path="res://scenes/gui/background_wood.tscn" id="3_bqqt6"]
+[ext_resource type="AudioStream" uid="uid://c01cq7vcp4767" path="res://sound/music/Honor_Bound.ogg" id="4_wu84c"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_vue75"]
 
@@ -18,6 +19,7 @@ script = ExtResource("1_l6cm7")
 newGameScene = "uid://bp8s5bsy23fh7"
 loadGameScene = "uid://cxkk5t8p0pwgw"
 optionScene = "uid://cjajv884jnumk"
+mapEditorScene = "uid://bytbj4pjllrke"
 
 [node name="BackgroundWood" parent="." instance=ExtResource("3_bqqt6")]
 layout_mode = 1
@@ -69,6 +71,11 @@ layout_mode = 2
 tooltip_text = "Settings and tools"
 text = "Options"
 
+[node name="MapEditor" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Warning: This is experimental"
+text = "Senario Editor"
+
 [node name="Exit" type="Button" parent="Panel/VBoxContainer"]
 layout_mode = 2
 tooltip_text = "Back to Desktop"
@@ -79,7 +86,13 @@ layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.65
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_wu84c")
+autoplay = true
+bus = &"Music"
+
 [connection signal="pressed" from="Panel/VBoxContainer/NewGame" to="." method="OnNewGamePressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/LoadGame" to="." method="OnLoadGamePressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Options" to="." method="OnOptionsPressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/MapEditor" to="." method="OnMapEditorPressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Exit" to="." method="OnExitPressed"]

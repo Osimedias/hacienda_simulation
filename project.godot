@@ -22,6 +22,10 @@ config/icon="res://icon.svg"
 
 MapData="*res://scenes/MapData.tscn"
 SceneTransition="*res://scenes/scene_transition.tscn"
+Lua="*res://scenes/lua.tscn"
+RandomMapScript="*res://scenes/random_map_script.tscn"
+ModManager="*res://scenes/mod_manager.tscn"
+AStarPathfinder="*res://scripts/AStarPathfinder.cs"
 
 [display]
 

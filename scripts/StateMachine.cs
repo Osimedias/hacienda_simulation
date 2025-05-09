@@ -16,11 +16,11 @@ namespace Trinketos.HaciendaSimulator
     [GlobalClass]
     public partial class StateMachine : Node
     {
-        
+
         [Export]
         public State initialState;
 
-        private Dictionary<string,State> _states;
+        private Dictionary<string, State> _states;
         private State _currentState;
 
         public override void _Ready()
@@ -29,7 +29,7 @@ namespace Trinketos.HaciendaSimulator
             _states = new Dictionary<string, State>();
             foreach (Node state in GetChildren())
             {
-                if(state is State s)
+                if (state is State s)
                 {
                     _states[state.Name] = s;
                     s.fsm = this;
@@ -60,7 +60,7 @@ namespace Trinketos.HaciendaSimulator
 
         public void TransitionTo(string key)
         {
-            if(!_states.ContainsKey(key) || _currentState == _states[key])
+            if (!_states.ContainsKey(key) || _currentState == _states[key])
             {
                 return;
             }

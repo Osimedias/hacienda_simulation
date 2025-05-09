@@ -19,10 +19,12 @@ namespace Trinketos.HaciendaSimulator
     public partial class Recipe : Resource
     {
         [Export]
-        Array<Goods> Ingredients;
+        public Dictionary<Goods, int> Ingredients; // Good, amount of this resource
         [Export]
-        Goods FinalGood;
+        public Goods FinalGood;
         [Export]
-        float CraftTime = 1.0f;
+        public int AmountOfOutput;
+        [Export]
+        public float CraftTime = 1.0f;
     }
 }

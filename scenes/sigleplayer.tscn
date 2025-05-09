@@ -1,13 +1,23 @@
-[gd_scene load_steps=5 format=3 uid="uid://bp8s5bsy23fh7"]
+[gd_scene load_steps=10 format=3 uid="uid://bp8s5bsy23fh7"]
 
 [ext_resource type="Theme" uid="uid://4r1xofhpny11" path="res://data/themes/main_menu.theme" id="1_e511x"]
 [ext_resource type="Script" uid="uid://c44g4scoygegg" path="res://scripts/Sigleplayer.cs" id="2_8fee2"]
 [ext_resource type="PackedScene" uid="uid://cpp8be2ic57cw" path="res://scenes/gui/background_wood.tscn" id="3_s2wtc"]
+[ext_resource type="Shader" uid="uid://cm6lm0hel27dj" path="res://shaders/map_viewer.gdshader" id="4_agigv"]
+[ext_resource type="Texture2D" uid="uid://wcjqwnwetk8c" path="res://textures/terrian/cliff.tga" id="5_g6j21"]
+[ext_resource type="Texture2D" uid="uid://b371q6ia3p456" path="res://textures/terrian/grass.tga" id="6_ovwor"]
+[ext_resource type="Texture2D" uid="uid://rqvsm0ag1ftl" path="res://textures/terrian/sand.tga" id="7_40itu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2u2x5"]
+shader = ExtResource("4_agigv")
+shader_parameter/grass_texture = ExtResource("6_ovwor")
+shader_parameter/sand_texture = ExtResource("7_40itu")
+shader_parameter/cliff_texture = ExtResource("5_g6j21")
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_01q17"]
 size = Vector2(120, 120)
 
-[node name="Sigleplayer" type="Control" node_paths=PackedStringArray("MapList", "Description")]
+[node name="Sigleplayer" type="Control" node_paths=PackedStringArray("MapList", "MapView", "Description")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,6 +27,7 @@ grow_vertical = 2
 theme = ExtResource("1_e511x")
 script = ExtResource("2_8fee2")
 MapList = NodePath("CenterContainer/Panel/HBoxContainer/VBoxContainer/Tree")
+MapView = NodePath("CenterContainer/Panel/HBoxContainer/VBoxContainer2/MapMiniMap")
 Description = NodePath("CenterContainer/Panel/HBoxContainer/VBoxContainer2/MapDescription")
 metadata/_edit_use_anchors_ = true
 
@@ -37,9 +48,11 @@ layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/Panel"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = -1
+anchor_left = 0.00292969
+anchor_top = 0.00585938
+anchor_right = 0.99707
+anchor_bottom = 0.994141
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -70,13 +83,18 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="MapMiniMap" type="TextureRect" parent="CenterContainer/Panel/HBoxContainer/VBoxContainer2"]
+material = SubResource("ShaderMaterial_2u2x5")
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+size_flags_vertical = 3
 texture = SubResource("PlaceholderTexture2D_01q17")
-stretch_mode = 3
+expand_mode = 1
+stretch_mode = 5
 
 [node name="MapDescription" type="RichTextLabel" parent="CenterContainer/Panel/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 2.43
 
 [node name="Start" type="Button" parent="CenterContainer/Panel/HBoxContainer/VBoxContainer2"]
 layout_mode = 2

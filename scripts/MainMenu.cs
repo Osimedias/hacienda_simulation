@@ -10,16 +10,18 @@ using System;
 
     MainMenu Script nothing else.
 */
-namespace Trinketos.HaciendaSimulator 
+namespace Trinketos.HaciendaSimulator
 {
     public partial class MainMenu : Control
     {
-        [Export(PropertyHint.File,"*.tscn")]
+        [Export(PropertyHint.File, "*.tscn")]
         string newGameScene;
-        [Export(PropertyHint.File,"*.tscn")]
+        [Export(PropertyHint.File, "*.tscn")]
         string loadGameScene;
-        [Export(PropertyHint.File,"*.tscn")]
+        [Export(PropertyHint.File, "*.tscn")]
         string optionScene;
+        [Export(PropertyHint.File, "*.tscn")]
+        string mapEditorScene;
 
         public void OnNewGamePressed()
         {
@@ -34,6 +36,15 @@ namespace Trinketos.HaciendaSimulator
         public void OnOptionsPressed()
         {
             GetTree().ChangeSceneToFile(optionScene);
+        }
+
+        public void OnMapEditorPressed()
+        {
+            MapData mapData = GetNode<MapData>("/root/MapData");
+            mapData.splatmap = GD.Load<Texture2D>("res://textures/map_editor/splatmap_blank.png");
+            mapData.heightmap = GD.Load<Texture2D>("res://textures/map_editor/heightmap_blank.png");
+            mapData.watermask = GD.Load<Texture2D>("res://textures/map_editor/water_mask_blank.png");
+            GetTree().ChangeSceneToFile(mapEditorScene);
         }
 
         public void OnExitPressed()

@@ -1,0 +1,23 @@
+{
+    "information" : {
+        "name" : "Valle Sonorence",
+        "description": "Valle con montañas en los bordes.",
+        "goods" : ["iron","Stone","Oil","Fertil lands","hunt Animals"] 
+    },
+    "textures":
+    {
+        "heightmap":"res://data/maps/vallery_large_heightmap.png",
+        "splatmap":"res://data/maps/vallery_large_splatmap.png",
+        "tree_distribution" : "res://data/maps/vallery_large_forest_density_mask.png",
+        "water_mask" : "res://data/maps/vallery_large_water_mask.png",
+        "terrain_palet":"deset"
+    },
+    "objects":
+    {
+
+    },
+    "starting_resource":
+    {
+
+    }
+}

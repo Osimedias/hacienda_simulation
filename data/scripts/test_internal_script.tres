@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="InternalLuaScript" load_steps=2 format=3 uid="uid://0oqt5xunpgk"]
+
+[ext_resource type="Script" uid="uid://d1amlgh863akm" path="res://scripts/InternalLuaScript.cs" id="1_ge11d"]
+
+[resource]
+script = ExtResource("1_ge11d")
+Code = "print_message(\"Hola desde un recurso\")"
+metadata/_custom_type_script = "uid://d1amlgh863akm"

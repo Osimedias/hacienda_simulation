@@ -12,10 +12,11 @@ using Godot;
 */
 
 
-namespace Trinketos.HaciendaSimulator {
+namespace Trinketos.HaciendaSimulator
+{
     public partial class ResourceLabel : HBoxContainer
     {
-        [Export(PropertyHint.Enum,"Money,Food,Goods,Popularity,Population")]
+        [Export(PropertyHint.Enum, "Money,Food,Goods,Popularity,Population")]
         int CounterType;
         [Export]
         Player Player;

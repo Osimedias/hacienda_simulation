@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://50448614p5tx"]
+
+[ext_resource type="Script" uid="uid://cwv4redrrvra0" path="res://scripts/NesSoundChip.cs" id="1_th0en"]
+
+[sub_resource type="Curve" id="Curve_th0en"]
+_data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_vmqkl"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="NesSoundChip" type="AudioStreamPlayer"]
+script = ExtResource("1_th0en")
+frequencyCurve = SubResource("Curve_th0en")
+volumeCurve = SubResource("Curve_vmqkl")
+metadata/_custom_type_script = "uid://cwv4redrrvra0"

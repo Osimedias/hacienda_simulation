@@ -4,6 +4,6 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="LuaCSharp" Version="0.4.2" />
+    <PackageReference Include="NLua" Version="1.7.5" />
   </ItemGroup>
 </Project>

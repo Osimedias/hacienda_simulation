@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 /*
     file: World.cs.
@@ -11,13 +10,22 @@ using System;
 
     Main Scene for the Session.
 */
-public partial class World : Node3D
+namespace Trinketos.HaciendaSimulator
 {
-	[Export]
-	SessionGui sessionGUI;
-	
-	void OnGUIChangeContext(string context)
-	{
-		sessionGUI.currentContext = context;
-	}
+
+
+    public partial class World : Node3D
+    {
+        [Export]
+        SessionGui sessionGUI;
+        public override void _Ready()
+        {
+            base._Ready();
+
+        }
+        void OnGUIChangeContext(string context)
+        {
+            sessionGUI.currentContext = context;
+        }
+    }
 }
