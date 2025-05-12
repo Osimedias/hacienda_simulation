@@ -16,6 +16,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_ekxnf")
 script = ExtResource("1_l6cm7")
+backgroundMusic = ExtResource("4_wu84c")
 newGameScene = "uid://bp8s5bsy23fh7"
 loadGameScene = "uid://cxkk5t8p0pwgw"
 optionScene = "uid://cjajv884jnumk"
@@ -24,22 +25,20 @@ mapEditorScene = "uid://bytbj4pjllrke"
 [node name="BackgroundWood" parent="." instance=ExtResource("3_bqqt6")]
 layout_mode = 1
 
-[node name="Panel" type="Panel" parent="."]
-custom_minimum_size = Vector2(269, 413)
+[node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -134.5
-offset_top = -206.5
-offset_right = 134.5
-offset_bottom = 206.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+[node name="Panel" type="Panel" parent="CenterContainer"]
+custom_minimum_size = Vector2(269, 413)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel"]
+custom_minimum_size = Vector2(269, 413)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -48,7 +47,7 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer"]
+[node name="Label" type="Label" parent="CenterContainer/Panel/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 6
 text = "Hacienda Simulation"
@@ -56,43 +55,38 @@ label_settings = SubResource("LabelSettings_vue75")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="NewGame" type="Button" parent="Panel/VBoxContainer"]
+[node name="NewGame" type="Button" parent="CenterContainer/Panel/VBoxContainer"]
 layout_mode = 2
 tooltip_text = "Start a New Game"
 text = "New Game"
 
-[node name="LoadGame" type="Button" parent="Panel/VBoxContainer"]
+[node name="LoadGame" type="Button" parent="CenterContainer/Panel/VBoxContainer"]
 layout_mode = 2
 tooltip_text = "Load Game"
 text = "Load Game"
 
-[node name="Options" type="Button" parent="Panel/VBoxContainer"]
+[node name="Options" type="Button" parent="CenterContainer/Panel/VBoxContainer"]
 layout_mode = 2
 tooltip_text = "Settings and tools"
 text = "Options"
 
-[node name="MapEditor" type="Button" parent="Panel/VBoxContainer"]
+[node name="MapEditor" type="Button" parent="CenterContainer/Panel/VBoxContainer"]
 layout_mode = 2
 tooltip_text = "Warning: This is experimental"
-text = "Senario Editor"
+text = "Scenario Editor"
 
-[node name="Exit" type="Button" parent="Panel/VBoxContainer"]
+[node name="Exit" type="Button" parent="CenterContainer/Panel/VBoxContainer"]
 layout_mode = 2
 tooltip_text = "Back to Desktop"
 text = "Quit Game"
 
-[node name="Control" type="Control" parent="Panel/VBoxContainer"]
+[node name="Control" type="Control" parent="CenterContainer/Panel/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.65
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_wu84c")
-autoplay = true
-bus = &"Music"
-
-[connection signal="pressed" from="Panel/VBoxContainer/NewGame" to="." method="OnNewGamePressed"]
-[connection signal="pressed" from="Panel/VBoxContainer/LoadGame" to="." method="OnLoadGamePressed"]
-[connection signal="pressed" from="Panel/VBoxContainer/Options" to="." method="OnOptionsPressed"]
-[connection signal="pressed" from="Panel/VBoxContainer/MapEditor" to="." method="OnMapEditorPressed"]
-[connection signal="pressed" from="Panel/VBoxContainer/Exit" to="." method="OnExitPressed"]
+[connection signal="pressed" from="CenterContainer/Panel/VBoxContainer/NewGame" to="." method="OnNewGamePressed"]
+[connection signal="pressed" from="CenterContainer/Panel/VBoxContainer/LoadGame" to="." method="OnLoadGamePressed"]
+[connection signal="pressed" from="CenterContainer/Panel/VBoxContainer/Options" to="." method="OnOptionsPressed"]
+[connection signal="pressed" from="CenterContainer/Panel/VBoxContainer/MapEditor" to="." method="OnMapEditorPressed"]
+[connection signal="pressed" from="CenterContainer/Panel/VBoxContainer/Exit" to="." method="OnExitPressed"]

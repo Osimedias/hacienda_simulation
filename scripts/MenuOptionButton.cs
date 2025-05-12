@@ -1,16 +1,6 @@
 using Godot;
 using Godot.Collections;
 
-/*
-    file: MenuOptionButton.cs.
-    author: Saúl Rodríguez Martínez (Trinketos)
-    date: 1:04 PM 27/04/25
-
-    This code is part of Hacienda Simulation(Shity name xdxd).
-    So the owner of this code is me Trinketos.
-
-    This code manager all posible options for this cain of controler, it use a Resource to populate the items(less code).
-*/
 
 namespace Trinketos.HaciendaSimulator
 {

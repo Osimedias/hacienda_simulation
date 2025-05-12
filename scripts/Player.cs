@@ -1,19 +1,6 @@
 using Godot;
 using Godot.Collections;
 
-/*
-    file: Player.cs.
-    author: Saúl Rodríguez Martínez (Trinketos)
-    date: 1:10 PM 27/04/25
-
-    This code is part of Hacienda Simulation(Shity name xdxd).
-    So the owner of this code is me Trinketos.
-
-    Player class for the redundant player(You).
-    Store all Goods and money, population, max population and track all object of the player.
-*/
-
-
 namespace Trinketos.HaciendaSimulator
 {
     [GlobalClass]
@@ -35,18 +22,22 @@ namespace Trinketos.HaciendaSimulator
         [Export(PropertyHint.Range, "0,100,1,hide_slider")]
         int foodRations = 50;
 
+        // Get by the sum of all resources in inventory of StoreNode
         public int foodAmount = 0;
         public int stockAmount = 0;
+
         private Array<Node3D> _Houses;
         private Array<Node3D> _Peasents;
 
-        private Building _Stockpile = null;
-        private Building _Grannery = null;
+        private StorageNode _Stockpile = null;
+        private StorageNode _Grannery = null;
 
         [Signal]
         public delegate void ChangeFoodValueEventHandler();
         [Signal]
         public delegate void ChangeStockpileValueEventHandler();
+        [Signal]
+        public delegate void ChangeMoneyValueEventHandler();
 
         public override void _Ready()
         {
@@ -64,9 +55,14 @@ namespace Trinketos.HaciendaSimulator
         {
             base._PhysicsProcess(delta);
 
-            if (_Stockpile == null || _Grannery == null || _Stockpile == null && _Grannery == null)
+            if (_Stockpile == null || _Grannery == null)
             {
                 FindStockBuildings();
+            }
+            if(_Stockpile != null || _Grannery != null)
+            {
+                SumAllGoodsInStorageInventory(_Stockpile,stockAmount);
+                SumAllGoodsInStorageInventory(_Grannery,stockAmount);
             }
 
         }
@@ -131,20 +127,24 @@ namespace Trinketos.HaciendaSimulator
 
         public void AddPeasentToArray(Node3D peasent)
         {
-            for (int i = 0; i < GetTree().GetNodeCountInGroup("Peasent"); i++)
-            {
-                _Peasents.Add(GetTree().GetNodesInGroup("House")[i] as Node3D);
-            }
         }
 
         public void FindStockBuildings()
         {
-            if (_Stockpile == null)
-                _Stockpile = GetTree().GetFirstNodeInGroup("stockpile") as Building;
-            if (_Grannery == null)
-                _Grannery = GetTree().GetFirstNodeInGroup("granery") as Building;
+            if (_Stockpile == null && GetTree().GetNodeCountInGroup("stockpile") > 0)
+                _Stockpile = GetTree().GetFirstNodeInGroup("stockpile").GetNode<StorageNode>("StoreNode");
+                
+            if (_Grannery == null && GetTree().GetNodeCountInGroup("granery") > 0)
+                _Grannery = GetTree().GetFirstNodeInGroup("granery").GetNode<StorageNode>("StoreNode");
         }
 
+        private void SumAllGoodsInStorageInventory(StorageNode storageNode,int valueTo)
+        {
+            foreach(Goods goods in storageNode.inventory.Values)
+            {
+                valueTo += goods.Amount;
+            }
+        }
 
     }
 }

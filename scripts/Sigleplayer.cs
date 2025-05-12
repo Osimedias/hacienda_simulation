@@ -2,18 +2,6 @@ using Godot;
 using Godot.Collections;
 
 
-/*
-    file: Singleplayer.cs.
-    author: Saúl Rodríguez Martínez (Trinketos)
-    date: 1:20 PM 27/04/25
-
-    This code is part of Hacienda Simulation(Shity name xdxd).
-    So the owner of this code is me Trinketos.
-
-    Show all avaliable maps in a Tree node you select a element of that list and a preview and descriptions is show in the right panel.
-    Also populates the MapData.cs whit related shit of the terrain and the position of the entities of the map.
-*/
-
 namespace Trinketos.HaciendaSimulator
 {
     public partial class Sigleplayer : Control
@@ -28,6 +16,7 @@ namespace Trinketos.HaciendaSimulator
         Array<string> MapsStringName = [];
         int item_selected = 0;
         MapData mapData;
+        SceneTransition st;
         public override void _Ready()
         {
             base._Ready();
@@ -35,6 +24,7 @@ namespace Trinketos.HaciendaSimulator
             mapData = GetNode<MapData>("/root/MapData");
             GetMapsFromFolder();
             MapList.SetSelected(MapList.GetRoot().GetChild(0), 0);
+            st = GetNode<SceneTransition>("/root/SceneTransition");
         }
 
         public void GetMapsFromFolder()
@@ -122,11 +112,12 @@ namespace Trinketos.HaciendaSimulator
         void OnStartPressed()
         {
             GetTree().ChangeSceneToFile("res://scenes/world.tscn");
+            st.GoToScene("res://scenes/world.tscn");
         }
 
         void OnBackPressed()
         {
-            GetTree().ChangeSceneToFile("res://scenes/main_menu.tscn");
+            st.GoToScene("res://scenes/main_menu.tscn");
         }
     }
 }

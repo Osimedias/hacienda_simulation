@@ -1,16 +1,5 @@
 using Godot;
 
-/*
-    file: OptionsPanel.cs.
-    author: Saúl Rodríguez Martínez (Trinketos)
-    date: 1:07 PM 27/04/25
-
-    This code is part of Hacienda Simulation(Shity name xdxd).
-    So the owner of this code is me Trinketos.
-
-    Used to track all controls of the OptionMenu also save the settings.
-*/
-
 
 namespace Trinketos.HaciendaSimulator
 {
@@ -46,6 +35,14 @@ namespace Trinketos.HaciendaSimulator
         [Export]
         Slider InterfaceVolume;
 
+        SceneTransition st;
+
+        public override void _Ready()
+        {
+            base._Ready();
+            st = GetNode<SceneTransition>("/root/SceneTransition");
+        }
+
         void OnSavePressed()
         {
             ConfigFile configFile = new ConfigFile();
@@ -70,7 +67,7 @@ namespace Trinketos.HaciendaSimulator
         }
         void OnBackPressed()
         {
-            GetTree().ChangeSceneToFile("res://scenes/main_menu.tscn");
+            st.GoToScene("res://scenes/main_menu.tscn");
         }
     }
 }

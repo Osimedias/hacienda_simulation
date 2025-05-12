@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://j6g7m361sn3u"]
+
+[ext_resource type="Script" uid="uid://jl2eoiwwl8oi" path="res://scripts/SoundManager.cs" id="1_8qd8g"]
+
+[node name="AudioManager" type="Node" node_paths=PackedStringArray("MusicPlayer", "EffectsPlayer")]
+script = ExtResource("1_8qd8g")
+MusicPlayer = NodePath("Music")
+EffectsPlayer = NodePath("Effects")
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+bus = &"Music"
+
+[node name="Effects" type="AudioStreamPlayer" parent="."]
+bus = &"Effect"

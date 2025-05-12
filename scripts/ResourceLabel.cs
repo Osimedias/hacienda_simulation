@@ -1,16 +1,5 @@
 using Godot;
 
-/*
-    file: ResourceLabel.cs.
-    author: Saúl Rodríguez Martínez (Trinketos)
-    date: 1:11 PM 27/04/25
-
-    This code is part of Hacienda Simulation(Shity name xdxd).
-    So the owner of this code is me Trinketos.
-
-    Show to the player all common resources in the top panel.
-*/
-
 
 namespace Trinketos.HaciendaSimulator
 {

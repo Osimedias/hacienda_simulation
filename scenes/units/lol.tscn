@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cu10q4av8306b"]
+
+[ext_resource type="Script" uid="uid://dkxbtfsdlkujw" path="res://scripts/SelectionBox.cs" id="1_nr4ne"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_nr4ne")

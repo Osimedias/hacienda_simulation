@@ -1,28 +1,36 @@
-[gd_scene load_steps=32 format=3 uid="uid://blhwt2tr7ral"]
+[gd_scene load_steps=45 format=3 uid="uid://blhwt2tr7ral"]
 
 [ext_resource type="Script" uid="uid://brlfaddcjvb32" path="res://scripts/Player.cs" id="1_4wyf3"]
 [ext_resource type="Script" uid="uid://dimumir1jqakd" path="res://scripts/CameraController.cs" id="1_nnsk1"]
 [ext_resource type="Script" uid="uid://c6btror3l8l0e" path="res://scripts/Terrain.cs" id="1_rwgxs"]
 [ext_resource type="Script" uid="uid://ck5x4dfje5wk" path="res://scripts/World.cs" id="1_xo05s"]
-[ext_resource type="Script" uid="uid://brtme8vtettk0" path="res://scripts/VoxelGiGenerator.cs" id="2_lakw3"]
 [ext_resource type="Material" uid="uid://c3t28m6aco153" path="res://materials/terrain.material" id="3_qfnet"]
+[ext_resource type="Script" uid="uid://npdvl0f6vmmv" path="res://scripts/FiniteStateMachine.cs" id="4_2lf6f"]
 [ext_resource type="AudioStream" uid="uid://c3mq147hwlvs" path="res://data/playlist/background_music.tres" id="4_ctatt"]
 [ext_resource type="PackedScene" uid="uid://cefaejtkbn518" path="res://scenes/gui/building_button.tscn" id="4_k0juu"]
+[ext_resource type="Script" uid="uid://bgsfvch34wyf7" path="res://scripts/GoodsFactory.cs" id="4_oo54l"]
+[ext_resource type="Script" uid="uid://conm6p53shcbn" path="res://scripts/ActionGaveMoney.cs" id="5_7iits"]
 [ext_resource type="PackedScene" uid="uid://bfd0apaxvg1n" path="res://scenes/gui/resource_label.tscn" id="5_71j4m"]
-[ext_resource type="AudioStream" uid="uid://dnq28meb7ja74" path="res://sound/gui/click_button.wav" id="5_xgqkh"]
 [ext_resource type="Shader" uid="uid://281sk0jeg8lx" path="res://shaders/water.gdshader" id="6_7r4gi"]
 [ext_resource type="Script" uid="uid://bccq4foyt3se7" path="res://scripts/Water.cs" id="6_e3hyu"]
+[ext_resource type="Script" uid="uid://damdbtul8v3bp" path="res://scripts/FiniteState.cs" id="6_oo54l"]
+[ext_resource type="Script" uid="uid://jy0wxifup5h4" path="res://scripts/StateConditionGaveMoney.cs" id="7_kpybi"]
 [ext_resource type="Texture2D" uid="uid://ceu3x4061otdh" path="res://textures/water/water_color.tga" id="7_w7kh3"]
 [ext_resource type="Theme" uid="uid://4r1xofhpny11" path="res://data/themes/main_menu.theme" id="11_jhx03"]
 [ext_resource type="Script" uid="uid://ccxpbiqcviqjk" path="res://scripts/SessionGui.cs" id="13_dss4m"]
-[ext_resource type="PackedScene" uid="uid://ygbgyampy21a" path="res://scenes/gui/resource_show_icon.tscn" id="15_dss4m"]
 [ext_resource type="PackedScene" uid="uid://ctlb4br36cgmk" path="res://scenes/buildings/land_owner_house_large.tscn" id="16_lakw3"]
 [ext_resource type="PackedScene" uid="uid://dmt31om3dfus1" path="res://scenes/buildings/grannery.tscn" id="16_pm21f"]
 [ext_resource type="PackedScene" uid="uid://d3r34cktl77i5" path="res://scenes/gui/selection_box.tscn" id="20_2lf6f"]
+[ext_resource type="Script" uid="uid://dkb4fi1l3xv7a" path="res://scripts/ResumePanel.cs" id="21_kpybi"]
+[ext_resource type="Script" uid="uid://cnt3pqeib4iq2" path="res://scripts/OptionsPanelSession.cs" id="22_ctatt"]
+[ext_resource type="Texture2D" uid="uid://djq40mjff2svw" path="res://textures/gui/papaer_background.png" id="23_ctatt"]
+[ext_resource type="Script" uid="uid://mxuqnasq6714" path="res://scripts/ObjetivesPanel.cs" id="23_xgqkh"]
 
-[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_7t5mc"]
-
-[sub_resource type="VoxelGIData" id="VoxelGIData_lakw3"]
+[sub_resource type="Environment" id="Environment_7t5mc"]
+background_mode = 1
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+reflected_light_source = 1
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7t5mc"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -49,6 +57,26 @@ adjustment_enabled = true
 adjustment_brightness = 1.31
 adjustment_contrast = 1.13
 adjustment_saturation = 1.26
+
+[sub_resource type="Resource" id="Resource_ctatt"]
+script = ExtResource("5_7iits")
+metadata/_custom_type_script = "uid://conm6p53shcbn"
+
+[sub_resource type="Resource" id="Resource_xgqkh"]
+script = ExtResource("7_kpybi")
+signalName = "ChangeMoneyValue"
+metadata/_custom_type_script = "uid://jy0wxifup5h4"
+
+[sub_resource type="Resource" id="Resource_munwf"]
+script = ExtResource("6_oo54l")
+Name = "GaveMoney"
+Duration = 0.1
+CanInterrupt = false
+transitionConditions = Array[Object]([SubResource("Resource_xgqkh")])
+Actions = Array[Object]([SubResource("Resource_ctatt")])
+metadata/_custom_type_script = "uid://damdbtul8v3bp"
+
+[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_7iits"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_e3hyu"]
 seed = 50
@@ -86,34 +114,32 @@ shader_parameter/water_normal_b = SubResource("NoiseTexture2D_7iits")
 geometry_parsed_geometry_type = 1
 geometry_collision_mask = 4278190083
 
-[sub_resource type="Environment" id="Environment_7t5mc"]
-background_mode = 1
-ambient_light_source = 2
-ambient_light_color = Color(1, 1, 1, 1)
-reflected_light_source = 1
+[sub_resource type="NavigationMesh" id="NavigationMesh_xgqkh"]
+geometry_collision_mask = 4294901778
 
-[node name="World" type="Node3D" node_paths=PackedStringArray("sessionGUI")]
+[sub_resource type="LabelSettings" id="LabelSettings_kpybi"]
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_7iits"]
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_oo54l"]
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_xgqkh"]
+font_size = 32
+
+[node name="World" type="Node3D" node_paths=PackedStringArray("debugCamera", "sessionGUI")]
 script = ExtResource("1_xo05s")
+debugCamera = NodePath("Camera3D")
+playlist = ExtResource("4_ctatt")
 sessionGUI = NodePath("SessionGUI")
 
-[node name="Music" type="AudioStreamPlayer" parent="."]
-unique_name_in_owner = true
-stream = ExtResource("4_ctatt")
-autoplay = true
-bus = &"Music"
-
-[node name="InterfaceSounds" type="AudioStreamPlayer" parent="."]
-unique_name_in_owner = true
-stream = ExtResource("5_xgqkh")
-bus = &"Interface"
-
-[node name="VoxelGI" type="VoxelGI" parent="." node_paths=PackedStringArray("terrain")]
-layers = 11
-subdiv = 2
-camera_attributes = SubResource("CameraAttributesPhysical_7t5mc")
-data = SubResource("VoxelGIData_lakw3")
-script = ExtResource("2_lakw3")
-terrain = NodePath("../Terrain/TerrainMesh")
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 342.866, 0)
+environment = SubResource("Environment_7t5mc")
+projection = 1
+current = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_pm21f")
@@ -123,10 +149,20 @@ transform = Transform3D(-0.146151, -0.708008, 0.690916, -3.03565e-08, 0.698415, 
 shadow_enabled = true
 directional_shadow_max_distance = 500.0
 
+[node name="Factories" type="Node" parent="."]
+
+[node name="GoodsFactory" type="Node" parent="Factories"]
+script = ExtResource("4_oo54l")
+
 [node name="Player" type="Node" parent="."]
 script = ExtResource("1_4wyf3")
 
-[node name="Terrain" type="StaticBody3D" parent="." node_paths=PackedStringArray("terrainMesh", "terrainShape")]
+[node name="PlayerStateMachine" type="Node" parent="."]
+script = ExtResource("4_2lf6f")
+States = Array[Object]([SubResource("Resource_munwf")])
+metadata/_custom_type_script = "uid://npdvl0f6vmmv"
+
+[node name="Terrain" type="StaticBody3D" parent="." node_paths=PackedStringArray("terrainMesh", "terrainShape") groups=["terrain"]]
 script = ExtResource("1_rwgxs")
 terrainMesh = NodePath("TerrainMesh")
 terrainShape = NodePath("TerrainShape")
@@ -135,6 +171,7 @@ terrainShape = NodePath("TerrainShape")
 material_override = ExtResource("3_qfnet")
 
 [node name="TerrainShape" type="CollisionShape3D" parent="Terrain"]
+shape = SubResource("HeightMapShape3D_7iits")
 
 [node name="Water" type="StaticBody3D" parent="." node_paths=PackedStringArray("waterMesh", "waterShape")]
 collision_layer = 16
@@ -152,6 +189,9 @@ material_override = SubResource("ShaderMaterial_w7kh3")
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavigationMesh_oo54l")
 
+[node name="NavigationRegion3D2" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_xgqkh")
+
 [node name="CameraController" type="Node3D" parent="." node_paths=PackedStringArray("meshBounds")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.236, 0, -11.9859)
 script = ExtResource("1_nnsk1")
@@ -165,7 +205,7 @@ transform = Transform3D(1, 0, 0, 0, 0.698415, 0.715693, 0, -0.715693, 0.698415, 
 current = true
 size = 1.952
 
-[node name="SessionGUI" type="Control" parent="."]
+[node name="SessionGUI" type="Control" parent="." node_paths=PackedStringArray("miniMapCamera", "BuildingsPanel", "HaciendaPanel", "StockpilePanel", "GranneryPanel", "MarketPanel", "BarracksPanel", "ResumePanel", "OptionsPanel", "PausePanel", "SurrenderPanel", "ObjetivesPanel")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -174,7 +214,71 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("11_jhx03")
 script = ExtResource("13_dss4m")
+miniMapCamera = NodePath("CommandPanel/HBoxContainer/MiniMap/SubViewport/Camera3D")
+BuildingsPanel = NodePath("CommandPanel/HBoxContainer/Buildings")
+HaciendaPanel = NodePath("CommandPanel/HBoxContainer/Hacienda")
+StockpilePanel = NodePath("CommandPanel/HBoxContainer/Stockpile")
+GranneryPanel = NodePath("CommandPanel/HBoxContainer/Grannery")
+MarketPanel = NodePath("CommandPanel/HBoxContainer/Market")
+BarracksPanel = NodePath("CommandPanel/HBoxContainer/Barracks")
+ResumePanel = NodePath("ResumePanel")
+OptionsPanel = NodePath("OptionsPanel")
+PausePanel = NodePath("PausePanel")
+SurrenderPanel = NodePath("SurrenderPanel")
+ObjetivesPanel = NodePath("ObjetivesPanel")
 metadata/_edit_use_anchors_ = true
+
+[node name="PausePanel" type="ColorRect" parent="SessionGUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.266667)
+metadata/_edit_use_anchors_ = true
+
+[node name="CenterContainer" type="CenterContainer" parent="SessionGUI/PausePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="SessionGUI/PausePanel/CenterContainer"]
+layout_mode = 2
+text = "Game Paused"
+label_settings = SubResource("LabelSettings_kpybi")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SurrenderPanel" type="ColorRect" parent="SessionGUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.266667)
+metadata/_edit_use_anchors_ = true
+
+[node name="CenterContainer" type="CenterContainer" parent="SessionGUI/SurrenderPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="SessionGUI/SurrenderPanel/CenterContainer"]
+layout_mode = 2
+text = "You Lose"
+label_settings = SubResource("LabelSettings_kpybi")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="CommandPanel" type="Panel" parent="SessionGUI"]
 layout_mode = 1
@@ -203,14 +307,13 @@ stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="SessionGUI/CommandPanel/HBoxContainer/MiniMap"]
 handle_input_locally = false
-size = Vector2i(158, 170)
+size = Vector2i(264, 283)
 render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="SessionGUI/CommandPanel/HBoxContainer/MiniMap/SubViewport"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 342.866, 0)
 environment = SubResource("Environment_7t5mc")
 projection = 1
-size = 515.78
 
 [node name="Buildings" type="TabContainer" parent="SessionGUI/CommandPanel/HBoxContainer"]
 layout_mode = 2
@@ -460,13 +563,13 @@ text = "Wood
 Cut"
 world = NodePath("../../../../../..")
 
-[node name="ContextGoodsResourcePanel" type="Panel" parent="SessionGUI/CommandPanel/HBoxContainer"]
+[node name="Stockpile" type="Panel" parent="SessionGUI/CommandPanel/HBoxContainer"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
 
-[node name="CenterContainer" type="CenterContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel"]
+[node name="CenterContainer" type="CenterContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Stockpile"]
 custom_minimum_size = Vector2(900, 170)
 layout_mode = 1
 anchors_preset = 15
@@ -475,138 +578,39 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Stockpile/CenterContainer"]
 custom_minimum_size = Vector2(980, 160)
 layout_mode = 2
 
-[node name="GridContainer" type="GridContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Stockpile/CenterContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
 columns = 11
 
-[node name="ResourceShowIcon" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon2" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon3" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon4" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon5" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon6" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon7" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon8" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon9" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon10" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon11" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon12" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon13" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon14" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon15" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon16" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon17" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon18" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon19" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon20" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon21" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon22" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon23" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon24" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon25" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon26" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon27" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon28" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon29" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon30" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon31" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon32" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon33" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="SubViewportContainer" type="SubViewportContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Stockpile/CenterContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.89
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer/SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="SessionGUI/CommandPanel/HBoxContainer/Stockpile/CenterContainer/HBoxContainer/SubViewportContainer"]
 handle_input_locally = false
 size = Vector2i(2, 2)
 render_target_update_mode = 0
 
-[node name="Control" type="Control" parent="SessionGUI/CommandPanel/HBoxContainer/ContextGoodsResourcePanel/CenterContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="SessionGUI/CommandPanel/HBoxContainer/Stockpile/CenterContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.79
 
-[node name="ContextFoodResourcePanel" type="Panel" parent="SessionGUI/CommandPanel/HBoxContainer"]
+[node name="Grannery" type="Panel" parent="SessionGUI/CommandPanel/HBoxContainer"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
 
-[node name="CenterContainer" type="CenterContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel"]
+[node name="CenterContainer" type="CenterContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Grannery"]
 custom_minimum_size = Vector2(900, 170)
 layout_mode = 1
 anchors_preset = 15
@@ -615,85 +619,145 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Grannery/CenterContainer"]
 custom_minimum_size = Vector2(980, 160)
 layout_mode = 2
 
-[node name="GridContainer" type="GridContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Grannery/CenterContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.42
 columns = 11
 
-[node name="ResourceShowIcon" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon2" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon3" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="ResourceShowIcon4" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/GridContainer" instance=ExtResource("15_dss4m")]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Grannery/CenterContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.57
 
-[node name="Control" type="Control" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/VBoxContainer"]
+[node name="Control" type="Control" parent="SessionGUI/CommandPanel/HBoxContainer/Grannery/CenterContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 13
 size_flags_vertical = 15
 
-[node name="FoodRateSliderLabel" type="Label" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/VBoxContainer"]
+[node name="FoodRateSliderLabel" type="Label" parent="SessionGUI/CommandPanel/HBoxContainer/Grannery/CenterContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Food Rate"
 horizontal_alignment = 1
 
-[node name="HSlider" type="HSlider" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/VBoxContainer"]
+[node name="FoodRateSlider" type="HSlider" parent="SessionGUI/CommandPanel/HBoxContainer/Grannery/CenterContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 value = 50.0
 
-[node name="GridContainer" type="GridContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/VBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Grannery/CenterContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 columns = 4
 
-[node name="CornBlock" type="Button" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="CornBlock" type="Button" parent="SessionGUI/CommandPanel/HBoxContainer/Grannery/CenterContainer/HBoxContainer/VBoxContainer/GridContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 
-[node name="MeatBlock" type="Button" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="MeatBlock" type="Button" parent="SessionGUI/CommandPanel/HBoxContainer/Grannery/CenterContainer/HBoxContainer/VBoxContainer/GridContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 
-[node name="CheaseBlock" type="Button" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="CheaseBlock" type="Button" parent="SessionGUI/CommandPanel/HBoxContainer/Grannery/CenterContainer/HBoxContainer/VBoxContainer/GridContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 
-[node name="BreadBlock" type="Button" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="BreadBlock" type="Button" parent="SessionGUI/CommandPanel/HBoxContainer/Grannery/CenterContainer/HBoxContainer/VBoxContainer/GridContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 
-[node name="Control2" type="Control" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/VBoxContainer"]
+[node name="Control2" type="Control" parent="SessionGUI/CommandPanel/HBoxContainer/Grannery/CenterContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 13
 size_flags_vertical = 15
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Grannery/CenterContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.89
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer/SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="SessionGUI/CommandPanel/HBoxContainer/Grannery/CenterContainer/HBoxContainer/SubViewportContainer"]
 handle_input_locally = false
 size = Vector2i(2, 2)
 render_target_update_mode = 0
 
-[node name="Control" type="Control" parent="SessionGUI/CommandPanel/HBoxContainer/ContextFoodResourcePanel/CenterContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="SessionGUI/CommandPanel/HBoxContainer/Grannery/CenterContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.79
+
+[node name="Market" type="Panel" parent="SessionGUI/CommandPanel/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 5.0
+
+[node name="CenterContainer" type="CenterContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Market"]
+custom_minimum_size = Vector2(900, 170)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Market/CenterContainer"]
+custom_minimum_size = Vector2(980, 160)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="SessionGUI/CommandPanel/HBoxContainer/Market/CenterContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.79
+
+[node name="Hacienda" type="Panel" parent="SessionGUI/CommandPanel/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 5.0
+
+[node name="CenterContainer" type="CenterContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Hacienda"]
+custom_minimum_size = Vector2(900, 170)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Hacienda/CenterContainer"]
+custom_minimum_size = Vector2(980, 160)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="SessionGUI/CommandPanel/HBoxContainer/Hacienda/CenterContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.79
+
+[node name="Barracks" type="Panel" parent="SessionGUI/CommandPanel/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 5.0
+
+[node name="CenterContainer" type="CenterContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Barracks"]
+custom_minimum_size = Vector2(900, 170)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SessionGUI/CommandPanel/HBoxContainer/Barracks/CenterContainer"]
+custom_minimum_size = Vector2(980, 160)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="SessionGUI/CommandPanel/HBoxContainer/Barracks/CenterContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.79
@@ -702,7 +766,7 @@ size_flags_stretch_ratio = 2.79
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
-anchor_bottom = 0.0648148
+anchor_bottom = 0.0481481
 grow_horizontal = 2
 metadata/_edit_use_anchors_ = true
 
@@ -749,11 +813,350 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 4.44
 
 [node name="Menu" type="MenuButton" parent="SessionGUI/MenuPanel/HBoxContainer"]
+process_mode = 3
 layout_mode = 2
 text = "Menu"
+item_count = 6
+popup/item_0/text = "Save"
+popup/item_0/id = 0
+popup/item_1/text = "Resume"
+popup/item_1/id = 1
+popup/item_2/text = "Options"
+popup/item_2/id = 2
+popup/item_3/text = "Un-Paused"
+popup/item_3/id = 3
+popup/item_4/text = "Surrender"
+popup/item_4/id = 4
+popup/item_5/text = "Quit"
+popup/item_5/id = 5
+
+[node name="ResumePanel" type="CenterContainer" parent="SessionGUI" node_paths=PackedStringArray("ScorePanel", "BuildingsPanel", "UnitsPanel", "ResourcePanel", "MarketPanel", "OthersPanel", "DiagramsPanel")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("21_kpybi")
+ScorePanel = NodePath("PanelContainer/VBoxContainer/TabContainer/Score")
+BuildingsPanel = NodePath("PanelContainer/VBoxContainer/TabContainer/Buildings")
+UnitsPanel = NodePath("PanelContainer/VBoxContainer/TabContainer/Units")
+ResourcePanel = NodePath("PanelContainer/VBoxContainer/TabContainer/Resources")
+MarketPanel = NodePath("PanelContainer/VBoxContainer/TabContainer/Market")
+OthersPanel = NodePath("PanelContainer/VBoxContainer/TabContainer/Others")
+DiagramsPanel = NodePath("PanelContainer/VBoxContainer/TabContainer/Diagrams")
+metadata/_edit_use_anchors_ = true
+
+[node name="PanelContainer" type="PanelContainer" parent="SessionGUI/ResumePanel"]
+custom_minimum_size = Vector2(1024, 1024)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SessionGUI/ResumePanel/PanelContainer"]
+layout_mode = 2
+
+[node name="MapName" type="Label" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "[Map Name]"
+label_settings = SubResource("LabelSettings_7iits")
+horizontal_alignment = 1
+
+[node name="TabContainer" type="TabContainer" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 18.76
+current_tab = 0
+
+[node name="Score" type="Tree" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Buildings" type="Tree" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Units" type="Tree" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="Resources" type="Tree" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="Market" type="Tree" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 4
+
+[node name="Others" type="Tree" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 5
+
+[node name="Diagrams" type="PanelContainer" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer/TabContainer/Diagrams"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer/TabContainer/Diagrams/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer/TabContainer/Diagrams/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="OptionButton" type="OptionButton" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer/TabContainer/Diagrams/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="OptionButton2" type="OptionButton" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer/TabContainer/Diagrams/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Diagram" type="Control" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer/TabContainer/Diagrams/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 14.03
+
+[node name="DiagramTexture" type="TextureRect" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer/TabContainer/Diagrams/HBoxContainer/VBoxContainer/Diagram"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Continue" type="Button" parent="SessionGUI/ResumePanel/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Continue"
+
+[node name="OptionsPanel" type="CenterContainer" parent="SessionGUI"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("22_ctatt")
+metadata/_edit_use_anchors_ = true
+
+[node name="PanelContainer" type="PanelContainer" parent="SessionGUI/OptionsPanel"]
+custom_minimum_size = Vector2(1024, 1024)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SessionGUI/OptionsPanel/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Game Options"
+label_settings = SubResource("LabelSettings_oo54l")
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 13
+size_flags_vertical = 15
+size_flags_stretch_ratio = 15.87
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+
+[node name="General" type="Button" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 13
+size_flags_vertical = 15
+text = "General"
+
+[node name="GraphicsGeneral" type="Button" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 13
+size_flags_vertical = 15
+text = "Graphics(General)"
+
+[node name="GraphicsAdvance" type="Button" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 13
+size_flags_vertical = 15
+text = "Graphics(Advance)"
+
+[node name="Sound" type="Button" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 13
+size_flags_vertical = 15
+text = "Sound"
+
+[node name="SessionConfiguration" type="Button" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 13
+size_flags_vertical = 15
+text = "Session Configuration"
+
+[node name="RedMultiplayer" type="Button" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 13
+size_flags_vertical = 15
+text = "Red/Multiplayer"
+
+[node name="ChatAndNotifications" type="Button" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 13
+size_flags_vertical = 15
+text = "Chat and Notifications"
+
+[node name="Visualization" type="Button" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 13
+size_flags_vertical = 15
+text = "Visualization"
+
+[node name="Gameplay" type="Button" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 13
+size_flags_vertical = 15
+text = "Gameplay
+"
+
+[node name="Control" type="Control" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.68
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+size_flags_stretch_ratio = 2.58
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 13
+size_flags_vertical = 15
+
+[node name="IgnoreChanges" type="Button" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+text = "Restablecer"
+
+[node name="Redo" type="Button" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+text = "Redo"
+
+[node name="Save" type="Button" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+text = "Save"
+
+[node name="Close" type="Button" parent="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+text = "Close"
+
+[node name="ObjetivesPanel" type="ColorRect" parent="SessionGUI" node_paths=PackedStringArray("ObjetivesText")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.266667)
+script = ExtResource("23_xgqkh")
+ObjetivesText = NodePath("CenterContainer/PanelContainer/VBoxContainer/NinePatchRect/CenterContainer/ObjetivesText")
+metadata/_edit_use_anchors_ = true
+
+[node name="CenterContainer" type="CenterContainer" parent="SessionGUI/ObjetivesPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="PanelContainer" type="PanelContainer" parent="SessionGUI/ObjetivesPanel/CenterContainer"]
+custom_minimum_size = Vector2(1024, 1024)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SessionGUI/ObjetivesPanel/CenterContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SessionGUI/ObjetivesPanel/CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Objetives"
+label_settings = SubResource("LabelSettings_xgqkh")
+horizontal_alignment = 1
+
+[node name="NinePatchRect" type="NinePatchRect" parent="SessionGUI/ObjetivesPanel/CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 13.63
+texture = ExtResource("23_ctatt")
+patch_margin_left = 60
+patch_margin_top = 60
+patch_margin_right = 60
+patch_margin_bottom = 60
+
+[node name="CenterContainer" type="CenterContainer" parent="SessionGUI/ObjetivesPanel/CenterContainer/PanelContainer/VBoxContainer/NinePatchRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="ObjetivesText" type="RichTextLabel" parent="SessionGUI/ObjetivesPanel/CenterContainer/PanelContainer/VBoxContainer/NinePatchRect/CenterContainer"]
+custom_minimum_size = Vector2(890, 790)
+layout_mode = 2
+bbcode_enabled = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SessionGUI/ObjetivesPanel/CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Control2" type="Control" parent="SessionGUI/ObjetivesPanel/CenterContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
+
+[node name="Button" type="Button" parent="SessionGUI/ObjetivesPanel/CenterContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Close"
+
+[node name="Control" type="Control" parent="SessionGUI/ObjetivesPanel/CenterContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 13
 
 [node name="SelectionBox" parent="." node_paths=PackedStringArray("World") instance=ExtResource("20_2lf6f")]
+Color = Color(0.254902, 0.411765, 0.882353, 0.439216)
 World = NodePath("..")
 
-[connection signal="TerrainGenerateFinish" from="Terrain" to="VoxelGI" method="OnTerrainGenerationFinish"]
 [connection signal="ChangeContext" from="SessionGUI" to="." method="OnGUIChangeContext"]
+[connection signal="pressed" from="SessionGUI/ResumePanel/PanelContainer/VBoxContainer/HBoxContainer/Continue" to="SessionGUI/ResumePanel" method="OnContinuePressed"]
+[connection signal="pressed" from="SessionGUI/OptionsPanel/PanelContainer/VBoxContainer/HBoxContainer2/Close" to="SessionGUI/OptionsPanel" method="OnClosePressed"]
+[connection signal="pressed" from="SessionGUI/ObjetivesPanel/CenterContainer/PanelContainer/VBoxContainer/HBoxContainer/Button" to="SessionGUI/ObjetivesPanel" method="OnClosePressed"]

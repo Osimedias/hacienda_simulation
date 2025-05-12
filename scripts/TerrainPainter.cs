@@ -1,5 +1,7 @@
 using Godot;
 
+//This is broken and i don't know way.
+
 namespace Trinketos.HaciendaSimulator
 {
     public static class TerrainPainter
@@ -56,6 +58,8 @@ namespace Trinketos.HaciendaSimulator
             int width = image.GetWidth();
             int height = image.GetHeight();
 
+            image.Convert(Image.Format.Rf);
+
             int centerX = Mathf.Clamp((int)(hitPosition.X / terrainMesh.Scale.X * width), 0, width - 1);
             int centerZ = Mathf.Clamp((int)(hitPosition.Z / terrainMesh.Scale.Z * height), 0, height - 1);
 
@@ -90,6 +94,8 @@ namespace Trinketos.HaciendaSimulator
             int width = image.GetWidth();
             int height = image.GetHeight();
 
+            image.Convert(Image.Format.Rf);
+
             int centerX = Mathf.Clamp((int)(hitPosition.X / terrainMesh.Scale.X * width), 0, width - 1);
             int centerZ = Mathf.Clamp((int)(hitPosition.Z / terrainMesh.Scale.Z * height), 0, height - 1);
 
@@ -114,6 +120,8 @@ namespace Trinketos.HaciendaSimulator
 
             int width = image.GetWidth();
             int height = image.GetHeight();
+
+            image.Convert(Image.Format.Rf);
 
             int centerX = Mathf.Clamp((int)(hitPosition.X / terrainMesh.Scale.X * width), 0, width - 1);
             int centerZ = Mathf.Clamp((int)(hitPosition.Z / terrainMesh.Scale.Z * height), 0, height - 1);

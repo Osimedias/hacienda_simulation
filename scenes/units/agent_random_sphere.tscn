@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://q7y15sbjc208"]
+
+[ext_resource type="Script" uid="uid://bk7ktayrnt6x3" path="res://scripts/AgentRandomSphere.cs" id="1_u2ws8"]
+
+[node name="AgentRandomSphere" type="NavigationAgent3D"]
+editor_description = "Use this in animals or something similar"
+script = ExtResource("1_u2ws8")

@@ -1,15 +1,5 @@
 using Godot;
 
-/*
-    file: LightFlicker.cs.
-    author: Saúl Rodríguez Martínez (Trinketos)
-    date: 12:59 PM 27/04/25
-
-    This code is part of Hacienda Simulation(Shity name xdxd).
-    So the owner of this code is me Trinketos.
-
-    This scripts is used to flick a OmniLight useful for candles or some shit like that.
-*/
 
 namespace Trinketos.HaciendaSimulator
 {

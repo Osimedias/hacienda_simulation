@@ -4,13 +4,12 @@ using Trinketos.HaciendaSimulator;
 
 public partial class VoxelGiGenerator : VoxelGI
 {
-    [Export]
-    MeshInstance3D terrain;
 
 
 
     void OnTerrainGenerationFinish()
     {
+        MeshInstance3D terrain = GetParent().GetNode<Terrain>("Terrain").GetChild<MeshInstance3D>(0);
         Size = terrain.GetAabb().Size;
         Bake();
     }

@@ -14,7 +14,6 @@ namespace Trinketos.HaciendaSimulator
         Terrain terrain;
         [Export]
         Water water;
-        // Called when the node enters the scene tree for the first time.
 
         Texture2D heightmap;
         Texture2D splatmap;
@@ -44,6 +43,8 @@ namespace Trinketos.HaciendaSimulator
         public override void _Ready()
         {
             base._Ready();
+            SoundManager soundManager = GetNode<SoundManager>("/root/AudioManager");
+            soundManager.StopMusic();
         }
 
         public override void _PhysicsProcess(double delta)
@@ -58,17 +59,19 @@ namespace Trinketos.HaciendaSimulator
             if (result.ContainsKey("position") && IsBrushMode)
             {
                 cursorPosition = (Vector3)result["position"];
+                GD.Print(cursorPosition);
             }
         }
 
 
-        public override void _UnhandledInput(InputEvent @event)
+        public override void _Input(InputEvent @event)
         {
-            base._UnhandledInput(@event);
+            base._Input(@event);
             if (@event is InputEventMouseButton e)
             {
                 if (e.IsPressed() && e.ButtonIndex == MouseButton.Left && IsBrushMode)
                 {
+                    GD.Print($"Brush mode {IsBrushMode}");
                     mousePosition = e.Position;
                     switch (brushes)
                     {
@@ -109,6 +112,7 @@ namespace Trinketos.HaciendaSimulator
                 else if (e.IsPressed() && e.ButtonIndex == MouseButton.Right && IsBrushMode)
                 {
                     IsBrushMode = false;
+                    GD.Print($"Brush mode {IsBrushMode}");
                 }
             }
         }
@@ -116,21 +120,29 @@ namespace Trinketos.HaciendaSimulator
         {
             brushes = Brushes.Raise;
             IsBrushMode = true;
+            GD.Print($"Brush mode {IsBrushMode}");
+            GD.Print($"Brush type {brushes}");
         }
         void OnLowerPressed()
         {
             brushes = Brushes.Lower;
             IsBrushMode = true;
+            GD.Print($"Brush mode {IsBrushMode}");
+            GD.Print($"Brush type {brushes}");
         }
         void OnSmoothPressed()
         {
             brushes = Brushes.Smooth;
             IsBrushMode = true;
+            GD.Print($"Brush mode {IsBrushMode}");
+            GD.Print($"Brush type {brushes}");
         }
         void OnPaintPressed()
         {
             brushes = Brushes.PaintColor;
             IsBrushMode = true;
+            GD.Print($"Brush mode {IsBrushMode}");
+            GD.Print($"Brush type {brushes}");
         }
     }
 

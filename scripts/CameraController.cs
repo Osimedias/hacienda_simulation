@@ -1,16 +1,5 @@
 using Godot;
 
-/*
-    file: CameraController.cs.
-    author: Saúl Rodríguez Martínez (Trinketos)
-    date: 10:20 PM 23/04/25
-
-    This code is part of Hacienda Simulation(Shity name xdxd).
-    So the owner of this code is me Trinketos.
-    But you can use the source for mods or some shit like that.
-
-    This camera controller is very basic because a new in csharp
-*/
 namespace Trinketos.HaciendaSimulator
 {
     public partial class CameraController : Node3D
@@ -54,6 +43,7 @@ namespace Trinketos.HaciendaSimulator
             var direction = Input.GetVector("move_left", "move_right", "move_forward", "move_backward");
 
             GlobalPosition += GlobalPosition with { X = direction.X, Y = 0, Z = direction.Y } * (float)Speed * (float)delta;
+            // Mathf.Clamp is not working
             // Mierda larga solo para no escribir lineas y lineas de codigo para esta mamada. No sirve por alguna razon antes si, pinche mierda
             //GlobalPosition = GlobalPosition with { X = Mathf.Clamp(GlobalPosition.X, _bounds.Size.X, _bounds.End.X), Z = Mathf.Clamp(GlobalPosition.Z, _bounds.Size.Z, _bounds.End.Z) };
 

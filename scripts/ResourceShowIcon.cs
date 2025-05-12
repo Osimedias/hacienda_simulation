@@ -1,15 +1,5 @@
 using Godot;
 using System;
-/*
-    file: ResourceShowIcon.cs.
-    author: Saúl Rodríguez Martínez (Trinketos)
-    date: 1:13 PM 27/04/25
-
-    This code is part of Hacienda Simulation(Shity name xdxd).
-    So the owner of this code is me Trinketos.
-
-    A square button in a grid of buttons(is use by context in the game menu,example if you select the stockpile will show you all the goods you have).
-*/
 
 namespace Trinketos.HaciendaSimulator
 {

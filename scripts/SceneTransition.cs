@@ -1,59 +1,78 @@
+using System.Threading.Tasks;
 using Godot;
-/*
-    file: SceneTransition.cs.
-    author: Saúl Rodríguez Martínez (Trinketos)
-    date: 1:17 PM 27/04/25
 
-    This code is part of Hacienda Simulation(Shity name xdxd).
-    So the owner of this code is me Trinketos.
 
-    I don't explain what the fuck this script do.Is global scope
-	it's a comment that explain use cases
-				|
-
-*/
-
-public partial class SceneTransition : CanvasLayer
+namespace Trinketos.HaciendaSimulator
 {
-    string currentScene;
-    ColorRect _colorRect;
-    float _switchDuration = 3.0f;
-
-    public override void _Ready()
+    public partial class SceneTransition : CanvasLayer
     {
-        base._Ready();
-        _colorRect = GetNode<ColorRect>("ColorRect");
-    }
-    /*
-	Use this function like this:
-	SceneTransition st = GetNode<SceneTransition>("/root/SceneTransition");
-	Node ev = GetNode("/root/Events");
-	st.GoToScene("game",(ev,"game_loaded"));
-	or:
-	Node ev = GetNode("/root/Events");
-	awiat ToSignal(GetTree().CreateTimer(2f),SceneTreeTimer.SignalName.Timeout);
-	ev.EmitSignal("game_loaded");
-	*/
-    public async void GoToScene(string scene, (GodotObject, string)? awaitable = null)
-    {
-        _colorRect.MouseFilter = Control.MouseFilterEnum.Stop;
+        //private float _time = 0.0f;
+        string currentScene;
+        ColorRect _colorRect;
+        ProgressBar progressBar;
 
-        Tween tween = GetTree().CreateTween();
-        tween.SetPauseMode(Tween.TweenPauseMode.Process);
-        tween.TweenProperty(_colorRect, "modulate", new Color(1, 1, 1, 1), _switchDuration / 2f);
-        await ToSignal(tween, Tween.SignalName.Finished);
+        float progressValue = 0.0f;
+        string path;
 
-        GetTree().ChangeSceneToFile(scene);
-        if (awaitable != null)
+        [Signal]
+        public delegate void SceneLoadedEventHandler(string path);
+
+        public override void _Ready()
         {
-            await ToSignal(awaitable.Value.Item1, awaitable.Value.Item2);
+            base._Ready();
+            _colorRect = GetNode<ColorRect>("ColorRect");
+            progressBar = GetNode<ProgressBar>("ProgressBar");
+            _colorRect.Modulate = new Color(0,0,0,0);
+            progressBar.Hide();
         }
-        GetTree().Paused = false;
-        currentScene = scene;
+        public override void _Process(double delta)
+        {
+            base._Process(delta);
+            if(path == "")
+            {
+                GD.Print($"{path} is empty");
+                return;
+            }
+            Godot.Collections.Array progress = new Godot.Collections.Array();
+            
+            ResourceLoader.ThreadLoadStatus status = ResourceLoader.LoadThreadedGetStatus(path,progress);
+            if(status == ResourceLoader.ThreadLoadStatus.InProgress)
+            {
+                progressValue = (float)progress[0]*100.0f;
+                progressBar.Value = Mathf.MoveToward(progressBar.Value,progressValue,delta* 20);
+            }
+            if(status == ResourceLoader.ThreadLoadStatus.Loaded)
+            {
+                //_time = 1.0f;
+                progressBar.Value = Mathf.MoveToward(progressBar.Value,100.0, delta * 150);
+                if(progressBar.Value >= 100)
+                {
+                   EmitSignal(SignalName.SceneLoaded,path);
+                   PackedScene scene = (PackedScene)ResourceLoader.LoadThreadedGet(path);
+                   GetTree().ChangeSceneToPacked(scene);
+                }
+            }
+        }
+        public async void GoToScene(string scene)
+        {
+           await _TransitionIn();
+           path = scene;
+           ResourceLoader.LoadThreadedRequest(path);
+           _TransitionOut();
+        }
 
-        tween = GetTree().CreateTween();
-        tween.SetPauseMode(Tween.TweenPauseMode.Process);
-        tween.TweenProperty(_colorRect, "modulate", new Color(1, 1, 1, 0), _switchDuration / 2f);
-        _colorRect.MouseFilter = Control.MouseFilterEnum.Ignore;
+        private async Task _TransitionIn()
+        {
+            progressBar.Show();
+            Tween tween = GetTree().CreateTween();
+            tween.TweenProperty(_colorRect,"modulate:a",1.0f,2.0 / 2f);
+            await ToSignal(tween,Tween.SignalName.Finished);
+        }
+        private void _TransitionOut()
+        {
+            progressBar.Hide();
+            Tween tween = GetTree().CreateTween();
+            tween.TweenProperty(_colorRect,"modulate:a",0.0f,3.5f / 2f);
+        }
     }
 }

@@ -1,22 +1,10 @@
 using Godot;
-/*
- *   file: Terrain.cs.
- *   author: Saúl Rodríguez Martínez (Trinketos)
- *   date: 1:10 PM 24/04/25
- *
- *   This code is part of Hacienda Simulation(Shity name xdxd).
- *   So the owner of this code is me Trinketos.
- *
- *   This Script is for generating the terrain and change the control textures.
- */
+
 
 namespace Trinketos.HaciendaSimulator
 {
     public partial class Terrain : StaticBody3D
     {
-        // Note will not be terrains biger that 1024*2.
-        [Export(PropertyHint.Range, "64,4096")]
-        int terrainSize = 512;
         [Export]
         MeshInstance3D terrainMesh;
         [Export]
@@ -25,8 +13,7 @@ namespace Trinketos.HaciendaSimulator
         public Texture2D splatMapTexture;
         public Texture2D heightMapTexture;
         public Texture2D colorMapTexture;
-
-
+        public Texture2D forestmapDensity;
         private HeightMapShape3D _heightMapShape;
 
         // Subdivision need to be equal to the heightmapShape cells
@@ -39,6 +26,8 @@ namespace Trinketos.HaciendaSimulator
         // Colormap Image
         private Image _clrmp_tex;
 
+        private Image _frsmp_tex;
+
         private Godot.Collections.Dictionary<Vector2I, float> heightCache = new Godot.Collections.Dictionary<Vector2I, float>(); // Buffer de alturas
 
         [Signal]
@@ -50,6 +39,7 @@ namespace Trinketos.HaciendaSimulator
             MapData mapData = GetNode<MapData>("/root/MapData");
             splatMapTexture = mapData.splatmap;
             heightMapTexture = mapData.heightmap;
+            forestmapDensity = mapData.treeDistMask;
             GenerateTerrain();
         }
 
@@ -58,16 +48,24 @@ namespace Trinketos.HaciendaSimulator
         {
             GenerateMesh();
             GenerateHeightMapShape();
+            //PlaceObjectBaseInGreenChannel("res://scenes/flora/tree.tscn",0.5f,0.3f);
             EmitSignal(SignalName.TerrainGenerateFinish);
         }
 
         public void GenerateMesh()
         {
+            Image image = heightMapTexture.GetImage();
+            int width = image.GetWidth();
+            int height = image.GetHeight();
+            GD.Print($"Terrain Size is ({width},{height})");
             _plane = new PlaneMesh();
-            _plane.Size = new Vector2(terrainSize, terrainSize);
+            _plane.Size = new Vector2(width, height);
+
             // This will break??
-            _plane.SubdivideWidth = Mathf.Clamp(terrainSize / 4,4,128);
-            _plane.SubdivideDepth = Mathf.Clamp(terrainSize / 4, 4, 128);
+            _plane.SubdivideWidth = width / 2;
+            _plane.SubdivideDepth = height / 2;
+            _plane.SubdivideWidth = width;
+            _plane.SubdivideDepth = height;
             terrainMesh.Mesh = _plane;
             ShaderMaterial material = terrainMesh.MaterialOverride as ShaderMaterial;
             material.SetShaderParameter("heightmap", heightMapTexture);
@@ -77,7 +75,10 @@ namespace Trinketos.HaciendaSimulator
         public void GenerateHeightMapShape()
         {
             _hgmp_tex = heightMapTexture.GetImage();
-            _hgmp_tex.Resize(terrainSize, terrainSize, Image.Interpolation.Trilinear);
+            int width = _hgmp_tex.GetWidth();
+            int height = _hgmp_tex.GetHeight();
+            _hgmp_tex.Resize(width, height, Image.Interpolation.Trilinear);
+
             if(_hgmp_tex.GetFormat() != Image.Format.Rf)
             {
                 _hgmp_tex.Convert(Image.Format.Rf);
@@ -85,6 +86,32 @@ namespace Trinketos.HaciendaSimulator
             _heightMapShape = new HeightMapShape3D();
             _heightMapShape.UpdateMapDataFromImage(_hgmp_tex, 0, 60);
             terrainShape.Shape = _heightMapShape;
+        }
+
+        // Not Working now :(
+        public void PlaceObjectBaseInGreenChannel(string scene, float threshold, float frequency)
+        {
+            _frsmp_tex = forestmapDensity.GetImage();
+            int width = _frsmp_tex.GetWidth();
+            int height = _frsmp_tex.GetHeight();
+
+            RandomNumberGenerator rng = new RandomNumberGenerator();
+            rng.Randomize();
+            for (int x = 0; x < width; x++)
+            {
+                for (int z = 0; z < height; z++)
+                {
+                    float green = _frsmp_tex.GetPixel(x,z).G;
+
+                    if(green > threshold)
+                    {
+                       if(rng.Randf() < frequency)
+                       {
+                            InstanceObjectAtPosition(x,z,scene);
+                       }
+                    }
+                }
+            }
         }
 
         public void InstanceObjectAtPosition(float x, float z, string scene)
@@ -103,22 +130,24 @@ namespace Trinketos.HaciendaSimulator
             }
             newInstance.GlobalPosition = new Vector3(x, GetHeightAt(x, z, 60), z);
             GetParent().AddChild(newInstance);
+            //GetParent().CallDeferred("add_child",newInstance);
         }
 
         public float GetHeightAt(float x, float y, float maxHeight)
         {
+            if(_hgmp_tex == null)
+                _hgmp_tex = heightMapTexture.GetImage();
+            int width = _hgmp_tex.GetWidth();
+            int height = _hgmp_tex.GetHeight();
             Vector2I pos = new Vector2I(Mathf.FloorToInt(x), Mathf.FloorToInt(y));
 
             if (!heightCache.ContainsKey(pos))
             {
-                int width = _hgmp_tex.GetWidth();
-                int height = _hgmp_tex.GetHeight();
-
                 pos.X = Mathf.Clamp(pos.X, 0, width - 2);
                 pos.Y = Mathf.Clamp(pos.Y, 0, height - 2);
 
                 Color c00 = _hgmp_tex.GetPixel(pos.X, pos.Y);
-                heightCache[pos] = c00.R * maxHeight; // Guardar en caché
+                heightCache[pos] = c00.R * maxHeight;
             }
 
             return heightCache[pos];

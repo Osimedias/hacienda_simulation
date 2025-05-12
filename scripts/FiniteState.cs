@@ -9,8 +9,6 @@ namespace Trinketos.HaciendaSimulator
         [Export]
         public string Name;
         [Export]
-        Action action;
-        [Export]
         public double Duration;
         [Export]
         public bool CanInterrupt;

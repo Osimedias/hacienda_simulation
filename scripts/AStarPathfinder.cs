@@ -1,114 +1,134 @@
 using System.Collections.Generic;
-using System.Linq;
 using Godot;
-
 
 namespace Trinketos.HaciendaSimulator
 {
     public partial class AStarPathfinder : Node3D
     {
-        [Export(PropertyHint.Layers3DPhysics)]
-        uint LayerMask;
-        AStar3D aStar3D;
-        Dictionary<int,Vector3> pathNodes;
+        private float GridStep = 2.0f;
+        private float GridY = 0.0f;
+        private Godot.Collections.Dictionary<Vector3, int> Points = new Godot.Collections.Dictionary<Vector3, int>();
+        private AStar3D Astar = new AStar3D();
 
-
-        public AStarPathfinder()
+        public void ActivateAStarPathfinder()
         {
-            aStar3D = new AStar3D();
-            pathNodes = new Dictionary<int, Vector3>();
-        }
-        public void GeneratePathNodes(Image heightmap, int gridSize)
-        {
-            int index = 0;
-            int width = heightmap.GetWidth();
-            int height = heightmap.GetHeight();
-
-            for (int x = 0; x < width; x += gridSize)
-            {
-                for (int z = 0; z < height; z += gridSize)
-                {
-                    float y = heightmap.GetPixel(x, z).R * 60;
-                    Vector3 position = new Vector3(x, y, z);
-                    aStar3D.AddPoint(index, position);
-                    pathNodes[index] = position;
-                    index++;
-                }
-            }
+            var pathables = GetTree().GetNodesInGroup("terrain");
+            AddPoints(pathables);
+            ConnectPoints();
         }
 
-        
-        public void ConnectPathNodes(int gridSize, Image heightmap, float maxHeightDifference)
+        private void AddPoints(Godot.Collections.Array<Node> pathables)
         {
-            foreach (var node in pathNodes)
+            foreach (Node node in pathables)
             {
-                int index = node.Key;
-                Vector3 pos = node.Value;
-
-                foreach (var neighbor in GetNeighbors(pos, gridSize, heightmap, maxHeightDifference))
+                if (node is Node3D pathable)
                 {
-                    int neighborIndex = pathNodes.FirstOrDefault(n => n.Value == neighbor).Key;
-                    if (neighborIndex != index && aStar3D.HasPoint(neighborIndex))
+                    MeshInstance3D mesh = pathable.GetChild<MeshInstance3D>(0);
+                    HeightMapShape3D heightShape = pathable.GetChild<CollisionShape3D>(1).Shape as HeightMapShape3D;
+                    var aabb = mesh.GetAabb();
+                    GD.Print("HeightmapShape3D.MapData is equal to aabb size: ",heightShape.MapData.Length == aabb.Size.X * aabb.Size.Z);
+                    var startPoint = aabb.Position;
+                    var xSteps = aabb.Size.X / GridStep;
+                    var zSteps = aabb.Size.Z / GridStep;
+
+                    for (int x = 0; x < xSteps; x++)
                     {
-                        aStar3D.ConnectPoints(index,neighborIndex);
+                        for (int z = 0; z < zSteps; z++)
+                        {
+                            var nextPoint = startPoint + new Vector3(x * GridStep, 0, z * GridStep);
+                            AddPoint(nextPoint);
+                        }
                     }
                 }
             }
         }
-        private List<Vector3> GetNeighbors(Vector3 position, int gridSize, Image heightmap, float maxHeightDifference)
+
+        private void AddPoint(Vector3 point)
         {
-            List<Vector3> neighbors = new List<Vector3>();
-            int width = heightmap.GetWidth();
-            int height = heightmap.GetHeight();
+            point.Y = GridY;
+            int id = (int)Astar.GetAvailablePointId();
+            Astar.AddPoint(id, point);
+            Points[WorldToAstar(point)] = id;
+        }
 
-            float baseHeight = heightmap.GetPixel((int)position.X, (int)position.Z).R * 60;
-
-            int[] offsets = { -gridSize, 0, gridSize };
-
-            foreach (int offsetX in offsets)
+        private void ConnectPoints()
+        {
+            foreach (KeyValuePair<Vector3,int> kvp in Points)
             {
-                foreach (int offsetZ in offsets)
+                Vector3 worldPos = kvp.Key;
+                var adjacentPoints = GetAdjacentPoints(worldPos);
+                int currentId = kvp.Value;
+
+                foreach (int neighborId in adjacentPoints)
                 {
-                    if (offsetX == 0 && offsetZ == 0) continue;
-
-                    int neighborX = (int)Mathf.Clamp(position.X + offsetX, 0, width - 1);
-                    int neighborZ = (int)Mathf.Clamp(position.Z + offsetZ, 0, height - 1);
-                    float neighborHeight = heightmap.GetPixel(neighborX, neighborZ).R * 60;
-
-                    if (Mathf.Abs(baseHeight - neighborHeight) > maxHeightDifference) continue;
-
-                    Vector3 neighborPos = new Vector3(neighborX, neighborHeight, neighborZ);
-
-                    // **Comprobamos si hay un obstáculo en el camino**
-                    if (!IsBlocked(neighborPos, position))
+                    if (!Astar.ArePointsConnected(currentId, neighborId))
                     {
-                        neighbors.Add(neighborPos);
+                        Astar.ConnectPoints(currentId, neighborId);
                     }
                 }
             }
-
-            return neighbors;
         }
-
-
-        public Vector3[] GetPointPath(Vector3 start, Vector3 end)
+        private Godot.Collections.Array<int> GetAdjacentPoints(Vector3 worldPoint)
         {
-            int startIndex = pathNodes.OrderBy(p => p.Value.DistanceTo(start)).First().Key;
-            int endIndex = pathNodes.OrderBy(p => p.Value.DistanceTo(end)).First().Key;
-            return aStar3D.GetPointPath(startIndex, endIndex);
-        }
+            var adjacentPoints = new Godot.Collections.Array<int>();
+            var searchCoords = new float[] { -GridStep, 0, GridStep };
 
-        public bool IsBlocked(Vector3 start, Vector3 end)
-        {
-            var space = GetWorld3D().DirectSpaceState;
-            PhysicsRayQueryParameters3D query = new PhysicsRayQueryParameters3D
+            foreach (float x in searchCoords)
             {
-                From = start + Vector3.Up * 1.0f,
-                To = end + Vector3.Up * 1.0f,
-                CollisionMask = LayerMask
-            };
-            var result = space.IntersectRay(query);
-            return result.Count > 0;
+                foreach (float z in searchCoords)
+                {
+                    var searchOffset = new Vector3(x, 0, z);
+                    if (searchOffset == Vector3.Zero) continue;
+
+                    var potentialNeighbor = WorldToAstar(worldPoint + searchOffset);
+                    if (Points.ContainsKey(potentialNeighbor))
+                        adjacentPoints.Add(Points[potentialNeighbor]);
+                }
+            }
+            return adjacentPoints;
+        }
+
+        public void HandleObstacleAdded(Node3D obstacle)
+        {
+            var normalizedOrigin = obstacle.GlobalTransform.Origin;
+            normalizedOrigin.Y = GridY;
+
+            var pointKey = WorldToAstar(normalizedOrigin);
+            int astarId = Points[pointKey];
+
+            if (!Astar.IsPointDisabled(astarId))
+            {
+                Astar.SetPointDisabled(astarId, true);
+            }
+        }
+
+        public void HandleObstacleRemoved(Node3D obstacle)
+        {
+            var normalizedOrigin = obstacle.GlobalTransform.Origin;
+            normalizedOrigin.Y = GridY;
+
+            var pointKey = WorldToAstar(normalizedOrigin);
+            int astarId = Points[pointKey];
+
+            if (Astar.IsPointDisabled(astarId))
+            {
+                Astar.SetPointDisabled(astarId, false);
+            }
+        }
+
+        public Vector3[] GetPointPath(Vector3 from, Vector3 to)
+        {
+            int startId = (int)Astar.GetClosestPoint(from);
+            int endId = (int)Astar.GetClosestPoint(to);
+            return Astar.GetPointPath(startId, endId);
+        }
+
+        private Vector3 WorldToAstar(Vector3 world)
+        {
+            float x = Mathf.Snapped(world.X, GridStep);
+            float y = GridY;
+            float z = Mathf.Snapped(world.Z, GridStep);
+            return new Vector3(x,y,z);
         }
     }
 }

@@ -1,16 +1,6 @@
 using Godot;
 using Godot.Collections;
 
-/*
-    file: SelectionBox.cs.
-    author: Saúl Rodríguez Martínez (Trinketos)
-    date: 1:15 PM 27/04/25
-
-    This code is part of Hacienda Simulation(Shity name xdxd).
-    So the owner of this code is me Trinketos.
-
-    SelectionBox, selected units inside a rect2
-*/
 
 namespace Trinketos.HaciendaSimulator
 {
@@ -20,18 +10,21 @@ namespace Trinketos.HaciendaSimulator
         string GroupSelectName = "Soliders";
         [Export]
         Color Color = Colors.RoyalBlue;
-
+        [Export]
+        Color LineColor = Colors.AliceBlue;
         [Export]
         Node3D World;
 
         private Camera3D _Camera;
+
+        //private float timeElapsed = .5f;
 
 
         private bool _IsSelected = false;
         private Vector2 _SelectionStart = Vector2.Zero;
         private Rect2 _SelectionRect = new Rect2();
 
-        private Array<Node3D> _SelectedUnitsCollection;
+        private Array<Node3D> _SelectedUnitsCollection = new Array<Node3D>();
         public override void _Ready()
         {
             base._Ready();
@@ -69,6 +62,14 @@ namespace Trinketos.HaciendaSimulator
                         _SelectionRect.Size = Vector2.Zero;
                         _SelectedUnits();
                     }
+                    if(_SelectedUnitsCollection.Count > 0)
+                    {
+                        Vector3 targetPosition = GetMousePosition();
+                        foreach(Peasent unit in _SelectedUnitsCollection)
+                        {
+                            unit.GetNode<Agent>("Agent").SetMovementTarget(targetPosition);
+                        }
+                    }
                     else
                     {
                         if (_IsSelected)
@@ -82,7 +83,8 @@ namespace Trinketos.HaciendaSimulator
                 else if (e.ButtonIndex == MouseButton.Right)
                 {
                     QueueRedraw();
-                    _SelectedUnitsCollection.Clear();
+                    if(_SelectedUnitsCollection.Count > 0)
+                        _SelectedUnitsCollection.Clear();
                     _SelectionRect = new Rect2();
                 }
             }
@@ -107,8 +109,22 @@ namespace Trinketos.HaciendaSimulator
 
         public override void _Draw()
         {
-            base._Draw();
-            DrawRect(_SelectionRect, Color, false, 1.5f);
+            DrawRect(_SelectionRect, LineColor, false, 2.0f);
+            DrawRect(_SelectionRect, Color, true, 1.0f);
+        }
+
+        private Vector3 GetMousePosition()
+        {
+            Vector3 from = _Camera.ProjectRayOrigin(GetGlobalMousePosition());
+            Vector3 to = from + _Camera.ProjectRayNormal(GetGlobalMousePosition()) * 10000;
+            PhysicsDirectSpaceState3D spaceState = _Camera.GetWorld3D().DirectSpaceState;
+            PhysicsRayQueryParameters3D query = PhysicsRayQueryParameters3D.Create(from, to);
+            Dictionary result = spaceState.IntersectRay(query);
+            if(result.Count > 0)
+            {
+                return (Vector3)result["position"];
+            }
+            return Vector3.Zero;
         }
 
         private void _SelectedUnits()
@@ -118,17 +134,14 @@ namespace Trinketos.HaciendaSimulator
                 GD.Print("There is not selectable units in the scene");
                 return;
             }
-            Array<Vector2> unitsPositions = [];
-            int index = 0;
             // Slow?
-            foreach (Node3D unit in GetTree().GetNodesInGroup(GroupSelectName))
+            foreach (Peasent unit in GetTree().GetNodesInGroup(GroupSelectName))
             {
-                unitsPositions.Add(_Camera.UnprojectPosition(unit.GlobalPosition));
-                if (_SelectionRect.HasPoint(unitsPositions[index]))
+                Vector2 unitPosition = _Camera.UnprojectPosition(unit.GlobalPosition);
+                if (_SelectionRect.HasPoint(unitPosition))
                 {
                     _SelectedUnitsCollection.Add(unit);
                 }
-                index++;
             }
         }
 

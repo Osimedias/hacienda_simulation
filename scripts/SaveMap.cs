@@ -1,18 +1,5 @@
-using System.Linq;
 using Godot;
 using Godot.Collections;
-
-
-/*
-    file: SaveMap.cs.
-    author: Saúl Rodríguez Martínez (Trinketos)
-    date: 1:15 PM 27/04/25
-
-    This code is part of Hacienda Simulation(Shity name xdxd).
-    So the owner of this code is me Trinketos.
-
-    Save the map into a binnary file(store the control maps(like heightmap),a json file whit alot of shit,a configFile for triggers)
-*/
 
 namespace Trinketos.HaciendaSimulator
 {

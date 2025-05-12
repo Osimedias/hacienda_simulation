@@ -1,13 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://b4hj5k3r5kqin"]
+[gd_scene load_steps=8 format=3 uid="uid://b4hj5k3r5kqin"]
 
 [ext_resource type="Script" uid="uid://c7q2agm132m00" path="res://scripts/Peasent.cs" id="1_h3t5h"]
 [ext_resource type="PackedScene" uid="uid://b1sgpt77ca2jr" path="res://scenes/units/actors/godot_plush.tscn" id="2_1lgko"]
+[ext_resource type="PackedScene" uid="uid://cvn65nx4fxgxq" path="res://scenes/units/agent.tscn" id="2_6o6a4"]
 [ext_resource type="Script" uid="uid://npdvl0f6vmmv" path="res://scripts/FiniteStateMachine.cs" id="3_vdwll"]
 [ext_resource type="Resource" uid="uid://dsm380wk2fsaa" path="res://data/states/peasent_idle.tres" id="4_1lgko"]
 [ext_resource type="Resource" uid="uid://457xtheba0vc" path="res://data/states/peasent_go_to_work_at.tres" id="5_r3a6v"]
+[ext_resource type="Script" uid="uid://bjgs8k6ub6ecs" path="res://scripts/TransportNode.cs" id="7_552f7"]
 
 [node name="Peasent" type="Node3D"]
 script = ExtResource("1_h3t5h")
+
+[node name="Agent" parent="." instance=ExtResource("2_6o6a4")]
 
 [node name="godot_plush" parent="." instance=ExtResource("2_1lgko")]
 
@@ -15,3 +19,7 @@ script = ExtResource("1_h3t5h")
 script = ExtResource("3_vdwll")
 States = Array[Object]([ExtResource("4_1lgko"), ExtResource("5_r3a6v")])
 metadata/_custom_type_script = "uid://npdvl0f6vmmv"
+
+[node name="TransportNode" type="Node" parent="."]
+script = ExtResource("7_552f7")
+metadata/_custom_type_script = "uid://bjgs8k6ub6ecs"
